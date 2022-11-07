@@ -38,16 +38,16 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 
-
-	// AWS RDS
-	runtimeOnly 'mysql:mysql-connector-java'
-
-	implementation "io.springfox:springfox-boot-starter:3.0.0"
-	implementation "io.springfox:springfox-swagger-ui:3.0.0"
-
-
-	// AWS S3
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+//
+//	// AWS RDS
+//	runtimeOnly 'mysql:mysql-connector-java'
+//
+//	implementation "io.springfox:springfox-boot-starter:3.0.0"
+//	implementation "io.springfox:springfox-swagger-ui:3.0.0"
+//
+//
+//	// AWS S3
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 }
 
 

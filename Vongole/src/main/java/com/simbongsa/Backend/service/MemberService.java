@@ -10,7 +10,7 @@ import com.simbongsa.Backend.entity.RefreshToken;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
-import com.simbongsa.Backend.util.S3Uploader;
+//import com.simbongsa.Backend.util.S3Uploader;
 import com.simbongsa.Backend.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +43,7 @@ public class MemberService {
     private final EntityManager entityManager;
     private final RefreshTokenRepository refreshTokenRepository;
     private final Util util;
-    private final S3Uploader s3Uploader;
+//    private final S3Uploader s3Uploader;
 
 
 
