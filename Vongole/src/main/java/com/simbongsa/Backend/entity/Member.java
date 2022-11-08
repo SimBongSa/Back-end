@@ -21,8 +21,8 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
-    private String nickname;
+//    @Column
+//    private String nickname;
 
     @JsonIgnore
     @Column(nullable = false)

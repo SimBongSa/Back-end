@@ -11,6 +11,7 @@ import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
 //import com.simbongsa.Backend.util.S3Uploader;
+import com.simbongsa.Backend.shared.Authority;
 import com.simbongsa.Backend.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,7 +50,7 @@ public class MemberService {
 
     @Transactional
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-        if (null != isPresentMember(requestDto.getNickname())) {
+        if (null != isPresentMember(requestDto.getUsername())) {
             return ResponseDto.fail("DUPLICATED_NICKNAME",
                     "nickname is duplicated");
         }
@@ -60,14 +61,15 @@ public class MemberService {
         }
 
         Member member = Member.builder()
-                .nickname(requestDto.getNickname())
+                .username(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .build();
+
         memberRepository.save(member);
         return ResponseDto.success(
                 MemberResponseDto.builder()
                         .id(member.getMemberId())
-                        .nickname(member.getNickname())
+                        .username(member.getUsername())
                         .createdAt(member.getCreatedAt())
                         .modifiedAt(member.getModifiedAt())
                         .build()
@@ -92,7 +94,7 @@ public class MemberService {
         return ResponseDto.success(
                 MemberResponseDto.builder()
                         .id(member.getMemberId())
-                        .nickname(member.getNickname())
+                        .username(member.getUsername())
                         .createdAt(member.getCreatedAt())
                         .modifiedAt(member.getModifiedAt())
                         .build()
@@ -137,8 +139,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member isPresentMember(String nickname) {
-        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+    public Member isPresentMember(String username) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(username);
         return optionalMember.orElse(null);
     }
 
