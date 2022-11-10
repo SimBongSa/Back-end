@@ -22,3 +22,7 @@
 
 ## Notion 링크
 https://www.notion.so/VONGOLE-ef8d0e42dabb4067b25f57240ddcf171
+
+
+# 2. Git Convention
+https://velog.io/@archivvonjang/Git-Commit-Message-Convention
