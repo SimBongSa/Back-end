@@ -7,6 +7,8 @@ import com.simbongsa.Backend.dto.response.MemberResponseDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
+import com.simbongsa.Backend.exception.ErrorCode;
+import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
@@ -80,8 +82,7 @@ public class MemberService {
     public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
         Member member = isPresentMember(requestDto.getNickname());
         if (null == member) {
-            return ResponseDto.fail("MEMBER_NOT_FOUND",
-                    "member not found");
+            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
