@@ -4,31 +4,26 @@ package com.simbongsa.Backend.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simbongsa.Backend.dto.request.TokenDto;
 import com.simbongsa.Backend.entity.Member;
-import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.service.KakaoUserService;
 import com.simbongsa.Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Locale;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class UserController {
+public class KakaoUserController {
 
     private final MemberService memberService;
     private final KakaoUserService kakaoUserService;
@@ -76,6 +71,6 @@ public class UserController {
 
         String message = messageSource.getMessage("spring.messages.frontRedirect", null, Locale.getDefault());
         log.info("message = {}", message);
-        return "redirect:"+message+"?token="+tokenDto.getAccessToken();
+        return "redirect:"+message+"?token="+tokenDto.getAccessToken()+"&username="+member.getUsername();
     }
 }

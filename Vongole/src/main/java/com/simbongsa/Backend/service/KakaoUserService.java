@@ -157,6 +157,7 @@ public class KakaoUserService {
                         .authority(Authority.ROLE_MEMBER)
                         .email(email)
                         .nickname(kakaoUserInfo.getNickname())
+                        .age(0)
                         .build();
             }
 
