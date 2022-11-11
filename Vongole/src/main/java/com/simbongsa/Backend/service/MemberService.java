@@ -2,6 +2,7 @@ package com.simbongsa.Backend.service;
 
 import com.simbongsa.Backend.dto.request.LoginRequestDto;
 import com.simbongsa.Backend.dto.request.MemberRequestDto;
+import com.simbongsa.Backend.dto.request.MemberUpdateRequestDto;
 import com.simbongsa.Backend.dto.request.TokenDto;
 import com.simbongsa.Backend.dto.response.MemberResponseDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
@@ -12,7 +13,8 @@ import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
-//import com.simbongsa.Backend.util.S3Uploader;
+import com.simbongsa.Backend.util.Check;
+import com.simbongsa.Backend.util.S3Uploader;
 import com.simbongsa.Backend.shared.Authority;
 import com.simbongsa.Backend.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -36,36 +39,43 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
 
 
+
+
     private final EntityManager entityManager;
     private final RefreshTokenRepository refreshTokenRepository;
     private final Util util;
-//    private final S3Uploader s3Uploader;
+    private final S3Uploader s3Uploader;
+
+    private final Check check;
 
 
 
     @Transactional
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-        if (null != isPresentMember(requestDto.getUsername())) {
-            return ResponseDto.fail("DUPLICATED_NICKNAME",
-                    "nickname is duplicated");
-        }
 
-        if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
-            return ResponseDto.fail("PASSWORDS_NOT_MATCHED",
-                    "password and password confirm are not matched");
-        }
+        check.isDuplicated(requestDto.getUsername());
 
-        Member member = Member.builder()
+
+        check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
+
+          Member member = Member.builder()
                 .username(requestDto.getUsername())
+                .nickname(requestDto.getNickname())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
+                .email(requestDto.getEmail())
+                .phoneNum(requestDto.getPhoneNum())
+                .name(requestDto.getName())
+                .gender(requestDto.getGender())
+                .authority(Authority.ROLE_MEMBER)
                 .build();
+
+
 
         memberRepository.save(member);
         return ResponseDto.success(
@@ -78,15 +88,17 @@ public class MemberService {
         );
     }
 
+
+
+
     @Transactional
     public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
-        Member member = isPresentMember(requestDto.getNickname());
-        if (null == member) {
-            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
-        }
+        Member member = check.isPresentMember(requestDto.getUsername());
+        check.isNotMember(member);
+
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(requestDto.getNickname(), requestDto.getPassword());
+                new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -102,23 +114,42 @@ public class MemberService {
         );
     }
 
+    public ResponseDto<?> memberUpdate(MemberUpdateRequestDto memberUpdateRequestDto, Member member, Long memberId) throws IOException {
+
+        Member preMember = util.getMember(member.getMemberId());
+        check.isSameMember(preMember, member, memberId);
+
+        Member newMember = Member.builder()
+                .memberId(preMember.getMemberId())
+                .username(preMember.getUsername())
+                .nickname(memberUpdateRequestDto.getNickname())
+                .password(preMember.getPassword())
+                .introduction(memberUpdateRequestDto.getIntroduction())
+                .authority(preMember.getAuthority())
+                .memberImage(
+                        (memberUpdateRequestDto.getMemberImage().getOriginalFilename().equals(""))?
+                                null:s3Uploader.uploadFiles(memberUpdateRequestDto.getMemberImage(), "member", member, "member"))
+                .build();
+
+        memberRepository.save(newMember);
+        return ResponseDto.success("회원정보가 정상적으로 수정되었습니다.");
+    }
+
+
+
+
     @Transactional
     public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-            return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-        }
+
+        check.isValidToken("Refresh-Token");
         Member member = tokenProvider.getMemberFromAuthentication();
-        if (null == member) {
-            return ResponseDto.fail("MEMBER_NOT_FOUND",
-                    "member not found");
-        }
+        check.isNotMember(member);
+
 
         Authentication authentication = tokenProvider.getAuthentication(request.getHeader("Access-Token"));
         RefreshToken refreshToken = tokenProvider.isPresentRefreshToken(member);
 
-        if (!refreshToken.getValue().equals(request.getHeader("Refresh-Token"))) {
-            return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-        }
+        check.isSameToken(refreshToken, "Refresh-Token");
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         refreshToken.updateValue(tokenDto.getRefreshToken());
@@ -127,23 +158,15 @@ public class MemberService {
     }
 
     public ResponseDto<?> logout(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-            return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-        }
+
+        check.isValidToken("Refresh-Token");
         Member member = tokenProvider.getMemberFromAuthentication();
-        if (null == member) {
-            return ResponseDto.fail("MEMBER_NOT_FOUND",
-                    "member not found");
-        }
+        check.isNotMember(member);
 
         return tokenProvider.deleteRefreshToken(member);
     }
 
-    @Transactional(readOnly = true)
-    public Member isPresentMember(String username) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        return optionalMember.orElse(null);
-    }
+
 
     public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
         response.addHeader("Access-Token", "Bearer " + tokenDto.getAccessToken());

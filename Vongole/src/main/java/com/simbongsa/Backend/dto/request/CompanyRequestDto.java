@@ -11,21 +11,19 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberRequestDto {
+public class CompanyRequestDto {
 
     @NotBlank(message = "아이디를 입력해주세요")
     @Size(min = 4, max = 12)
     @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
     private String username;
 
-    @NotBlank(message = "닉네입을 입력해주세요")
-    @Size(min = 4, max = 12)
-    @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
-    private String nickname;
+    @NotBlank(message = "사업자번호를 입력해주세요")
+    private String companyNum;
 
     @NotBlank(message = "비밀번호를 입력해주세요")
-    @Size(min = 4, max = 12)
-    @Pattern(regexp = "[a-z\\d]*${3,12}")
+    @Size(min = 4, max = 32)
+    @Pattern(regexp = "[a-z\\d]*${3,32}")
     private String password;
 
     @NotBlank
@@ -36,9 +34,15 @@ public class MemberRequestDto {
 
     private String phoneNum;
 
-    private String name;
+    @NotBlank(message = "회사명을 입력해주세요")
+    private String companyName;
 
-    private String gender;
+
+
+
+
+
+
 
 
 }
