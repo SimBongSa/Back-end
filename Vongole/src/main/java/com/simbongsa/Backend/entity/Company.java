@@ -14,38 +14,36 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member extends Timestamped {
-    @Id @GeneratedValue
-    @Column(name = "member_id")
-    private Long memberId;
+public class Company {
+    @Id
+    @GeneratedValue
+    @Column(name = "company_id")
+    private Long companyId;
 
     @Column(name = "username", nullable = false)
     private String username;
-
-    @Column(name = "nickname", nullable = false)
-    private String nickname;
 
     @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "member_image")
-    private String memberImage;
+    @Column(name = "company_name", nullable = false)
+    private String companyName;
+
+    @Column(name = "company_image")
+    private String companyImage;
+
+    @Column(name = "company_num")
+    private String companyNum;
+
+    @Column(name = "certificate_image")
+    private String certificateImage;
+
+    @Column(name = "company_phone_num")
+    private String companyPhoneNum;
 
     @Column(name = "email")
     private String email;
-
-    @Column(name = "phone_num")
-    private String phoneNum;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "age")
-    private int age;
 
     @Column(name = "introduction")
     private String introduction;
@@ -54,8 +52,7 @@ public class Member extends Timestamped {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    public void updateMember() {
+    public void updateCompany() {
 
     }
-
 }

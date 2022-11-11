@@ -3,17 +3,18 @@ package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.LoginRequestDto;
 import com.simbongsa.Backend.dto.request.MemberRequestDto;
+import com.simbongsa.Backend.dto.request.MemberUpdateRequestDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
+import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,25 +22,29 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @RequestMapping(value = "/api/member/signup", method = RequestMethod.POST)
+    @PostMapping(value = "/member/signup")
     public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
         return memberService.createMember(requestDto);
     }
 
-    @RequestMapping(value = "/api/member/login", method = RequestMethod.POST)
-    public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
-                                HttpServletResponse response
-    ) {
+    @PutMapping("/{memberId}")
+    public ResponseDto<?> memberUpdate(@ModelAttribute MemberUpdateRequestDto memberUpdateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long memberId) throws IOException {
+        return memberService.memberUpdate(memberUpdateRequestDto, userDetails.getMember(), memberId);
+    }
+
+    @PostMapping(value = "/member/login")
+    public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto, HttpServletResponse response) {
         return memberService.login(requestDto, response);
     }
 
-    @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
+    @PostMapping(value = "/auth/member/reissue")
     public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         return memberService.reissue(request, response);
     }
 
-    @RequestMapping(value = "/api/auth/member/logout", method = RequestMethod.POST)
+    @PostMapping(value = "/auth/member/logout")
     public ResponseDto<?> logout(HttpServletRequest request) {
+
         return memberService.logout(request);
     }
 }
