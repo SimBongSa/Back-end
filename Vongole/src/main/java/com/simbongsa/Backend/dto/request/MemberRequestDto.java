@@ -40,5 +40,7 @@ public class MemberRequestDto {
 
     private String gender;
 
+    private int age;
+
 
 }
