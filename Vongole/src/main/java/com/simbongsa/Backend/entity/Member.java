@@ -21,8 +21,8 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String username;
 
-//    @Column
-//    private String nickname;
+    @Column
+    private String nickname;
 
     @JsonIgnore
     @Column(nullable = false)
@@ -44,4 +44,11 @@ public class Member extends Timestamped {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    @Column(unique = true)
+    private Long kakaoId;
+
+
+    public void setKakaoId(Long kakaoId){
+        this.kakaoId = kakaoId;
+    }
 }
