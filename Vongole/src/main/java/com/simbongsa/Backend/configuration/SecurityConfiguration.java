@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                 .antMatchers("/api/post").permitAll()
                 .antMatchers("/api/post/*").permitAll()
                 .antMatchers("/api/comment/*").permitAll()
+                .antMatchers("/user/kakao/callback").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
