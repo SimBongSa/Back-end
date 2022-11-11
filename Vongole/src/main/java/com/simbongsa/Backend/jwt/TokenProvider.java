@@ -5,6 +5,8 @@ import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
+import com.simbongsa.Backend.exception.ErrorCode;
+import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
 import com.simbongsa.Backend.service.UserDetailsServiceImpl;
@@ -154,7 +156,7 @@ public class TokenProvider {
     public ResponseDto<?> deleteRefreshToken(Member member) {
         RefreshToken refreshToken = isPresentRefreshToken(member);
         if (null == refreshToken) {
-            return ResponseDto.fail("TOKEN_NOT_FOUND", "refresh token not found");
+            throw new GlobalException(ErrorCode.TOKEN_NOT_FOUND);
         }
 
         refreshTokenRepository.delete(refreshToken);

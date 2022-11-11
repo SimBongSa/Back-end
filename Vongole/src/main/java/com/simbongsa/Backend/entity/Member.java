@@ -16,33 +16,45 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Member extends Timestamped {
     @Id @GeneratedValue
+    @Column(name = "member_id")
     private Long memberId;
 
-    @Column(nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column
+
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @JsonIgnore
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column()
+    @Column(name = "member_image")
     private String memberImage;
 
-    @Column()
+    @Column(name = "email")
     private String email;
 
-    @Column()
-    private String area;
+    @Column(name = "phone_num")
+    private String phoneNum;
 
-    @Column()
-    private String phone_num;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "introduction")
+    private String introduction;
 
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
 
     @Column(unique = true)
     private Long kakaoId;
@@ -50,5 +62,9 @@ public class Member extends Timestamped {
 
     public void setKakaoId(Long kakaoId){
         this.kakaoId = kakaoId;
+    }
+
+    public void updateMember() {
+
     }
 }
