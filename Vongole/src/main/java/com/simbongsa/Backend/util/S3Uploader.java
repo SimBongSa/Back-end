@@ -50,8 +50,8 @@ public class S3Uploader {
 
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest((bucket), fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
-//        return "{url}" + fileName;
+//        return amazonS3Client.getUrl(bucket, fileName).toString();
+        return "https://vongole.s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
