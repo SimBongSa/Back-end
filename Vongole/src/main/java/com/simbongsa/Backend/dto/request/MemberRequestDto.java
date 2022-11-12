@@ -34,13 +34,21 @@ public class MemberRequestDto {
     @NotBlank(message = "이메일을 입력해주세요")
     private String email;
 
-    private String phoneNum;
+    private String phoneNumber;
 
     private String name;
 
     private String gender;
 
     private int age;
+
+    private String introduction;
+
+    private String licenseNumber;
+
+    private String licenseImage;
+
+    private int userType;
 
 
 }

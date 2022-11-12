@@ -51,7 +51,6 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final Util util;
     private final S3Uploader s3Uploader;
-
     private final Check check;
 
 
@@ -64,28 +63,74 @@ public class MemberService {
 
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
-          Member member = Member.builder()
-                .username(requestDto.getUsername())
-                .nickname(requestDto.getNickname())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
-                .email(requestDto.getEmail())
-                .phoneNum(requestDto.getPhoneNum())
-                .name(requestDto.getName())
-                .gender(requestDto.getGender())
-                .authority(Authority.ROLE_MEMBER)
-                .build();
+
+        // Todo 타입은 enum으로 구분해서 수정하기!!
+
+        if (requestDto.getUserType() == 1) {
+
+
+            // 기업회원
+
+            Member member = Member.builder()
+                    .username(requestDto.getUsername())
+                    .nickname(requestDto.getNickname())
+                    .password(passwordEncoder.encode(requestDto.getPassword()))
+                    .email(requestDto.getEmail())
+                    .phoneNumber(requestDto.getPhoneNumber())
+                    .name(requestDto.getName())
+                    .licenseNumber(requestDto.getLicenseNumber())
+                    .licenseImage(requestDto.getLicenseImage())
+                    .introduction(requestDto.getIntroduction())
+                    .userType(requestDto.getUserType())
+                    .build();
 
 
 
-        memberRepository.save(member);
-        return ResponseDto.success(
-                MemberResponseDto.builder()
-                        .id(member.getMemberId())
-                        .username(member.getUsername())
-                        .createdAt(member.getCreatedAt())
-                        .modifiedAt(member.getModifiedAt())
-                        .build()
-        );
+            memberRepository.save(member);
+
+            return ResponseDto.success(
+                    MemberResponseDto.builder()
+                            .id(member.getMemberId())
+                            .username(member.getUsername())
+                            .createdAt(member.getCreatedAt())
+                            .modifiedAt(member.getModifiedAt())
+                            .build()
+            );
+
+        } else {
+
+
+            // 일반회원
+            Member member = Member.builder()
+                    .username(requestDto.getUsername())
+                    .nickname(requestDto.getNickname())
+                    .password(passwordEncoder.encode(requestDto.getPassword()))
+                    .email(requestDto.getEmail())
+                    .phoneNumber(requestDto.getPhoneNumber())
+                    .name(requestDto.getName())
+                    .gender(requestDto.getGender())
+                    .userType(requestDto.getUserType())
+                    .build();
+
+
+
+            memberRepository.save(member);
+
+            return ResponseDto.success(
+                    MemberResponseDto.builder()
+                            .id(member.getMemberId())
+                            .username(member.getUsername())
+                            .createdAt(member.getCreatedAt())
+                            .modifiedAt(member.getModifiedAt())
+                            .build()
+            );
+
+        }
+
+
+
+
+
     }
 
 
@@ -126,7 +171,7 @@ public class MemberService {
                 .password(preMember.getPassword())
                 .introduction(memberUpdateRequestDto.getIntroduction())
                 .authority(preMember.getAuthority())
-                .memberImage(
+                .profileImage(
                         (memberUpdateRequestDto.getMemberImage().getOriginalFilename().equals(""))?
                                 null:s3Uploader.uploadFiles(memberUpdateRequestDto.getMemberImage(), "member", member, "member"))
                 .build();
