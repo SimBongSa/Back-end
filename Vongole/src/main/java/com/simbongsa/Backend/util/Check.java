@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.util;
 
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Like;
 import com.simbongsa.Backend.entity.Comment;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
@@ -8,6 +9,7 @@ import com.simbongsa.Backend.exception.ErrorCode;
 import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.BoardRepository;
+import com.simbongsa.Backend.repository.LikeRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class Check {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final LikeRepository likeRepository;
 
     private final CommentRepository commentRepository;
 
@@ -103,7 +106,7 @@ public class Check {
 
 
     /*
-        상품 존재 유무 확인
+        게시글 존재 유무 확인
      */
     public Board isExist(Long boardId) {
         Board board = boardRepository.findById(boardId).orElse(null);
