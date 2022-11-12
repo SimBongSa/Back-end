@@ -116,8 +116,9 @@ public class BoardService {
 
         check.isAuthor(member);
 
-        // 지원자 있는지 확인해야 함
+        // Todo 지원자 있는지 확인해야 함
 
+        // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);
         return ResponseDto.success(new MsgResponse("게시물 삭제 완료"));
     }
