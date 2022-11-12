@@ -34,7 +34,7 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @DeleteMapping("/}comment_id}")
+    @DeleteMapping("/{comment_id}")
     public ResponseDto<MsgResponse> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                   @PathVariable("comment_id") Long id) {
         return commentService.deleteComment(userDetails.getMember(), id);
