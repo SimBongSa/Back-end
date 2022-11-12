@@ -51,7 +51,12 @@ public class KakaoUserService {
         String accessToken = getAccessToken(code);
 
         // 2. 토큰으로 카카오 API 호출
-        KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
+//        KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
+        KakaoUserInfoDto kakaoUserInfo;
+        kakaoUserInfo = getKakaoUserInfo(accessToken);
+        if(kakaoUserInfo == null){
+            return null;
+        }
 
         // 3. 필요시에 회원가입
 //        Member kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
@@ -115,8 +120,13 @@ public class KakaoUserService {
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
-                .get("email").asText();
+        String email;
+        try {
+            email = jsonNode.get("kakao_account")
+                    .get("email").asText();
+        }catch (NullPointerException e){
+            return null;
+        }
 
         System.out.println("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
         return new KakaoUserInfoDto(id, nickname, email);
