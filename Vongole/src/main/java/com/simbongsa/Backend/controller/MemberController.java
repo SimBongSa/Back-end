@@ -22,7 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping(value = "/member/signup")
+    @PostMapping("/members/signup")
     public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
         return memberService.createMember(requestDto);
     }
@@ -32,17 +32,17 @@ public class MemberController {
         return memberService.memberUpdate(memberUpdateRequestDto, userDetails.getMember(), memberId);
     }
 
-    @PostMapping(value = "/member/login")
+    @PostMapping("/members/login")
     public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto, HttpServletResponse response) {
         return memberService.login(requestDto, response);
     }
 
-    @PostMapping(value = "/auth/member/reissue")
+    @PostMapping("/auth/members/reissue")
     public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         return memberService.reissue(request, response);
     }
 
-    @PostMapping(value = "/auth/member/logout")
+    @PostMapping("/auth/members/logout")
     public ResponseDto<?> logout(HttpServletRequest request) {
 
         return memberService.logout(request);
