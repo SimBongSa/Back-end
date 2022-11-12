@@ -13,12 +13,12 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Board board;
-
     //기관,멤버
     @Column
     private String author;
+
+    @ManyToOne
+    private Board board;
 
     @Column(nullable = false)
     private String content;
