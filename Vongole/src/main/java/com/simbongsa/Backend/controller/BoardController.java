@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.response.BoardDetailResponse;
 import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
@@ -41,15 +42,15 @@ public class BoardController {
     }
 
     @PutMapping("/{boardId}")
-    public ResponseDto<BoardResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                  @RequestPart(value = "boardRequest") BoardRequest boardRequest,
-                                                  @RequestPart(value = "file", required = false) MultipartFile multipartFile,
-                                                  @PathVariable Long boardId) {
+    public ResponseDto<BoardDetailResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @RequestPart(value = "boardRequest") BoardRequest boardRequest,
+                                                        @RequestPart(value = "file", required = false) MultipartFile multipartFile,
+                                                        @PathVariable Long boardId) {
         return boardService.updateBoard(userDetails.getMember(), boardRequest, multipartFile, boardId);
     }
 
     @GetMapping("/{boardId}")
-    public ResponseDto<BoardResponse> getBoard(@PathVariable Long boardId) {
+    public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId) {
         return boardService.getBoard(boardId);
     }
 
