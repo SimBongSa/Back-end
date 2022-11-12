@@ -4,19 +4,23 @@ import com.simbongsa.Backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 public class BoardResponse {
 
+    private Long boardId;
+
     private String title;
 
-    private String content;
+    private String author;
 
-    private Long count;
+//    private String content;
 
-    private String boardImage;
+//    private Long hits;
+
+//    private String boardImage;
 
     private String dueDay;
 
@@ -26,17 +30,23 @@ public class BoardResponse {
 
     private String area;
 
-    private String category;
+    private LocalDateTime createdAt;
+
+//    private String category;
 
     public BoardResponse(Board board) {
+        this.boardId = board.getId();
         this.title = board.getTitle();
-        this.content = board.getContent();
-        this.count = board.getCount();
-        this.boardImage = board.getBoardImage();
+        this.author = board.getMember().getUsername();
+//        this.content = board.getContent();
+//        this.hits = board.getHits();
+//        this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
         this.area = board.getArea();
-        this.category = board.getCategory();
+        this.createdAt = board.getCreatedAt();
+//        this.category = board.getCategory();
     }
+
 }

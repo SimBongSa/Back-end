@@ -35,7 +35,7 @@ public class BoardService {
 
         // entity 객체 생성 후 db에 저장
         String boardImage = "";
-        Board board = new Board(boardRequest, boardImage);
+        Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
         return ResponseDto.success(new MsgResponse("게시물 생성 완료"));
@@ -58,6 +58,7 @@ public class BoardService {
     /**
      * 게시물 수정
      * (작성한 관리자만 수정 가능)
+     *
      * @param member
      * @param boardRequest
      * @param multipartFile
@@ -80,6 +81,7 @@ public class BoardService {
      * 게시물 상세 조회
      * 댓글 전체 조회
      * 조회수 증가
+     *
      * @param boardId
      * @return
      */
@@ -88,7 +90,7 @@ public class BoardService {
         Board board = check.isExist(boardId);
 
         // 조회수 증가
-        board.addCount();
+        board.addHits();
 
         // 댓글 추가해야 함
         return ResponseDto.success(new BoardResponse(board));
@@ -98,6 +100,7 @@ public class BoardService {
      * 게시물 삭제
      * 작성자만 삭제 가능
      * 봉사 지원자 있을 경우 삭제 불가
+     *
      * @param member
      * @param boardId
      * @return
