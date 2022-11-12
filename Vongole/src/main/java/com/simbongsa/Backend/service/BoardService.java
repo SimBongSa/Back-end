@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.service;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.response.BoardDetailResponse;
 import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
@@ -70,7 +71,7 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public ResponseDto<BoardResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
+    public ResponseDto<BoardDetailResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
         Board board = check.isExist(boardId);
 
         check.isAuthor(member);
@@ -78,7 +79,7 @@ public class BoardService {
         String boardImage = "";
         board.update(boardRequest, boardImage);
 
-        return ResponseDto.success(new BoardResponse(board));
+        return ResponseDto.success(new BoardDetailResponse(board));
     }
 
     /**
@@ -90,14 +91,14 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public ResponseDto<BoardResponse> getBoard(Long boardId) {
+    public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
         Board board = check.isExist(boardId);
 
         // 조회수 증가
         board.addHits();
 
         // 댓글 추가해야 함
-        return ResponseDto.success(new BoardResponse(board));
+        return ResponseDto.success(new BoardDetailResponse(board));
     }
 
     /**
