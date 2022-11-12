@@ -1,12 +1,14 @@
 package com.simbongsa.Backend.util;
 
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Comment;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
 import com.simbongsa.Backend.exception.ErrorCode;
 import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.BoardRepository;
+import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ public class Check {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
+    private final CommentRepository commentRepository;
+
     private final Util util;
 
     private final TokenProvider tokenProvider;
@@ -31,7 +35,7 @@ public class Check {
 
     public Member isPresentMember(String username) {
         Optional<Member> optionalMember = memberRepository.findByUsername(username);
-            return optionalMember.orElse(null);
+        return optionalMember.orElse(null);
     }
 
     /*
@@ -50,7 +54,7 @@ public class Check {
         멤버 확인 (동일 유무)
      */
 
-    public Member isSameMember(Member preMember ,Member member, Long memberId) {
+    public Member isSameMember(Member preMember, Member member, Long memberId) {
 
         if (!preMember.getMemberId().equals(memberId)) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
@@ -76,7 +80,7 @@ public class Check {
      */
 
     public void isPassword(String password, String passwordConfirm) {
-        if(!password.equals(passwordConfirm)) {
+        if (!password.equals(passwordConfirm)) {
             throw new GlobalException(ErrorCode.PASSWORD_NOT_MATCHED);
         }
     }
@@ -86,20 +90,16 @@ public class Check {
      */
 
     public void isValidToken(String getHeader) {
-        if(!tokenProvider.validateToken(getHeader)) {
+        if (!tokenProvider.validateToken(getHeader)) {
             throw new GlobalException(ErrorCode.INVALID_TOKEN);
         }
     }
 
     public void isSameToken(RefreshToken refreshToken, String getHeader) {
-        if(!refreshToken.getValue().equals(getHeader)) {
+        if (!refreshToken.getValue().equals(getHeader)) {
             throw new GlobalException(ErrorCode.INVALID_TOKEN);
         }
     }
-
-
-
-
 
 
     /*
@@ -124,4 +124,14 @@ public class Check {
         }
     }
 
+    /*
+        댓글 존재 유무 확인
+     */
+    public Comment isComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if (comment == null) {
+            throw new GlobalException(ErrorCode.BOARD_NOT_FOUND);
+        }
+        return comment;
+    }
 }
