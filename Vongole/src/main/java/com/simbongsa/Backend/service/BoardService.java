@@ -39,7 +39,7 @@ public class BoardService {
 
         // entity 객체 생성 후 db에 저장
         String boardImage = "";
-        Board board = new Board(boardRequest, boardImage);
+        Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
         return ResponseDto.success(new MsgResponse("게시물 생성 완료"));
@@ -94,7 +94,7 @@ public class BoardService {
         Board board = check.isExist(boardId);
 
         // 조회수 증가
-        board.addCount();
+        board.addHits();
 
         // 댓글 추가해야 함
         return ResponseDto.success(new BoardResponse(board));

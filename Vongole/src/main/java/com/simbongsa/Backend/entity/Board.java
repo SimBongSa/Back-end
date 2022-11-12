@@ -24,16 +24,16 @@ public class Board extends Timestamped {
     private String content;
 
 
-    // 연관관계 맺을거면 빼고, 안맺을거면 넣어야함
-    @Column(nullable = false)
-    private String author;
+//    // 연관관계 맺을거면 빼고, 안맺을거면 넣어야함
+//    @Column(nullable = false)
+//    private String author;
 
-//    @ManyToOne
-//    @Column
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
-    private Long count;
+    private Long hits;
 
     @Column(nullable = false)
     private String boardImage;
@@ -53,16 +53,19 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String category;
 
-    public Board(BoardRequest boardRequest, String boardImage) {
+    public Board(BoardRequest boardRequest, Member member, String boardImage) {
         this.title = boardRequest.getTitle();
         this.content = boardRequest.getContent();
-        this.count = 0L;
+        this.member = member;
         this.boardImage = boardImage;
         this.dueDay = boardRequest.getDueDay();
         this.startDate = boardRequest.getStartDate();
         this.endDate = boardRequest.getEndDate();
         this.area = boardRequest.getArea();
         this.category = boardRequest.getCategory();
+
+        this.hits = 0L;
+
     }
 
     public void update(BoardRequest boardRequest, String boardImage) {
@@ -77,7 +80,7 @@ public class Board extends Timestamped {
     }
 
     // 조회수 증가
-    public void addCount() {
-        this.count++;
+    public void addHits() {
+        this.hits++;
     }
 }
