@@ -6,8 +6,10 @@ import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Like;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
+import com.simbongsa.Backend.repository.LikeRepository;
 import com.simbongsa.Backend.util.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final LikeRepository likeRepository;
+
     private final Check check;
 
     /**
@@ -117,6 +121,33 @@ public class BoardService {
         // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);
         return ResponseDto.success(new MsgResponse("게시물 삭제 완료"));
+    }
+
+    /**
+     * 게시물 찜 or 찜 취소
+     *
+     * @param username
+     * @param boardId
+     * @return
+     */
+    @Transactional
+    public ResponseDto<MsgResponse> likeBoard(String username, Long boardId) {
+        // 게시물 리스펀스에 찜 유무 리턴해야함 !!!!
+
+        Like like = likeRepository.findByUsernameAndBoardId(username, boardId).orElse(null);
+        String msg = "";
+        // 찜한 기록이 없을 경우 -> 찜
+        if (like == null) {
+            likeRepository.save(new Like(username, boardId));
+            msg = "찜!";
+        }
+        // 이미 찜한 경우 -> 찜 취소
+        else {
+            likeRepository.delete(like);
+            msg = "찜 취소";
+        }
+
+        return ResponseDto.success(new MsgResponse(msg));
     }
 }
 

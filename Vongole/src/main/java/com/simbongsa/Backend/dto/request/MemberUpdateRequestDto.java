@@ -12,5 +12,5 @@ public class MemberUpdateRequestDto {
     private String introduction;
     private String password;
     private String email;
-    private String phoneNum;
+    private String phoneNumber;
 }
