@@ -94,5 +94,4 @@ public class BoardController {
                                               @PathVariable Long boardId) {
         return boardService.likeBoard(userDetails.getUsername(), boardId);
     }
-
 }
