@@ -13,7 +13,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByDueDay(String dueDay);
 
     // 게시물 작성한 유저인지 확인
-    Optional<Board> findByAuthor(String username);
+    Optional<Board> findByMember(Member member);
 
     // 게시물 존재 유무 확인
     Optional<Board> findById(Long id);
