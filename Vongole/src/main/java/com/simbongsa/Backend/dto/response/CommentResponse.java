@@ -18,7 +18,6 @@ public class CommentResponse {
 
     private LocalDateTime createdAt;
 
-    // Todo comment 게터, TimeStamped 상속, Board 연관 관계 필요
     public CommentResponse(Comment comment) {
 //        this.boardId = comment.
     }
