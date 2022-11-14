@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -34,6 +35,9 @@ public class BoardDetailResponse {
 
     private String category;
 
+    private List<CommentResponse> commentResponses;
+
+    // todo comment 추가
     public BoardDetailResponse(Board board) {
         this.boardId = board.getId();
         this.author = board.getMember().getUsername();
