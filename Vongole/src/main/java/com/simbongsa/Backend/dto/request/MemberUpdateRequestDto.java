@@ -8,9 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class MemberUpdateRequestDto {
     private String nickname;                        // nickname 아래로 수정,
-    private MultipartFile memberImage;
+    private MultipartFile profileImage;
     private String introduction;
     private String password;
-    private String email;
-    private String phoneNumber;
+
 }
