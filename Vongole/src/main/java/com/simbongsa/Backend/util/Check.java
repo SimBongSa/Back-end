@@ -122,7 +122,7 @@ public class Check {
      */
     public void isAuthor(Member member) {
         // 관리자 테이블 나눌건지 회의 후 수정해야 함
-        if (boardRepository.findByAuthor(member.getUsername()).isEmpty()) {
+        if (boardRepository.findByMember(member).isEmpty()) {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
         }
     }
