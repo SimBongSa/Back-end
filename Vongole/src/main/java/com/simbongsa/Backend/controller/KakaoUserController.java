@@ -55,8 +55,13 @@ public class KakaoUserController {
         log.info("[called GET:/user/kakao/callback] param code : {}", code);
 //        kakaoUserService.kakaoLogin(code);
 //        return "redirect:/";
+        String message = messageSource.getMessage("spring.messages.frontRedirect", null, Locale.getDefault());
+        log.info("message = {}", message);
 
         Member member = kakaoUserService.kakaoLogin(code);
+        if(member==null){
+            return "redirect:"+message+"/kakao";    //카카오 로그인 email 미동의 할경우 redirect url(front측 에러 페이지)
+        }
 
         log.info("kakaoUserService.kakaoLogin complete! member = {} {}",member.getUsername(),member.getPassword());
 
@@ -70,8 +75,7 @@ public class KakaoUserController {
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-        String message = messageSource.getMessage("spring.messages.frontRedirect", null, Locale.getDefault());
-        log.info("message = {}", message);
+
         return "redirect:"+message+"?token="+tokenDto.getAccessToken()+"&username="+member.getUsername();
     }
 }
