@@ -6,9 +6,11 @@ import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Comment;
 import com.simbongsa.Backend.entity.Like;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
+import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.LikeRepository;
 import com.simbongsa.Backend.util.Check;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     private final Check check;
 
@@ -36,7 +39,7 @@ public class BoardService {
      * @param multipartFile
      */
     public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile) {
-        // 관리자인지 확인
+        // Todo 관리자인지 확인
 
         // entity 객체 생성 후 db에 저장
         String boardImage = "";
@@ -57,6 +60,7 @@ public class BoardService {
             boardResponses.add(new BoardResponse(board));
         }
 
+
         return ResponseDto.success(boardResponses);
     }
 
@@ -72,8 +76,9 @@ public class BoardService {
      */
     @Transactional
     public ResponseDto<BoardDetailResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
+        // 게시물 존재 유무
         Board board = check.isExist(boardId);
-
+        // 작성자인지 확인
         check.isAuthor(member);
 
         String boardImage = "";
@@ -92,7 +97,10 @@ public class BoardService {
      */
     @Transactional
     public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
+        // 게시물 존재 유무
         Board board = check.isExist(boardId);
+
+        List<Comment> comments = commentRepository.findAllByBoard(board);
 
         // 조회수 증가
         board.addHits();
