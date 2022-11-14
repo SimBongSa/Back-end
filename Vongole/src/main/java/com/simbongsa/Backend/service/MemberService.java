@@ -112,6 +112,7 @@ public class MemberService {
                     MemberResponseDto.builder()
                             .id(member.getMemberId())
                             .username(member.getUsername())
+                            .authority(member.getAuthority())
                             .createdAt(member.getCreatedAt())
                             .modifiedAt(member.getModifiedAt())
                             .build()
@@ -141,8 +142,7 @@ public class MemberService {
                 MemberResponseDto.builder()
                         .id(member.getMemberId())
                         .username(member.getUsername())
-                        .createdAt(member.getCreatedAt())
-                        .modifiedAt(member.getModifiedAt())
+                        .authority(member.getAuthority())
                         .build()
         );
     }

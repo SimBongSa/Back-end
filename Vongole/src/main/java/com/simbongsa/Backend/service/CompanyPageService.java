@@ -100,7 +100,7 @@ public class CompanyPageService {
     public ResponseDto<MsgResponse> approveMember(Member member, Long memberId) {
 
         // Optional 을 어떻게 해결해야 하지
-        Member findMember = memberRepository.findById(memberId).get();
+        Member findMember = memberRepository.findByMemberId(memberId).get();
 
         Volunteer volunteer = volunteerRepository.findByMember(findMember);
 
@@ -119,7 +119,7 @@ public class CompanyPageService {
     @Transactional
     public ResponseDto<MsgResponse> disapproveMember(Member member, Long memberId) {
         // Optional 을 어떻게 해결해야 하지
-        Member findMember = memberRepository.findById(memberId).get();
+        Member findMember = memberRepository.findByMemberId(memberId).get();
 
         Volunteer volunteer = volunteerRepository.findByMember(findMember);
 
