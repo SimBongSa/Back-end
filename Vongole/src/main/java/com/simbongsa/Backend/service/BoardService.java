@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.service;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.response.BoardDetailResponse;
 import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
@@ -39,7 +40,7 @@ public class BoardService {
 
         // entity 객체 생성 후 db에 저장
         String boardImage = "";
-        Board board = new Board(boardRequest, boardImage);
+        Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
         return ResponseDto.success(new MsgResponse("게시물 생성 완료"));
@@ -70,7 +71,7 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public ResponseDto<BoardResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
+    public ResponseDto<BoardDetailResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
         Board board = check.isExist(boardId);
 
         check.isAuthor(member);
@@ -78,7 +79,7 @@ public class BoardService {
         String boardImage = "";
         board.update(boardRequest, boardImage);
 
-        return ResponseDto.success(new BoardResponse(board));
+        return ResponseDto.success(new BoardDetailResponse(board));
     }
 
     /**
@@ -90,14 +91,14 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public ResponseDto<BoardResponse> getBoard(Long boardId) {
+    public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
         Board board = check.isExist(boardId);
 
         // 조회수 증가
-        board.addCount();
+        board.addHits();
 
         // 댓글 추가해야 함
-        return ResponseDto.success(new BoardResponse(board));
+        return ResponseDto.success(new BoardDetailResponse(board));
     }
 
     /**
@@ -115,8 +116,9 @@ public class BoardService {
 
         check.isAuthor(member);
 
-        // 지원자 있는지 확인해야 함
+        // Todo 지원자 있는지 확인해야 함
 
+        // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);
         return ResponseDto.success(new MsgResponse("게시물 삭제 완료"));
     }

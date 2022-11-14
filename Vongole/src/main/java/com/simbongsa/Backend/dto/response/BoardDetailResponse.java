@@ -8,19 +8,19 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class BoardResponse {
+public class BoardDetailResponse {
 
     private Long boardId;
 
-    private String title;
-
     private String author;
 
-//    private String content;
+    private String title;
 
-//    private Long hits;
+    private String content;
 
-//    private String boardImage;
+    private Long hits;
+
+    private String boardImage;
 
     private String dueDay;
 
@@ -28,25 +28,25 @@ public class BoardResponse {
 
     private String endDate;
 
+    private LocalDateTime createAt;
+
     private String area;
 
-    private LocalDateTime createdAt;
+    private String category;
 
-//    private String category;
-
-    public BoardResponse(Board board) {
+    public BoardDetailResponse(Board board) {
         this.boardId = board.getId();
-        this.title = board.getTitle();
         this.author = board.getMember().getUsername();
-//        this.content = board.getContent();
-//        this.hits = board.getHits();
-//        this.boardImage = board.getBoardImage();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.hits = board.getHits();
+        this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
+        this.createAt = board.getCreatedAt();
         this.area = board.getArea();
-        this.createdAt = board.getCreatedAt();
-//        this.category = board.getCategory();
+        this.category = board.getCategory();
     }
-
 }
+
