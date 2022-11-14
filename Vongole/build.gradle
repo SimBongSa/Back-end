@@ -49,6 +49,12 @@ dependencies {
 
 	// AWS S3
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+
+
+
+
+//	// AWS S3를 테스트하기 위한 라이브러리(S3 Mock)
+//	testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
 

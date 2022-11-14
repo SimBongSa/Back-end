@@ -42,15 +42,9 @@ public class Member extends Timestamped {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "age")
-    private int age;
-
     @Column(name = "introduction")
     private String introduction;
 
-    @JsonIgnore
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
 
     @Column(name = "license_number")
     private String licenseNumber;
@@ -58,9 +52,9 @@ public class Member extends Timestamped {
     @Column(name = "license_image")
     private String licenseImage;
 
-    @Column(name = "user_type")
-    private int userType;
-
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
     @Column(unique = true)
     private Long kakaoId;

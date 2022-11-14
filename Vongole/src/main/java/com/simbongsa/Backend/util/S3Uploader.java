@@ -26,12 +26,15 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    // 업로드할 파일을 생성
     public String uploadFiles(MultipartFile multipartFile, String dirName, Member member, String type) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
         return upload(uploadFile,dirName, member, type);
     }
 
+
+    // S3로 업로드
     private String upload(File uploadFile, String filePath, Member member, String type) {
         String name = (type.equals("member"))? member.getUsername() : UUID.randomUUID() + member.getUsername();
         String fileName = filePath + "/" + name;
