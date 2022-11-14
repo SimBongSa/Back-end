@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.dto.request;
 
+import com.simbongsa.Backend.shared.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,15 +41,13 @@ public class MemberRequestDto {
 
     private String gender;
 
-    private int age;
-
     private String introduction;
 
     private String licenseNumber;
 
     private String licenseImage;
 
-    private int userType;
+    private Authority authority;
 
 
 }

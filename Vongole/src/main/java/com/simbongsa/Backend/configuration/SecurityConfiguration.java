@@ -51,10 +51,10 @@ public class SecurityConfiguration {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/member/*").permitAll()
-                .antMatchers("/api/post").permitAll()
-                .antMatchers("/api/post/*").permitAll()
-                .antMatchers("/api/comment/*").permitAll()
+                .antMatchers("/members/*").permitAll()
+                .antMatchers("/boards").permitAll()
+                .antMatchers("/boards/*").permitAll()
+                .antMatchers("/comments/*").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
                 .anyRequest().authenticated()
 

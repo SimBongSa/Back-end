@@ -8,8 +8,6 @@ import com.simbongsa.Backend.dto.response.MemberResponseDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
-import com.simbongsa.Backend.exception.ErrorCode;
-import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.RefreshTokenRepository;
@@ -59,17 +57,12 @@ public class MemberService {
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
         check.isDuplicated(requestDto.getUsername());
-
-
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
-        // Todo 타입은 enum으로 구분해서 수정하기!!
 
-        if (requestDto.getUserType() == 1) {
-
-
-            // 기업회원
+        // 기업회원
+        if (requestDto.getAuthority() == Authority.ROLE_ADMIN) {
 
             Member member = Member.builder()
                     .username(requestDto.getUsername())
@@ -81,7 +74,7 @@ public class MemberService {
                     .licenseNumber(requestDto.getLicenseNumber())
                     .licenseImage(requestDto.getLicenseImage())
                     .introduction(requestDto.getIntroduction())
-                    .userType(requestDto.getUserType())
+                    .authority(requestDto.getAuthority())
                     .build();
 
 
@@ -97,8 +90,7 @@ public class MemberService {
                             .build()
             );
 
-        } else {
-
+        } else  {
 
             // 일반회원
             Member member = Member.builder()
@@ -109,7 +101,7 @@ public class MemberService {
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
                     .gender(requestDto.getGender())
-                    .userType(requestDto.getUserType())
+                    .authority(requestDto.getAuthority())
                     .build();
 
 
@@ -126,10 +118,6 @@ public class MemberService {
             );
 
         }
-
-
-
-
 
     }
 
@@ -172,8 +160,8 @@ public class MemberService {
                 .introduction(memberUpdateRequestDto.getIntroduction())
                 .authority(preMember.getAuthority())
                 .profileImage(
-                        (memberUpdateRequestDto.getMemberImage().getOriginalFilename().equals(""))?
-                                null:s3Uploader.uploadFiles(memberUpdateRequestDto.getMemberImage(), "member", member, "member"))
+                        (memberUpdateRequestDto.getProfileImage().getOriginalFilename().equals(""))?
+                                null:s3Uploader.uploadFiles(memberUpdateRequestDto.getProfileImage(), "member", member, "member"))
                 .build();
 
         memberRepository.save(newMember);
