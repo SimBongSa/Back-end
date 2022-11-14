@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowedOriginPatterns("*")
                 .exposedHeaders("Authorization")
+                .exposedHeaders("*")    // todo : 필요한 헤더만 사용하도록 수정할것
                 .allowedHeaders("*");
     }
 }
