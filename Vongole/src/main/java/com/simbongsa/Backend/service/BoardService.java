@@ -56,6 +56,7 @@ public class BoardService {
         for (Board board : boards) {
             boardResponses.add(new BoardResponse(board));
         }
+        // test
 
         return ResponseDto.success(boardResponses);
     }
