@@ -1,9 +1,6 @@
 package com.simbongsa.Backend.service;
 
-import com.simbongsa.Backend.dto.request.LoginRequestDto;
-import com.simbongsa.Backend.dto.request.MemberRequestDto;
-import com.simbongsa.Backend.dto.request.MemberUpdateRequestDto;
-import com.simbongsa.Backend.dto.request.TokenDto;
+import com.simbongsa.Backend.dto.request.*;
 import com.simbongsa.Backend.dto.response.MemberResponseDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Member;
@@ -42,9 +39,6 @@ public class MemberService {
     private final TokenProvider tokenProvider;
 
 
-
-
-
     private final EntityManager entityManager;
     private final RefreshTokenRepository refreshTokenRepository;
     private final Util util;
@@ -61,37 +55,6 @@ public class MemberService {
 
 
 
-        // 기업회원
-        if (requestDto.getAuthority() == Authority.ROLE_ADMIN) {
-
-            Member member = Member.builder()
-                    .username(requestDto.getUsername())
-                    .nickname(requestDto.getNickname())
-                    .password(passwordEncoder.encode(requestDto.getPassword()))
-                    .email(requestDto.getEmail())
-                    .phoneNumber(requestDto.getPhoneNumber())
-                    .name(requestDto.getName())
-                    .licenseNumber(requestDto.getLicenseNumber())
-                    .licenseImage(requestDto.getLicenseImage())
-                    .introduction(requestDto.getIntroduction())
-                    .authority(requestDto.getAuthority())
-                    .build();
-
-
-
-            memberRepository.save(member);
-
-            return ResponseDto.success(
-                    MemberResponseDto.builder()
-                            .id(member.getMemberId())
-                            .username(member.getUsername())
-                            .authority(member.getAuthority())
-                            .createdAt(member.getCreatedAt())
-                            .modifiedAt(member.getModifiedAt())
-                            .build()
-            );
-
-        } else  {
 
             // 일반회원
             Member member = Member.builder()
@@ -120,9 +83,61 @@ public class MemberService {
                             .build()
             );
 
-        }
+
 
     }
+
+    // 기업회원
+    @Transactional
+    public ResponseDto<?> createCompanyMember(CompanyMemberRequestDto requestDto) {
+
+        check.isDuplicated(requestDto.getUsername());
+        check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
+
+
+
+//
+//        if (requestDto.getAuthority() != Authority.ROLE_ADMIN) {
+//
+//
+//
+//        }
+
+            Member member = Member.builder()
+                    .username(requestDto.getUsername())
+                    .nickname(requestDto.getNickname())
+                    .password(passwordEncoder.encode(requestDto.getPassword()))
+                    .email(requestDto.getEmail())
+                    .phoneNumber(requestDto.getPhoneNumber())
+                    .name(requestDto.getName())
+                    .licenseNumber(requestDto.getLicenseNumber())
+                    .licenseImage(requestDto.getLicenseImage())
+                    .authority(requestDto.getAuthority())
+                    .build();
+
+
+
+
+
+            memberRepository.save(member);
+
+            return ResponseDto.success(
+                    MemberResponseDto.builder()
+                            .id(member.getMemberId())
+                            .username(member.getUsername())
+                            .authority(member.getAuthority())
+                            .createdAt(member.getCreatedAt())
+                            .modifiedAt(member.getModifiedAt())
+                            .build()
+            );
+
+
+
+    }
+
+
+
+
 
 
 
