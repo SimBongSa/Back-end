@@ -85,6 +85,7 @@ public class MemberService {
                     MemberResponseDto.builder()
                             .id(member.getMemberId())
                             .username(member.getUsername())
+                            .authority(member.getAuthority())
                             .createdAt(member.getCreatedAt())
                             .modifiedAt(member.getModifiedAt())
                             .build()
@@ -101,6 +102,7 @@ public class MemberService {
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
                     .gender(requestDto.getGender())
+                    .birthdate(requestDto.getBirthdate())
                     .authority(requestDto.getAuthority())
                     .build();
 
