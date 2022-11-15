@@ -44,6 +44,7 @@ public class CompanyPageService {
      */
     public ResponseDto<CompanyResponse> updateMyProfile(Member member) {
         // Todo 이미지 업로드되면 시작
+
         return null;
     }
 

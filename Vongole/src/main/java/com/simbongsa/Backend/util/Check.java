@@ -1,7 +1,6 @@
 package com.simbongsa.Backend.util;
 
 import com.simbongsa.Backend.entity.Board;
-import com.simbongsa.Backend.entity.Like;
 import com.simbongsa.Backend.entity.Comment;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
@@ -9,9 +8,10 @@ import com.simbongsa.Backend.exception.ErrorCode;
 import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.BoardRepository;
-import com.simbongsa.Backend.repository.LikeRepository;
+import com.simbongsa.Backend.repository.LikesRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.MemberRepository;
+import com.simbongsa.Backend.shared.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class Check {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final LikeRepository likeRepository;
+    private final LikesRepository likesRepository;
 
     private final CommentRepository commentRepository;
 
@@ -34,8 +34,6 @@ public class Check {
     /*
         멤버 확인 (username 중복 유무)
      */
-
-
     public Member isPresentMember(String username) {
         Optional<Member> optionalMember = memberRepository.findByUsername(username);
         return optionalMember.orElse(null);
@@ -65,6 +63,16 @@ public class Check {
 
         return member;
     }
+
+    /*
+        관리자인지 확인
+     */
+    public void isAdmin(Member member) {
+        if (member.getAuthority() != Authority.ROLE_ADMIN) {
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
+        }
+    }
+
 
     /*
         중복 확인
@@ -123,7 +131,7 @@ public class Check {
     public void isAuthor(Member member) {
         // 관리자 테이블 나눌건지 회의 후 수정해야 함
         if (boardRepository.findByMember(member).isEmpty()) {
-            throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_AUTHOR);
         }
     }
 
@@ -136,5 +144,15 @@ public class Check {
             throw new GlobalException(ErrorCode.BOARD_NOT_FOUND);
         }
         return comment;
+    }
+
+
+    /*
+        봉사 활동 지원자 있는지 확인
+     */
+    public void existVolunteer(Board board) {
+        if (board.getVolunteerCnt() != 0L) {
+            throw new GlobalException(ErrorCode.UNABLE_DELETE_BOARD);
+        }
     }
 }

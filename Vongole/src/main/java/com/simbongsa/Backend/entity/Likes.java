@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Like {
+public class Likes {
 
     @Id
     @GeneratedValue
@@ -20,7 +20,7 @@ public class Like {
     @Column(nullable = false, unique = true)
     private Long boardId;
 
-    public Like(String username, Long boardId) {
+    public Likes(String username, Long boardId) {
         this.username = username;
         this.boardId = boardId;
     }

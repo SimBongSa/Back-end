@@ -23,11 +23,6 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-
-//    // 연관관계 맺을거면 빼고, 안맺을거면 넣어야함
-//    @Column(nullable = false)
-//    private String author;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -53,6 +48,11 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String category;
 
+    @Column
+    private Long volunteerCnt;
+
+
+
     public Board(BoardRequest boardRequest, Member member, String boardImage) {
         this.title = boardRequest.getTitle();
         this.content = boardRequest.getContent();
@@ -65,7 +65,7 @@ public class Board extends Timestamped {
         this.category = boardRequest.getCategory();
 
         this.hits = 0L;
-
+        this.volunteerCnt = 0L;
     }
 
     public void update(BoardRequest boardRequest, String boardImage) {

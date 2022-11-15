@@ -22,6 +22,7 @@ public class Volunteer {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
+
     private Approval approval;
 
     public void pass() {
