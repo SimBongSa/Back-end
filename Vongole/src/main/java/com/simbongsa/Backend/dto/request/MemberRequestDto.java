@@ -41,6 +41,8 @@ public class MemberRequestDto {
 
     private String gender;
 
+    private String birthdate;
+
     private String introduction;
 
     private String licenseNumber;
