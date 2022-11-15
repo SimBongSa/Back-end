@@ -30,6 +30,8 @@ public class BoardResponse {
 
     private String area;
 
+    private String detailArea;
+
     private LocalDateTime createdAt;
 
 //    private String category;
@@ -45,6 +47,7 @@ public class BoardResponse {
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
         this.area = board.getArea();
+        this.detailArea = board.getDetailArea();
         this.createdAt = board.getCreatedAt();
 //        this.category = board.getCategory();
     }

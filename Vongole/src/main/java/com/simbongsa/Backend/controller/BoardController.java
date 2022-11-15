@@ -37,7 +37,7 @@ public class BoardController {
      * @param dueDay
      * @return
      */
-    @GetMapping("/{dueDay}")
+    @GetMapping("/date/{dueDay}")
     public ResponseDto<List<BoardResponse>> getBoards(@PathVariable String dueDay) {
         return boardService.getBoards(dueDay);
     }

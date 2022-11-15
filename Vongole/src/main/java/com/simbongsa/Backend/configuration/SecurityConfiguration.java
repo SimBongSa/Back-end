@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/members/*").permitAll()
                 .antMatchers("/boards").permitAll()
-                .antMatchers("/boards/*").permitAll()
+                .antMatchers("/boards/**").permitAll() // boards 이후의 모든 엔드포인트에 대해 허용
                 .antMatchers("/comments/*").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
                 .anyRequest().authenticated()
