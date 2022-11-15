@@ -42,6 +42,10 @@ public class Member extends Timestamped {
     @Column(name = "gender")
     private String gender;
 
+    @Column(name = "birthdate")
+    private String birthdate;
+
+
     @Column(name = "introduction")
     private String introduction;
 
