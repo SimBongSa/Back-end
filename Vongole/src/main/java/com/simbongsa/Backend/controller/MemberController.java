@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 
+import com.simbongsa.Backend.dto.request.CompanyMemberRequestDto;
 import com.simbongsa.Backend.dto.request.LoginRequestDto;
 import com.simbongsa.Backend.dto.request.MemberRequestDto;
 import com.simbongsa.Backend.dto.request.MemberUpdateRequestDto;
@@ -22,9 +23,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/members/signup")
+    @PostMapping("/members/signup/individual")
     public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
         return memberService.createMember(requestDto);
+    }
+
+    @PostMapping("/members/signup/admin")
+    public ResponseDto<?> signupAdmin(@RequestBody @Valid CompanyMemberRequestDto requestDto) {
+        return memberService.createCompanyMember(requestDto);
     }
 
     @PutMapping("/{memberId}")

@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberRequestDto {
+public class CompanyMemberRequestDto {
 
     @NotBlank(message = "아이디를 입력해주세요")
     @Size(min = 4, max = 12)
@@ -39,9 +39,9 @@ public class MemberRequestDto {
 
     private String name;
 
-    private String gender;
+    private String licenseNumber;
 
-    private String birthdate;
+    private String licenseImage;
 
     private Authority authority;
 
