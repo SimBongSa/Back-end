@@ -1,34 +1,36 @@
 package com.simbongsa.Backend.service;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
-import com.simbongsa.Backend.dto.response.BoardDetailResponse;
-import com.simbongsa.Backend.dto.response.BoardResponse;
-import com.simbongsa.Backend.dto.response.MsgResponse;
-import com.simbongsa.Backend.dto.response.ResponseDto;
+import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Comment;
-import com.simbongsa.Backend.entity.Like;
+import com.simbongsa.Backend.entity.Likes;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
-import com.simbongsa.Backend.repository.LikeRepository;
+import com.simbongsa.Backend.repository.LikesRepository;
+import com.simbongsa.Backend.repository.VolunteerRepository;
 import com.simbongsa.Backend.util.Check;
+import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final LikeRepository likeRepository;
+    private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
+    private final VolunteerRepository volunteerRepository;
 
+    private final S3Uploader s3Uploader;
     private final Check check;
 
     /**
@@ -36,13 +38,13 @@ public class BoardService {
      *
      * @param member
      * @param boardRequest
-     * @param multipartFile
      */
-    public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile) {
-        // Todo 관리자인지 확인
+    public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
+        // 관리자인지 확인
+        check.isAdmin(member);
 
-        // entity 객체 생성 후 db에 저장
-        String boardImage = "";
+        String boardImage = Objects.equals(boardRequest.getBoardImage().getOriginalFilename(), "") ?
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "????");
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
@@ -53,6 +55,7 @@ public class BoardService {
      * 게시물 전체 조회
      */
     public ResponseDto<List<BoardResponse>> getBoards(String dueDay) {
+        // Todo 시간 관련 함수, 쿼리 공부
         List<Board> boards = boardRepository.findAllByDueDay(dueDay);
 
         List<BoardResponse> boardResponses = new ArrayList<>();
@@ -60,31 +63,7 @@ public class BoardService {
             boardResponses.add(new BoardResponse(board));
         }
 
-
         return ResponseDto.success(boardResponses);
-    }
-
-    /**
-     * 게시물 수정
-     * (작성한 관리자만 수정 가능)
-     *
-     * @param member
-     * @param boardRequest
-     * @param multipartFile
-     * @param boardId
-     * @return
-     */
-    @Transactional
-    public ResponseDto<BoardDetailResponse> updateBoard(Member member, BoardRequest boardRequest, MultipartFile multipartFile, Long boardId) {
-        // 게시물 존재 유무
-        Board board = check.isExist(boardId);
-        // 작성자인지 확인
-        check.isAuthor(member);
-
-        String boardImage = "";
-        board.update(boardRequest, boardImage);
-
-        return ResponseDto.success(new BoardDetailResponse(board));
     }
 
     /**
@@ -100,13 +79,39 @@ public class BoardService {
         // 게시물 존재 유무
         Board board = check.isExist(boardId);
 
-        List<Comment> comments = commentRepository.findAllByBoard(board);
-
         // 조회수 증가
         board.addHits();
 
-        // 댓글 추가해야 함
-        return ResponseDto.success(new BoardDetailResponse(board));
+        List<Comment> comments = commentRepository.findAllByBoard(board);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentResponses.add(new CommentResponse(comment));
+        }
+
+        return ResponseDto.success(new BoardDetailResponse(board, commentResponses));
+    }
+
+    /**
+     * 게시물 수정
+     * (작성한 관리자만 수정 가능)
+     *
+     * @param member
+     * @param boardRequest
+     * @param boardId
+     * @return
+     */
+    @Transactional
+    public ResponseDto<BoardUpdateResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
+        // 게시물 존재 유무
+        Board board = check.isExist(boardId);
+        // 작성자인지 확인
+        check.isAuthor(member);
+
+        String boardImage = Objects.equals(boardRequest.getBoardImage().getOriginalFilename(), "") ?
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "member");
+        board.update(boardRequest, boardImage);
+
+        return ResponseDto.success(new BoardUpdateResponse(board));
     }
 
     /**
@@ -124,7 +129,8 @@ public class BoardService {
 
         check.isAuthor(member);
 
-        // Todo 지원자 있는지 확인해야 함
+        // 지원자 있는지 확인
+        check.existVolunteer(board);
 
         // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);
@@ -142,16 +148,16 @@ public class BoardService {
     public ResponseDto<MsgResponse> likeBoard(String username, Long boardId) {
         // 게시물 리스펀스에 찜 유무 리턴해야함 !!!!
 
-        Like like = likeRepository.findByUsernameAndBoardId(username, boardId).orElse(null);
+        Likes likes = likesRepository.findByUsernameAndBoardId(username, boardId).orElse(null);
         String msg = "";
         // 찜한 기록이 없을 경우 -> 찜
-        if (like == null) {
-            likeRepository.save(new Like(username, boardId));
+        if (likes == null) {
+            likesRepository.save(new Likes(username, boardId));
             msg = "찜!";
         }
         // 이미 찜한 경우 -> 찜 취소
         else {
-            likeRepository.delete(like);
+            likesRepository.delete(likes);
             msg = "찜 취소";
         }
 

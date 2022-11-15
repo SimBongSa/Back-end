@@ -19,6 +19,9 @@ public class CommentResponse {
     private LocalDateTime createdAt;
 
     public CommentResponse(Comment comment) {
-//        this.boardId = comment.
+        this.boardId = comment.getId();
+        this.author = comment.getMember().getUsername();
+        this.content = comment.getContent();
+        this.createdAt = comment.getCreatedAt();
     }
 }

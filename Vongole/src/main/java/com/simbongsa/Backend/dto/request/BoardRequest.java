@@ -3,6 +3,7 @@ package com.simbongsa.Backend.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,6 +17,9 @@ public class BoardRequest {
 
     @NotBlank(message = "빈 칸을 채워 주세요.")
     private String content;
+
+    @NotBlank(message = "이미지를 첨부해 주세요")
+    private MultipartFile boardImage;
 
     @NotBlank(message = "봉사 활동 날짜를 정해 주세요.")
     private String dueDay;
