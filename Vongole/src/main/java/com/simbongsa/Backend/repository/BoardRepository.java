@@ -15,7 +15,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // 게시물 작성한 유저인지 확인
     Optional<Board> findByMember(Member member);
 
-
     // 내가 작성한 게시물 조회
     List<Board> findAllByMember(Member member);
 }
