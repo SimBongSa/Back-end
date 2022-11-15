@@ -51,7 +51,7 @@ public class SecurityConfiguration {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/members/*").permitAll()
+                .antMatchers("/members/**").permitAll()
                 .antMatchers("/boards").permitAll()
                 .antMatchers("/boards/**").permitAll() // boards 이후의 모든 엔드포인트에 대해 허용
                 .antMatchers("/comments/*").permitAll()
