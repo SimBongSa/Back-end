@@ -27,7 +27,7 @@ public class BoardController {
      */
     @PostMapping()
     public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @RequestBody BoardRequest boardRequest) throws IOException {
+                                                @ModelAttribute BoardRequest boardRequest) throws IOException {
         return boardService.createBoard(userDetails.getMember(),boardRequest);
 }
 

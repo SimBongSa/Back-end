@@ -46,6 +46,9 @@ public class Board extends Timestamped {
     private String area;
 
     @Column(nullable = false)
+    private String detailArea;
+
+    @Column(nullable = false)
     private String category;
 
     @Column
@@ -62,6 +65,7 @@ public class Board extends Timestamped {
         this.startDate = boardRequest.getStartDate();
         this.endDate = boardRequest.getEndDate();
         this.area = boardRequest.getArea();
+        this.detailArea = boardRequest.getDetailArea();
         this.category = boardRequest.getCategory();
 
         this.hits = 0L;
@@ -76,6 +80,7 @@ public class Board extends Timestamped {
         this.startDate = boardRequest.getStartDate();
         this.endDate = boardRequest.getEndDate();
         this.area = boardRequest.getArea();
+        this.detailArea = boardRequest.getDetailArea();
         this.category = boardRequest.getCategory();
     }
 
