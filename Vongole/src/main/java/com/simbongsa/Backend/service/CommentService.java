@@ -18,6 +18,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     private final Check check;
+
     public ResponseDto<MsgResponse> createComment(Member member, Long id, CommentRequest commentRequest) {
         //멤버,컴퍼니 체크
 

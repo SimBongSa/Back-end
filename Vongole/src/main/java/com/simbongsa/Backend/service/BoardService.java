@@ -44,7 +44,7 @@ public class BoardService {
         check.isAdmin(member);
 
         String boardImage = Objects.equals(boardRequest.getBoardImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "????");
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "member");
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
