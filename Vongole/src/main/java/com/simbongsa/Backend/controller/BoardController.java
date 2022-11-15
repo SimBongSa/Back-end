@@ -1,10 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
-import com.simbongsa.Backend.dto.response.BoardDetailResponse;
-import com.simbongsa.Backend.dto.response.BoardResponse;
-import com.simbongsa.Backend.dto.response.MsgResponse;
-import com.simbongsa.Backend.dto.response.ResponseDto;
+import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,17 +24,16 @@ public class BoardController {
      *
      * @param userDetails
      * @param boardRequest
-     * @param multipartFile
      */
     @PostMapping()
     public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @RequestPart(value = "boardRequest") BoardRequest boardRequest,
-                                                @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
-        return boardService.createBoard(userDetails.getMember(), boardRequest, multipartFile);
-    }
+                                                @RequestBody BoardRequest boardRequest) throws IOException {
+        return boardService.createBoard(userDetails.getMember(),boardRequest);
+}
 
     /**
      * 게시물 날짜별 조회
+     *
      * @param dueDay
      * @return
      */
@@ -46,23 +43,8 @@ public class BoardController {
     }
 
     /**
-     * 게시물 수정
-     * @param userDetails
-     * @param boardRequest
-     * @param multipartFile
-     * @param boardId
-     * @return
-     */
-    @PutMapping("/{boardId}")
-    public ResponseDto<BoardDetailResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @RequestPart(value = "boardRequest") BoardRequest boardRequest,
-                                                        @RequestPart(value = "file", required = false) MultipartFile multipartFile,
-                                                        @PathVariable Long boardId) {
-        return boardService.updateBoard(userDetails.getMember(), boardRequest, multipartFile, boardId);
-    }
-
-    /**
      * 게시물 단건 조회
+     *
      * @param boardId
      * @return
      */
@@ -72,19 +54,36 @@ public class BoardController {
     }
 
     /**
+     * 게시물 수정
+     *
+     * @param userDetails
+     * @param boardRequest
+     * @param boardId
+     * @return
+     */
+    @PutMapping("/{boardId}")
+    public ResponseDto<BoardUpdateResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @RequestBody BoardRequest boardRequest,
+                                                        @PathVariable Long boardId) throws IOException {
+        return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
+    }
+
+    /**
      * 게시물 삭제
+     *
      * @param userDetails
      * @param boardId
      * @return
      */
     @DeleteMapping("/{boardId}")
     public ResponseDto<MsgResponse> deleteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                  @PathVariable Long boardId) {
+                                                @PathVariable Long boardId) {
         return boardService.deleteBoard(userDetails.getMember(), boardId);
     }
 
     /**
      * 게시물 찜 or 찜 취소
+     *
      * @param userDetails
      * @param boardId
      * @return

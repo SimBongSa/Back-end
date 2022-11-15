@@ -13,7 +13,12 @@ public enum ErrorCode {
 
 
     /*UNAUTHORIZED 401 error*/
-    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "작성자만 수정 또는 삭제할 수 있습니다."),
+    UNAUTHORIZED_AUTHOR(HttpStatus.UNAUTHORIZED.value(), "Unauthorized Author", "작성자만 수정 또는 삭제할 수 있습니다."),
+    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "관리자만 게시물을 생성할 수 있습니다."),
+
+    /*FORBIDDEN 403 error*/
+    // 나중에 에러코드 명 바꾸기
+    UNABLE_DELETE_BOARD(HttpStatus.FORBIDDEN.value(), "Unable To Delete Board", "봉사활동 지원자가 있기 때문에 삭제할 수 없습니다."),
 
     /*Not Found 404 error*/
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Board Not Found", "해당 게시물은 존재하지 않습니다."),
