@@ -48,8 +48,8 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String detailArea;
 
-    @Column(nullable = false)
-    private String category;
+//    @Column(nullable = false)
+//    private String category;
 
     @Column
     private Long volunteerCnt;
@@ -66,7 +66,7 @@ public class Board extends Timestamped {
         this.endDate = boardRequest.getEndDate();
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-        this.category = boardRequest.getCategory();
+//        this.category = boardRequest.getCategory();
 
         this.hits = 0L;
         this.volunteerCnt = 0L;
@@ -81,7 +81,7 @@ public class Board extends Timestamped {
         this.endDate = boardRequest.getEndDate();
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-        this.category = boardRequest.getCategory();
+//        this.category = boardRequest.getCategory();
     }
 
     // 조회수 증가

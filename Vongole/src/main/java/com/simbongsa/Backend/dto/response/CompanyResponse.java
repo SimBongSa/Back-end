@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.dto.response;
 
 import com.simbongsa.Backend.entity.Member;
+import com.simbongsa.Backend.shared.Authority;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,8 @@ public class CompanyResponse {
 
     private String introduction;
 
+    private Authority authority;
+
 //    private String licenseNumber;
 //
 //    private String licenseImage;
@@ -34,5 +37,6 @@ public class CompanyResponse {
         this.email = member.getEmail();
         this.phoneNumber = member.getPhoneNumber();
         this.introduction = member.getIntroduction();
+        this.authority = member.getAuthority();
     }
 }

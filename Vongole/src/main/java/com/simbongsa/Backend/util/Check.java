@@ -20,8 +20,6 @@ public class Check {
 
     private final CommentRepository commentRepository;
 
-//    private final VolunteerRepository volunteerRepository;
-
     private final EnrollRepository enrollRepository;
 
 

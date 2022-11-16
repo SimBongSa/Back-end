@@ -41,7 +41,6 @@ public class BoardService {
     public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
-        System.out.println(boardRequest.getTitle());
         String boardImage = boardRequest.getBoardImage().getOriginalFilename().equals("") ?
                 null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
         Board board = new Board(boardRequest, member, boardImage);
