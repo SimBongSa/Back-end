@@ -33,7 +33,7 @@ public class BoardDetailResponse {
 
     private String area;
 
-    private String category;
+//    private String category;
 
     private Long volunteerCnt;
 
@@ -51,7 +51,7 @@ public class BoardDetailResponse {
         this.endDate = board.getEndDate();
         this.createAt = board.getCreatedAt();
         this.area = board.getArea();
-        this.category = board.getCategory();
+//        this.category = board.getCategory();
         this.volunteerCnt = board.getVolunteerCnt();
 
         this.comments = commentResponses;
