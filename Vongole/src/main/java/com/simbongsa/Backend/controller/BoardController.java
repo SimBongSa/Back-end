@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BoardController {
      */
     @PostMapping()
     public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @ModelAttribute BoardRequest boardRequest) throws IOException {
+                                                @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
         return boardService.createBoard(userDetails.getMember(),boardRequest);
 }
 
@@ -63,7 +64,7 @@ public class BoardController {
      */
     @PutMapping("/{boardId}")
     public ResponseDto<BoardUpdateResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @ModelAttribute BoardRequest boardRequest,
+                                                        @ModelAttribute @Valid BoardRequest boardRequest,
                                                         @PathVariable Long boardId) throws IOException {
         return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
     }
