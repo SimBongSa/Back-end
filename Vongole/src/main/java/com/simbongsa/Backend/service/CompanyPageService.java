@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.service;
 
+import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Member;
@@ -8,12 +9,15 @@ import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.repository.VolunteerRepository;
 import com.simbongsa.Backend.util.Check;
+import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +26,9 @@ public class CompanyPageService {
     private final VolunteerRepository volunteerRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-    private Check check;
 
+    private final Check check;
+    private final S3Uploader s3Uploader;
 
     /**
      * 내 프로필 조회
@@ -32,6 +37,7 @@ public class CompanyPageService {
      * @return
      */
     public ResponseDto<CompanyResponse> getMyProfile(Member member) {
+        check.isAdmin(member);
         return ResponseDto.success(new CompanyResponse(member));
     }
 
@@ -40,12 +46,18 @@ public class CompanyPageService {
      * 내 프로필 수정
      *
      * @param member
+     * @param companyUpdateRequest
      * @return
      */
-    public ResponseDto<CompanyResponse> updateMyProfile(Member member) {
-        // Todo 이미지 업로드되면 시작
+    @Transactional
+    public ResponseDto<CompanyResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
+        check.isAdmin(member);
 
-        return null;
+        String profileImage = Objects.equals(companyUpdateRequest.getProfileImage().getOriginalFilename(), "") ?
+                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "board", member, "board");
+        member.update(companyUpdateRequest, profileImage);
+
+        return ResponseDto.success(new CompanyResponse(member));
     }
 
     /**
@@ -55,8 +67,7 @@ public class CompanyPageService {
      * @return
      */
     public ResponseDto<List<BoardResponse>> getMyBoards(Member member) {
-        // Todo 관리자인지 확인??
-
+        check.isAdmin(member);
         List<Board> myBoards = boardRepository.findAllByMember(member);
         List<BoardResponse> boardResponses = new ArrayList<>();
 
@@ -75,8 +86,7 @@ public class CompanyPageService {
      * @return
      */
     public ResponseDto<List<VolunteerResponse>> getVolunteers(Member member, Long boardId) {
-        // Todo 관리자인지 확인??
-
+        check.isAdmin(member);
         // Todo 어차피 확정된 아이디값인데 optional 로 받아서 존재하는 board 인지 확인할 필요가 있나?
         Board board = boardRepository.findById(boardId).get();
 
@@ -99,7 +109,7 @@ public class CompanyPageService {
      */
     @Transactional
     public ResponseDto<MsgResponse> approveMember(Member member, Long memberId) {
-
+        check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
         Member findMember = memberRepository.findByMemberId(memberId).get();
 
@@ -119,6 +129,7 @@ public class CompanyPageService {
      */
     @Transactional
     public ResponseDto<MsgResponse> disapproveMember(Member member, Long memberId) {
+        check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
         Member findMember = memberRepository.findByMemberId(memberId).get();
 

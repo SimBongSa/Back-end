@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.*;
 
@@ -64,7 +65,14 @@ public class Member extends Timestamped {
     private Long kakaoId;
 
 
-
+    public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage) {
+        this.nickname = companyUpdateRequest.getNickname();
+        this.name = companyUpdateRequest.getName();
+        this.email = companyUpdateRequest.getEmail();
+        this.introduction = companyUpdateRequest.getIntroduction();
+        this.phoneNumber = companyUpdateRequest.getPhoneNumber();
+        this.profileImage = profileImage;
+    }
 
 
     public void setKakaoId(Long kakaoId){

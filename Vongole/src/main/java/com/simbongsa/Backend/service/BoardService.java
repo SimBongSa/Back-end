@@ -28,7 +28,6 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
-    private final VolunteerRepository volunteerRepository;
 
     private final S3Uploader s3Uploader;
     private final Check check;
