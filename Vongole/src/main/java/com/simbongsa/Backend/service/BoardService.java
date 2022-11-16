@@ -105,10 +105,10 @@ public class BoardService {
         // 게시물 존재 유무
         Board board = check.isExist(boardId);
         // 작성자인지 확인
-        check.isAuthor(member);
+        check.isAuthor(member, board);
 
         String boardImage = Objects.equals(boardRequest.getBoardImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "member");
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
         board.update(boardRequest, boardImage);
 
         return ResponseDto.success(new BoardUpdateResponse(board));
@@ -127,7 +127,7 @@ public class BoardService {
     public ResponseDto<MsgResponse> deleteBoard(Member member, Long boardId) {
         Board board = check.isExist(boardId);
 
-        check.isAuthor(member);
+        check.isAuthor(member, board);
 
         // 지원자 있는지 확인
         check.existVolunteer(board);

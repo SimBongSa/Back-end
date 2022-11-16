@@ -128,9 +128,9 @@ public class Check {
     /*
         게시글 작성한 유저인지 확인
      */
-    public void isAuthor(Member member) {
+    public void isAuthor(Member member, Board board) {
         // 관리자 테이블 나눌건지 회의 후 수정해야 함
-        if (boardRepository.findByMember(member).isEmpty()) {
+        if (!board.getMember().getUsername().equals(member.getUsername())) {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_AUTHOR);
         }
     }
