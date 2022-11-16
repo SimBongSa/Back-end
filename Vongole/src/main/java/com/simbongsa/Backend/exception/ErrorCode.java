@@ -26,6 +26,7 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND.value(),"Token Not Found","해당 토큰은 존재하지 않습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Member Not Found", "해당 멤버는 존재하지 않습니다."),
 
+    ENROLLMENT_NOT_FOUND(HttpStatus.NO_CONTENT.value(), "Applicant Not Found", "신청자를 찾을 수 없습니다."),
 
 
     /* CONFLICT 409 error*/
@@ -38,7 +39,9 @@ public enum ErrorCode {
 
     PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND.value(),"Password is Not Matched", "비밀번호가 일치하지 않습니다."),
 
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Token is Invalid", "토큰이 유효하지 않습니다.");
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Token is Invalid", "토큰이 유효하지 않습니다."),
+
+    ALREADY_APPLIED(HttpStatus.UNAUTHORIZED.value(), "Board is Already Applied", "이미 신청 중인 게시물입니다.");
 
 
 
