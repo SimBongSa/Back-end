@@ -1,16 +1,10 @@
 package com.simbongsa.Backend.util;
 
-import com.simbongsa.Backend.entity.Board;
-import com.simbongsa.Backend.entity.Comment;
-import com.simbongsa.Backend.entity.Member;
-import com.simbongsa.Backend.entity.RefreshToken;
+import com.simbongsa.Backend.entity.*;
 import com.simbongsa.Backend.exception.ErrorCode;
 import com.simbongsa.Backend.exception.GlobalException;
 import com.simbongsa.Backend.jwt.TokenProvider;
-import com.simbongsa.Backend.repository.BoardRepository;
-import com.simbongsa.Backend.repository.LikesRepository;
-import com.simbongsa.Backend.repository.CommentRepository;
-import com.simbongsa.Backend.repository.MemberRepository;
+import com.simbongsa.Backend.repository.*;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,11 +17,13 @@ public class Check {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final LikesRepository likesRepository;
 
     private final CommentRepository commentRepository;
 
-    private final Util util;
+//    private final VolunteerRepository volunteerRepository;
+
+    private final EnrollRepository enrollRepository;
+
 
     private final TokenProvider tokenProvider;
 
@@ -63,6 +59,23 @@ public class Check {
 
         return member;
     }
+
+    /*
+        이미 신청된 유저인지 확인
+     */
+
+
+    public void isExistedByMemberAndBoard(Member member, Board board) {
+        if (enrollRepository.existsByMemberAndBoard(member, board)) {
+            throw new GlobalException(ErrorCode.ALREADY_APPLIED);
+        }
+
+    }
+
+       /*
+        이미 승인된 유저인지 확인
+     */
+
 
     /*
         관리자인지 확인
@@ -147,6 +160,18 @@ public class Check {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_AUTHOR);
         }
         return comment;
+    }
+
+    public Enrollment isEnrolled(Member member, Long id) {
+        Enrollment enrollment = enrollRepository.findById(id).orElse(null);
+        if (enrollment == null) {
+            throw new GlobalException(ErrorCode.ENROLLMENT_NOT_FOUND);
+        }
+        if (!enrollment.getMember().getMemberId().equals(member.getMemberId())) {
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
+        return enrollment;
     }
 
 
