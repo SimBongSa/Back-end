@@ -63,7 +63,7 @@ public class BoardController {
      */
     @PutMapping("/{boardId}")
     public ResponseDto<BoardUpdateResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @RequestBody BoardRequest boardRequest,
+                                                        @ModelAttribute BoardRequest boardRequest,
                                                         @PathVariable Long boardId) throws IOException {
         return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
     }
