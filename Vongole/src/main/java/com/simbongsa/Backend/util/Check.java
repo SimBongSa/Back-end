@@ -23,11 +23,8 @@ public class Check {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final LikesRepository likesRepository;
 
     private final CommentRepository commentRepository;
-
-    private final Util util;
 
     private final TokenProvider tokenProvider;
 

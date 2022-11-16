@@ -54,7 +54,7 @@ public class CompanyPageService {
         check.isAdmin(member);
 
         String profileImage = Objects.equals(companyUpdateRequest.getProfileImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "board", member, "board");
+                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company", member, "board");
         member.update(companyUpdateRequest, profileImage);
 
         return ResponseDto.success(new CompanyResponse(member));
