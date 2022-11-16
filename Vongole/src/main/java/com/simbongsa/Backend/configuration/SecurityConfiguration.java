@@ -56,6 +56,7 @@ public class SecurityConfiguration {
                 .antMatchers("/boards/**").permitAll() // boards 이후의 모든 엔드포인트에 대해 허용
                 .antMatchers("/comments/*").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
+                .antMatchers("/companypage/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.controller;
 
+import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.CompanyPageService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,9 @@ public class CompanyPageController {
 
 
     @PutMapping()
-    public ResponseDto<CompanyResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return companyPageService.updateMyProfile(userDetails.getMember());
+    public ResponseDto<CompanyResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @ModelAttribute CompanyUpdateRequest companyUpdateRequest) throws IOException {
+        return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }
 
 
