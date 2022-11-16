@@ -29,12 +29,13 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private String content;
 
-    public Comment(Board board, CommentRequest commentRequest) {
-        this.board = board;
-        this.content = commentRequest.getContent();
-    }
-
     public void update(CommentRequest commentRequest) {
         this.content = commentRequest.getContent() != null ? commentRequest.getContent() :this.content;
+    }
+
+    public Comment(Member member, Board board, CommentRequest commentRequest) {
+        this.member = member;
+        this.board = board;
+        this.content = commentRequest.getContent();
     }
 }

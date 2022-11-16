@@ -138,10 +138,13 @@ public class Check {
     /*
         댓글 존재 유무 확인
      */
-    public Comment isComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElse(null);
+    public Comment isComment(Member member,Long id) {
+        Comment comment = commentRepository.findById(id).orElse(null);
         if (comment == null) {
-            throw new GlobalException(ErrorCode.BOARD_NOT_FOUND);
+            throw new GlobalException(ErrorCode.COMMENT_NOT_FOUND);
+        }
+        if (!comment.getMember().getUsername().equals(member.getUsername())){
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_AUTHOR);
         }
         return comment;
     }
