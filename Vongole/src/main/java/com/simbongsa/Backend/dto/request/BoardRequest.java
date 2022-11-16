@@ -34,6 +34,6 @@ public class BoardRequest {
     @NotBlank(message = "상세 주소를 작성해 주세요.")
     private String detailArea;
 
-    @NotBlank(message = "봉사 활동 종류를 선택해 주세요.")
-    private String category;
+//    @NotBlank(message = "봉사 활동 종류를 선택해 주세요.")
+//    private String category;
 }
