@@ -23,10 +23,12 @@ public class EnrollController {
         return enrollService.createEnrollment(userDetails.getMember(), boardId);
     }
 
-    @DeleteMapping("/boards/{board_id}/ask/{enroll_id}")
+    @DeleteMapping("/boards/{board_id}/ask")
+    // Todo 봉사 활동 신청 시 리스펀스로 enrollId를 주는 게 아닌데 어떻게 pathVariable 로 받는지?
+    // Todo pathVariable 로 boardId 안받음
     public ResponseDto<MsgResponse> cancelEnrollment(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                     @PathVariable("enroll_id") Long id) {
-        return enrollService.cancelEnrollment(userDetails.getMember(), id);
+                                                     @PathVariable("board_id") Long boardId) {
+        return enrollService.cancelEnrollment(userDetails.getMember(), boardId);
 
     }
 }

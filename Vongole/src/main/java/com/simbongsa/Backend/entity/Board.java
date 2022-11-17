@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -34,13 +37,13 @@ public class Board extends Timestamped {
     private String boardImage;
 
     @Column(nullable = false)
-    private String dueDay;
+    private LocalDate dueDay;
 
     @Column(nullable = false)
-    private String startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private String endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false)
     private String area;
@@ -48,12 +51,11 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String detailArea;
 
-    @Column(nullable = false)
-    private String category;
+//    @Column(nullable = false)
+//    private String category;
 
     @Column
-    private Long volunteerCnt;
-
+    private Long applicantCnt;
 
 
     public Board(BoardRequest boardRequest, Member member, String boardImage) {
@@ -61,31 +63,40 @@ public class Board extends Timestamped {
         this.content = boardRequest.getContent();
         this.member = member;
         this.boardImage = boardImage;
-        this.dueDay = boardRequest.getDueDay();
-        this.startDate = boardRequest.getStartDate();
-        this.endDate = boardRequest.getEndDate();
+        this.dueDay = LocalDate.parse(boardRequest.getDueDay(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.startDate = LocalDate.parse(boardRequest.getStartDate(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.endDate = LocalDate.parse(boardRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-        this.category = boardRequest.getCategory();
+//        this.category = boardRequest.getCategory();
 
         this.hits = 0L;
-        this.volunteerCnt = 0L;
+        this.applicantCnt = 0L;
     }
 
     public void update(BoardRequest boardRequest, String boardImage) {
         this.title = boardRequest.getTitle();
         this.content = boardRequest.getContent();
         this.boardImage = boardImage;
-        this.dueDay = boardRequest.getDueDay();
-        this.startDate = boardRequest.getStartDate();
-        this.endDate = boardRequest.getEndDate();
+        this.dueDay = LocalDate.parse(boardRequest.getDueDay(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.startDate = LocalDate.parse(boardRequest.getStartDate(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.endDate = LocalDate.parse(boardRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-        this.category = boardRequest.getCategory();
+//        this.category = boardRequest.getCategory();
     }
 
     // 조회수 증가
     public void addHits() {
         this.hits++;
     }
+
+    public void addApplicant() {
+        this.applicantCnt++;
+    }
+
+    public void removeApplicant() {
+        this.applicantCnt--;
+    }
 }
+

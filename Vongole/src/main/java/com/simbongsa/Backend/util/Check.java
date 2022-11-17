@@ -20,8 +20,6 @@ public class Check {
 
     private final CommentRepository commentRepository;
 
-//    private final VolunteerRepository volunteerRepository;
-
     private final EnrollRepository enrollRepository;
 
 
@@ -63,8 +61,6 @@ public class Check {
     /*
         이미 신청된 유저인지 확인
      */
-
-
     public void isExistedByMemberAndBoard(Member member, Board board) {
         if (enrollRepository.existsByMemberAndBoard(member, board)) {
             throw new GlobalException(ErrorCode.ALREADY_APPLIED);
@@ -129,7 +125,7 @@ public class Check {
     /*
         게시글 존재 유무 확인
      */
-    public Board isExist(Long boardId) {
+    public Board existBoard(Long boardId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         if (board == null) {
             throw new GlobalException(ErrorCode.BOARD_NOT_FOUND);
@@ -178,9 +174,12 @@ public class Check {
     /*
         봉사 활동 지원자 있는지 확인
      */
-    public void existVolunteer(Board board) {
-        if (board.getVolunteerCnt() != 0L) {
+    public void existApplicant(Board board) {
+        if (board.getApplicantCnt() != 0L) {
             throw new GlobalException(ErrorCode.UNABLE_DELETE_BOARD);
         }
     }
+
+
+
 }

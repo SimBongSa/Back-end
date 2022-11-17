@@ -4,6 +4,7 @@ import com.simbongsa.Backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,19 +24,19 @@ public class BoardDetailResponse {
 
     private String boardImage;
 
-    private String dueDay;
+    private LocalDate dueDay;
 
-    private String startDate;
+    private LocalDate startDate;
 
-    private String endDate;
+    private LocalDate endDate;
 
     private LocalDateTime createAt;
 
     private String area;
 
-    private String category;
+//    private String category;
 
-    private Long volunteerCnt;
+    private Long applicantCnt;
 
     private List<CommentResponse> comments;
 
@@ -51,8 +52,8 @@ public class BoardDetailResponse {
         this.endDate = board.getEndDate();
         this.createAt = board.getCreatedAt();
         this.area = board.getArea();
-        this.category = board.getCategory();
-        this.volunteerCnt = board.getVolunteerCnt();
+//        this.category = board.getCategory();
+        this.applicantCnt = board.getApplicantCnt();
 
         this.comments = commentResponses;
     }

@@ -3,11 +3,11 @@ package com.simbongsa.Backend.service;
 import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Enrollment;
 import com.simbongsa.Backend.entity.Member;
-import com.simbongsa.Backend.entity.Volunteer;
 import com.simbongsa.Backend.repository.BoardRepository;
+import com.simbongsa.Backend.repository.EnrollRepository;
 import com.simbongsa.Backend.repository.MemberRepository;
-import com.simbongsa.Backend.repository.VolunteerRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CompanyPageService {
 
-    private final VolunteerRepository volunteerRepository;
+    private final EnrollRepository enrollRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
@@ -32,9 +32,6 @@ public class CompanyPageService {
 
     /**
      * 내 프로필 조회
-     *
-     * @param member
-     * @return
      */
     public ResponseDto<CompanyResponse> getMyProfile(Member member) {
         check.isAdmin(member);
@@ -44,17 +41,13 @@ public class CompanyPageService {
 
     /**
      * 내 프로필 수정
-     *
-     * @param member
-     * @param companyUpdateRequest
-     * @return
      */
     @Transactional
     public ResponseDto<CompanyResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
         check.isAdmin(member);
 
         String profileImage = Objects.equals(companyUpdateRequest.getProfileImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "board", member, "board");
+                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company", member, "board");
         member.update(companyUpdateRequest, profileImage);
 
         return ResponseDto.success(new CompanyResponse(member));
@@ -62,9 +55,6 @@ public class CompanyPageService {
 
     /**
      * 내 게시물 목록
-     *
-     * @param member
-     * @return
      */
     public ResponseDto<List<BoardResponse>> getMyBoards(Member member) {
         check.isAdmin(member);
@@ -80,63 +70,52 @@ public class CompanyPageService {
 
     /**
      * 봉사 활동 지원자 목록
-     *
-     * @param member
-     * @param boardId
-     * @return
      */
-    public ResponseDto<List<VolunteerResponse>> getVolunteers(Member member, Long boardId) {
+    public ResponseDto<List<EnrollResponse>> getVolunteers(Member member, Long boardId) {
         check.isAdmin(member);
-        // Todo 어차피 확정된 아이디값인데 optional 로 받아서 존재하는 board 인지 확인할 필요가 있나?
-        Board board = boardRepository.findById(boardId).get();
 
-        List<Volunteer> volunteers = volunteerRepository.findAllByBoard(board);
-        List<VolunteerResponse> volunteerResponses = new ArrayList<>();
+        // board 존재하는지 체크
+        Board board = check.existBoard(boardId);
 
-        for (Volunteer volunteer : volunteers) {
-            volunteerResponses.add(new VolunteerResponse(volunteer));
+        List<Enrollment> enrollments = enrollRepository.findAllByBoard(board);
+        List<EnrollResponse> enrollResponses = new ArrayList<>();
+
+        for (Enrollment enrollment : enrollments) {
+            enrollResponses.add(new EnrollResponse(enrollment));
         }
 
-        return ResponseDto.success(volunteerResponses);
+        return ResponseDto.success(enrollResponses);
     }
 
     /**
      * 봉사 활동 지원자 승인
-     *
-     * @param member
-     * @param memberId
-     * @return
      */
     @Transactional
     public ResponseDto<MsgResponse> approveMember(Member member, Long memberId) {
         check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
-        Member findMember = memberRepository.findByMemberId(memberId).get();
+        Member applicant = memberRepository.findByMemberId(memberId).get();
 
-        Volunteer volunteer = volunteerRepository.findByMember(findMember);
+        Enrollment enrollment = enrollRepository.findByMember(applicant).get();
 
-        volunteer.pass();
+        enrollment.approve();
 
-        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 완료"));
+        return ResponseDto.success(new MsgResponse(applicant.getUsername() + " 님, 승인 완료"));
     }
 
     /**
      * 봉사 활동 지원자 거절
-     *
-     * @param member
-     * @param memberId
-     * @return
      */
     @Transactional
     public ResponseDto<MsgResponse> disapproveMember(Member member, Long memberId) {
         check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
-        Member findMember = memberRepository.findByMemberId(memberId).get();
+        Member applicant = memberRepository.findByMemberId(memberId).get();
 
-        Volunteer volunteer = volunteerRepository.findByMember(findMember);
+        Enrollment enrollment = enrollRepository.findByMember(applicant).get();
 
-        volunteer.fail();
+        enrollment.disapprove();
 
-        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 거절"));
+        return ResponseDto.success(new MsgResponse(applicant.getUsername() + " 님, 승인 거절"));
     }
 }
