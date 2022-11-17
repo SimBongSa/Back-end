@@ -47,7 +47,6 @@ public class BoardService {
         return ResponseDto.success(new MsgResponse("게시물 생성 완료"));
     }
 
-
     /**
      * 게시물 전체 조회
      */

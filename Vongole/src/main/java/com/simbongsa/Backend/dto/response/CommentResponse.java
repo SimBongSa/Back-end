@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentResponse {
 
-    private Long boardId;
+    private Long commentId;
 
     private String author;
 
@@ -19,7 +19,7 @@ public class CommentResponse {
     private LocalDateTime createdAt;
 
     public CommentResponse(Comment comment) {
-        this.boardId = comment.getId();
+        this.commentId = comment.getId();
         this.author = comment.getMember().getUsername();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();

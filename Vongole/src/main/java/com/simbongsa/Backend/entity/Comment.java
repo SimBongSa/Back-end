@@ -19,6 +19,7 @@ public class Comment extends Timestamped{
 
     //기관,멤버
     @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
