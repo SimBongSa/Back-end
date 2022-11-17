@@ -53,7 +53,7 @@ public class CompanyPageController {
      * @return
      */
     @GetMapping("/boards/{boardId}")
-    public ResponseDto<List<VolunteerResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<List<EnrollResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                               @PathVariable Long boardId) {
         return companyPageService.getVolunteers(userDetails.getMember(),boardId);
     }

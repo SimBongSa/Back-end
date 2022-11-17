@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class BoardController {
      * @return
      */
     @GetMapping("/date/{dueDay}")
-    public ResponseDto<List<BoardResponse>> getBoards(@PathVariable String dueDay) {
+    public ResponseDto<List<BoardResponse>> getBoards(@PathVariable LocalDate dueDay) {
         return boardService.getBoards(dueDay);
     }
 

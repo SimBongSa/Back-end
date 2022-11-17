@@ -4,6 +4,7 @@ import com.simbongsa.Backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,13 +21,13 @@ public class BoardResponse {
 
 //    private Long hits;
 
-//    private String boardImage;
+    private String boardImage;
 
-    private String dueDay;
+    private LocalDate dueDay;
 
-    private String startDate;
+    private LocalDate startDate;
 
-    private String endDate;
+    private LocalDate endDate;
 
     private String area;
 
@@ -36,13 +37,15 @@ public class BoardResponse {
 
 //    private String category;
 
+    private Long applicantCnt;
+
     public BoardResponse(Board board) {
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.author = board.getMember().getUsername();
 //        this.content = board.getContent();
 //        this.hits = board.getHits();
-//        this.boardImage = board.getBoardImage();
+        this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
@@ -50,6 +53,7 @@ public class BoardResponse {
         this.detailArea = board.getDetailArea();
         this.createdAt = board.getCreatedAt();
 //        this.category = board.getCategory();
+        this.applicantCnt = board.getApplicantCnt();
     }
 
 }

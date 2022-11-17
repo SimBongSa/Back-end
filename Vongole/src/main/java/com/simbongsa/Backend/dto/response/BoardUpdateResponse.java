@@ -4,6 +4,8 @@ import com.simbongsa.Backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 public class BoardUpdateResponse {
@@ -14,11 +16,11 @@ public class BoardUpdateResponse {
 
     private String boardImage;
 
-    private String dueDay;
+    private LocalDate dueDay;
 
-    private String startDate;
+    private LocalDate startDate;
 
-    private String endDate;
+    private LocalDate endDate;
 
     private String area;
 

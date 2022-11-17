@@ -9,7 +9,6 @@ import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.LikesRepository;
-import com.simbongsa.Backend.repository.VolunteerRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +43,7 @@ public class BoardService {
         check.isAdmin(member);
         String boardImage = boardRequest.getBoardImage().getOriginalFilename().equals("") ?
                 null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
+
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
@@ -52,7 +53,7 @@ public class BoardService {
     /**
      * 게시물 전체 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoards(String dueDay) {
+    public ResponseDto<List<BoardResponse>> getBoards(LocalDate dueDay) {
         // Todo 시간 관련 함수, 쿼리 공부
         List<Board> boards = boardRepository.findAllByDueDay(dueDay);
 
@@ -75,7 +76,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
         // 게시물 존재 유무
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
 
         // 조회수 증가
         board.addHits();
@@ -101,7 +102,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<BoardUpdateResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
         // 게시물 존재 유무
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
         // 작성자인지 확인
         check.isAuthor(member, board);
 
@@ -123,12 +124,12 @@ public class BoardService {
      */
     @Transactional
     public ResponseDto<MsgResponse> deleteBoard(Member member, Long boardId) {
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
 
         check.isAuthor(member, board);
 
         // 지원자 있는지 확인
-        check.existVolunteer(board);
+        check.existApplicant(board);
 
         // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);
