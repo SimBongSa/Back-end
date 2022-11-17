@@ -4,13 +4,13 @@ import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 날짜별 봉사활동 목록 조회
-    List<Board> findAllByDueDay(String dueDay);
+    List<Board> findAllByDueDay(LocalDate dueDay);
 
     // 내가 작성한 게시물 조회
     List<Board> findAllByMember(Member member);

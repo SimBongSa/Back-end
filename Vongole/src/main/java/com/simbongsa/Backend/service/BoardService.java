@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,7 @@ public class BoardService {
         check.isAdmin(member);
         String boardImage = boardRequest.getBoardImage().getOriginalFilename().equals("") ?
                 null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
+
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
@@ -51,7 +53,7 @@ public class BoardService {
     /**
      * 게시물 전체 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoards(String dueDay) {
+    public ResponseDto<List<BoardResponse>> getBoards(LocalDate dueDay) {
         // Todo 시간 관련 함수, 쿼리 공부
         List<Board> boards = boardRepository.findAllByDueDay(dueDay);
 
