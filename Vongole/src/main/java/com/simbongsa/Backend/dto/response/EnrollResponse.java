@@ -1,7 +1,7 @@
 package com.simbongsa.Backend.dto.response;
 
 import com.simbongsa.Backend.entity.Approval;
-import com.simbongsa.Backend.entity.Volunteer;
+import com.simbongsa.Backend.entity.Enrollment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 
 @Getter
 @NoArgsConstructor
-public class VolunteerResponse {
+public class EnrollResponse {
 
     private Long memberId;
 
@@ -20,9 +20,9 @@ public class VolunteerResponse {
     @Enumerated(EnumType.STRING)
     private Approval approval;
 
-    public VolunteerResponse(Volunteer volunteer) {
-        this.memberId = volunteer.getMember().getMemberId();
-        this.username = volunteer.getMember().getUsername();
-        this.approval = volunteer.getApproval();
+    public EnrollResponse(Enrollment enrollment) {
+        this.memberId = enrollment.getMember().getMemberId();
+        this.username = enrollment.getMember().getUsername();
+        this.approval = this.getApproval();
     }
 }

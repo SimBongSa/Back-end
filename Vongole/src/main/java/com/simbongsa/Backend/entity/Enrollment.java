@@ -34,7 +34,13 @@ public class Enrollment {
         this.approval = Approval.WAITING;
     }
 
+    public void approve() {
+        this.approval = Approval.PASS;
+    }
 
+    public void disapprove() {
+        this.approval = Approval.FAIL;
+    }
 
 
 }

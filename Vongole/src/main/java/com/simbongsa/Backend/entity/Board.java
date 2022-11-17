@@ -52,8 +52,7 @@ public class Board extends Timestamped {
 //    private String category;
 
     @Column
-    private Long volunteerCnt;
-
+    private Long applicantCnt;
 
 
     public Board(BoardRequest boardRequest, Member member, String boardImage) {
@@ -69,7 +68,7 @@ public class Board extends Timestamped {
 //        this.category = boardRequest.getCategory();
 
         this.hits = 0L;
-        this.volunteerCnt = 0L;
+        this.applicantCnt = 0L;
     }
 
     public void update(BoardRequest boardRequest, String boardImage) {
@@ -88,4 +87,13 @@ public class Board extends Timestamped {
     public void addHits() {
         this.hits++;
     }
+
+    public void addApplicant() {
+        this.applicantCnt++;
+    }
+
+    public void removeApplicant() {
+        this.applicantCnt--;
+    }
 }
+

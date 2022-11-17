@@ -9,7 +9,6 @@ import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.LikesRepository;
-import com.simbongsa.Backend.repository.VolunteerRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +74,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
         // 게시물 존재 유무
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
 
         // 조회수 증가
         board.addHits();
@@ -101,7 +100,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<BoardUpdateResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
         // 게시물 존재 유무
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
         // 작성자인지 확인
         check.isAuthor(member, board);
 
@@ -123,12 +122,12 @@ public class BoardService {
      */
     @Transactional
     public ResponseDto<MsgResponse> deleteBoard(Member member, Long boardId) {
-        Board board = check.isExist(boardId);
+        Board board = check.existBoard(boardId);
 
         check.isAuthor(member, board);
 
         // 지원자 있는지 확인
-        check.existVolunteer(board);
+        check.existApplicant(board);
 
         // 댓글 테이블 삭제 어노테이션 찾아보기
         boardRepository.delete(board);

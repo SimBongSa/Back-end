@@ -36,6 +36,8 @@ public class BoardResponse {
 
 //    private String category;
 
+    private Long applicantCnt;
+
     public BoardResponse(Board board) {
         this.boardId = board.getId();
         this.title = board.getTitle();
@@ -50,6 +52,7 @@ public class BoardResponse {
         this.detailArea = board.getDetailArea();
         this.createdAt = board.getCreatedAt();
 //        this.category = board.getCategory();
+        this.applicantCnt = board.getApplicantCnt();
     }
 
 }
