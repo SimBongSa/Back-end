@@ -6,6 +6,7 @@ import com.simbongsa.Backend.shared.Authority;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -44,8 +45,7 @@ public class Member extends Timestamped {
     private String gender;
 
     @Column(name = "birthdate")
-    private String birthdate;
-
+    private LocalDate birthdate;
 
     @Column(name = "introduction")
     private String introduction;

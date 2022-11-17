@@ -20,9 +20,6 @@ public class Check {
 
     private final CommentRepository commentRepository;
 
-    private final EnrollRepository enrollRepository;
-
-
     private final TokenProvider tokenProvider;
 
     /*
@@ -58,15 +55,6 @@ public class Check {
         return member;
     }
 
-    /*
-        이미 신청된 유저인지 확인
-     */
-    public void isExistedByMemberAndBoard(Member member, Board board) {
-        if (enrollRepository.existsByMemberAndBoard(member, board)) {
-            throw new GlobalException(ErrorCode.ALREADY_APPLIED);
-        }
-
-    }
 
        /*
         이미 승인된 유저인지 확인
@@ -158,17 +146,6 @@ public class Check {
         return comment;
     }
 
-    public Enrollment isEnrolled(Member member, Long id) {
-        Enrollment enrollment = enrollRepository.findById(id).orElse(null);
-        if (enrollment == null) {
-            throw new GlobalException(ErrorCode.ENROLLMENT_NOT_FOUND);
-        }
-        if (!enrollment.getMember().getMemberId().equals(member.getMemberId())) {
-            throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
-        }
-
-        return enrollment;
-    }
 
 
     /*

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
@@ -41,7 +42,7 @@ public class MemberRequestDto {
 
     private String gender;
 
-    private String birthdate;
+    private LocalDate birthdate;
 
     private Authority authority;
 
