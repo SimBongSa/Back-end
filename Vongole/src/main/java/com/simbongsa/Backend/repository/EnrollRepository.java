@@ -19,8 +19,9 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
     // 봉사활동에 지원한 사람인지 확인
     Boolean existsByMemberAndBoard(Member member, Board board);
 
+    Enrollment getEnrollmentByMemberAndBoard(Member member, Board board);
+
     // 멤버아이디로 봉사활동 지원자 조회
     Optional<Enrollment> findByMember(Member member);
 
-    Optional<Enrollment> findByBoard(Board board);
 }
