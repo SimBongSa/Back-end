@@ -22,7 +22,7 @@ public class CommentService {
     public ResponseDto<MsgResponse> createComment(Member member, Long id, CommentRequest commentRequest) {
         //게시글 체크
         Board board = check.existBoard(id);
-        //entity생성후 db저장
+        //entity 생성 후 db 저장
         Comment comment = new Comment(member,board,commentRequest);
         commentRepository.save(comment);
 

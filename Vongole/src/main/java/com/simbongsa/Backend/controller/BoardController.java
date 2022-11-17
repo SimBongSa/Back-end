@@ -7,7 +7,6 @@ import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -23,32 +22,29 @@ public class BoardController {
 
     /**
      * 게시물 생성
-     *
-     * @param userDetails
-     * @param boardRequest
      */
     @PostMapping()
     public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                 @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
-        return boardService.createBoard(userDetails.getMember(),boardRequest);
-}
+        return boardService.createBoard(userDetails.getMember(), boardRequest);
+    }
+
+
+    @GetMapping()
+    public ResponseDto<List<BoardResponse>> getAllBoards() {
+        return boardService.getAllBoards();
+    }
 
     /**
      * 게시물 날짜별 조회
-     *
-     * @param dueDay
-     * @return
      */
     @GetMapping("/date/{dueDay}")
-    public ResponseDto<List<BoardResponse>> getBoards(@PathVariable LocalDate dueDay) {
-        return boardService.getBoards(dueDay);
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay) {
+        return boardService.getBoardsByDueDay(dueDay);
     }
 
     /**
      * 게시물 단건 조회
-     *
-     * @param boardId
-     * @return
      */
     @GetMapping("/{boardId}")
     public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId) {
@@ -57,11 +53,6 @@ public class BoardController {
 
     /**
      * 게시물 수정
-     *
-     * @param userDetails
-     * @param boardRequest
-     * @param boardId
-     * @return
      */
     @PutMapping("/{boardId}")
     public ResponseDto<BoardUpdateResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -72,10 +63,6 @@ public class BoardController {
 
     /**
      * 게시물 삭제
-     *
-     * @param userDetails
-     * @param boardId
-     * @return
      */
     @DeleteMapping("/{boardId}")
     public ResponseDto<MsgResponse> deleteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -85,10 +72,6 @@ public class BoardController {
 
     /**
      * 게시물 찜 or 찜 취소
-     *
-     * @param userDetails
-     * @param boardId
-     * @return
      */
     @PostMapping("/{boardId}/like")
     public ResponseDto<MsgResponse> likeBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
