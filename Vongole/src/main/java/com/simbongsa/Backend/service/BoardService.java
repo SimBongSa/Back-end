@@ -34,9 +34,6 @@ public class BoardService {
 
     /**
      * 게시물 생성 (관리자만 생성 가능)
-     *
-     * @param member
-     * @param boardRequest
      */
     public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
@@ -53,7 +50,20 @@ public class BoardService {
     /**
      * 게시물 전체 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoards(LocalDate dueDay) {
+    public ResponseDto<List<BoardResponse>> getAllBoards() {
+        List<Board> boards = boardRepository.findAll();
+        List<BoardResponse> boardResponses = new ArrayList<>();
+
+        for (Board board : boards) {
+            boardResponses.add(new BoardResponse(board));
+        }
+        return ResponseDto.success(boardResponses);
+    }
+
+    /**
+     * 게시물 날짜별 조회
+     */
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay) {
         // Todo 시간 관련 함수, 쿼리 공부
         List<Board> boards = boardRepository.findAllByDueDay(dueDay);
 
@@ -69,9 +79,6 @@ public class BoardService {
      * 게시물 상세 조회
      * 댓글 전체 조회
      * 조회수 증가
-     *
-     * @param boardId
-     * @return
      */
     @Transactional
     public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
@@ -93,11 +100,6 @@ public class BoardService {
     /**
      * 게시물 수정
      * (작성한 관리자만 수정 가능)
-     *
-     * @param member
-     * @param boardRequest
-     * @param boardId
-     * @return
      */
     @Transactional
     public ResponseDto<BoardUpdateResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
@@ -117,10 +119,6 @@ public class BoardService {
      * 게시물 삭제
      * 작성자만 삭제 가능
      * 봉사 지원자 있을 경우 삭제 불가
-     *
-     * @param member
-     * @param boardId
-     * @return
      */
     @Transactional
     public ResponseDto<MsgResponse> deleteBoard(Member member, Long boardId) {
@@ -138,10 +136,6 @@ public class BoardService {
 
     /**
      * 게시물 찜 or 찜 취소
-     *
-     * @param username
-     * @param boardId
-     * @return
      */
     @Transactional
     public ResponseDto<MsgResponse> likeBoard(String username, Long boardId) {
@@ -162,6 +156,7 @@ public class BoardService {
 
         return ResponseDto.success(new MsgResponse(msg));
     }
+
 }
 
 
