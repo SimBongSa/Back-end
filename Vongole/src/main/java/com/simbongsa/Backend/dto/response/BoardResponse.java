@@ -20,7 +20,7 @@ public class BoardResponse {
 
 //    private Long hits;
 
-//    private String boardImage;
+    private String boardImage;
 
     private String dueDay;
 
@@ -44,7 +44,7 @@ public class BoardResponse {
         this.author = board.getMember().getUsername();
 //        this.content = board.getContent();
 //        this.hits = board.getHits();
-//        this.boardImage = board.getBoardImage();
+        this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();

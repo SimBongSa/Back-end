@@ -33,7 +33,7 @@ public class EnrollService {
 
     }
 
-    @Transactional
+    @Transactional // Todo 지원자수 감소 메서드 실행
     public ResponseDto<MsgResponse> cancelEnrollment(Member member, Long boardId) {
 
 //        Enrollment enrollment = check.isEnrolled(member, boardId);
