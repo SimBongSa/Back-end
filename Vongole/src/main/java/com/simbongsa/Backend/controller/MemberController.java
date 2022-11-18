@@ -29,11 +29,11 @@ public class MemberController {
     }
 
     @PostMapping("/members/signup/admin")
-    public ResponseDto<?> signupAdmin(@RequestBody @Valid CompanyMemberRequestDto requestDto) {
+    public ResponseDto<?> signupAdmin(@ModelAttribute @Valid CompanyMemberRequestDto requestDto) throws IOException {
         return memberService.createCompanyMember(requestDto);
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/members/{memberId}")
     public ResponseDto<?> memberUpdate(@ModelAttribute MemberUpdateRequestDto memberUpdateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long memberId) throws IOException {
         return memberService.memberUpdate(memberUpdateRequestDto, userDetails.getMember(), memberId);
     }
@@ -53,4 +53,20 @@ public class MemberController {
 
         return memberService.logout(request);
     }
+
+    @GetMapping("/members/signup/check_username/{username}")
+    public ResponseDto<?> checkUsername(@PathVariable String username) {
+        return memberService.checkUsername(username);
+    }
+
+    @GetMapping("/members/signup/check_nickname/{nickname}")
+    public ResponseDto<?> checkNickname(@PathVariable String nickname) {
+        return memberService.checkNickname(nickname);
+    }
+
+
+
+
+
+
 }

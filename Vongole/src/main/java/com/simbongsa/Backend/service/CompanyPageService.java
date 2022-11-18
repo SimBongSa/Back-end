@@ -46,8 +46,7 @@ public class CompanyPageService {
     public ResponseDto<CompanyResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
         check.isAdmin(member);
 
-        String profileImage = Objects.equals(companyUpdateRequest.getProfileImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company", member, "board");
+        String profileImage = s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
         member.update(companyUpdateRequest, profileImage);
 
         return ResponseDto.success(new CompanyResponse(member));
