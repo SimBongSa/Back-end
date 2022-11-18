@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.CommentRequest;
+import com.simbongsa.Backend.dto.response.CommentResponse;
 import com.simbongsa.Backend.dto.response.MsgResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
@@ -19,15 +20,15 @@ public class CommentController {
 
     //댓글 생성
     @PostMapping("/{board_id}")
-    public ResponseDto<MsgResponse> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                  @PathVariable("board_id") Long id,
-                                                  @RequestBody CommentRequest commentRequest) {
+    public ResponseDto<CommentResponse> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                      @PathVariable("board_id") Long id,
+                                                      @RequestBody CommentRequest commentRequest) {
         return commentService.createComment(userDetails.getMember(), id, commentRequest);
     }
 
     //댓글 수정
     @PutMapping("/{comment_id}")
-    public ResponseDto<MsgResponse> updateComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<CommentResponse> updateComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                   @PathVariable("comment_id") Long id,
                                                   @RequestBody CommentRequest commentRequest) {
         return commentService.updateComment(userDetails.getMember(), id, commentRequest);
@@ -35,7 +36,7 @@ public class CommentController {
 
     //댓글 삭제
     @DeleteMapping("/{comment_id}")
-    public ResponseDto<MsgResponse> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<CommentResponse> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                   @PathVariable("comment_id") Long id) {
         return commentService.deleteComment(userDetails.getMember(), id);
     }
