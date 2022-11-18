@@ -75,9 +75,16 @@ public class Check {
         중복 확인
      */
 
-    public void isDuplicated(String username) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
+    // Username 중복확인
+    public void isDuplicatedUsername(String username) {
         if (null != isPresentMember(username)) {
+            throw new GlobalException(ErrorCode.DUPLICATE_USERNAME);
+        }
+
+    }
+
+    public void isDuplicatedNickname(String nickname) {
+        if (null != isPresentMember(nickname)) {
             throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
         }
 

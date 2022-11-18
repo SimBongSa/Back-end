@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +37,7 @@ public class BoardService {
     public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
-        String boardImage = boardRequest.getBoardImage().getOriginalFilename().equals("") ?
-                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
+        String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
 
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
@@ -108,8 +106,7 @@ public class BoardService {
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        String boardImage = Objects.equals(boardRequest.getBoardImage().getOriginalFilename(), "") ?
-                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board", member, "board");
+        String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
 
         return ResponseDto.success(new BoardUpdateResponse(board));

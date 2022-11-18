@@ -24,7 +24,6 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +37,6 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
-
-    private final EntityManager entityManager;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final Util util;
     private final S3Uploader s3Uploader;
     private final Check check;
@@ -50,7 +46,6 @@ public class MemberService {
     @Transactional
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
-        check.isDuplicated(requestDto.getUsername());
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
@@ -89,9 +84,8 @@ public class MemberService {
 
     // 기업회원
     @Transactional
-    public ResponseDto<?> createCompanyMember(CompanyMemberRequestDto requestDto) {
+    public ResponseDto<?> createCompanyMember(CompanyMemberRequestDto requestDto) throws IOException {
 
-        check.isDuplicated(requestDto.getUsername());
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
@@ -111,7 +105,7 @@ public class MemberService {
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
                     .licenseNumber(requestDto.getLicenseNumber())
-                    .licenseImage(requestDto.getLicenseImage())
+                    .licenseImage(s3Uploader.uploadFiles(requestDto.getLicenseImage(), "licenseImage"))
                     .authority(requestDto.getAuthority())
                     .build();
 
@@ -134,11 +128,6 @@ public class MemberService {
 
 
     }
-
-
-
-
-
 
 
 
@@ -176,9 +165,7 @@ public class MemberService {
                 .password(preMember.getPassword())
                 .introduction(memberUpdateRequestDto.getIntroduction())
                 .authority(preMember.getAuthority())
-                .profileImage(
-                        (memberUpdateRequestDto.getProfileImage().getOriginalFilename().equals(""))?
-                                null:s3Uploader.uploadFiles(memberUpdateRequestDto.getProfileImage(), "member", member, "member"))
+                .profileImage(s3Uploader.uploadFiles(memberUpdateRequestDto.getProfileImage(), "member"))
                 .build();
 
         memberRepository.save(newMember);
@@ -225,4 +212,15 @@ public class MemberService {
     }
 
 
+    public ResponseDto<?> checkUsername(String username) {
+
+        check.isDuplicatedUsername(username);
+        return ResponseDto.success("사용 가능한 아이디 입니다.");
+
+    }
+
+    public ResponseDto<?> checkNickname(String nickname) {
+        check.isDuplicatedNickname(nickname);
+        return ResponseDto.success("사용 가능한 닉네임 입니다.");
+    }
 }
