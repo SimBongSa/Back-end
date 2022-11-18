@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.repository;
 
+import com.simbongsa.Backend.entity.Approval;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Enrollment;
 import com.simbongsa.Backend.entity.Member;
@@ -24,4 +25,7 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
     // 멤버아이디로 봉사활동 지원자 조회
     Optional<Enrollment> findByMember(Member member);
 
+    List<Enrollment> findAllByMember(Member member);
+
+    List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
 }

@@ -2,6 +2,7 @@ package com.simbongsa.Backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
+import com.simbongsa.Backend.dto.request.MyUpdateRequest;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.*;
 
@@ -74,6 +75,16 @@ public class Member extends Timestamped {
         this.profileImage = profileImage;
     }
 
+    public void myupdate(MyUpdateRequest myUpdateRequest, String profileImage) {
+        this.nickname = myUpdateRequest.getNickname();
+        this.profileImage = profileImage;
+        this.email = myUpdateRequest.getEmail();
+        this.phoneNumber = myUpdateRequest.getPhoneNumber();
+        this.name = myUpdateRequest.getName();
+        this.gender = myUpdateRequest.getGender();
+        this.birthdate = myUpdateRequest.getBirthdate();
+        this.introduction = myUpdateRequest.getIntroduction();
+    }
 
     public void setKakaoId(Long kakaoId){
         this.kakaoId = kakaoId;

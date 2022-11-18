@@ -69,6 +69,14 @@ public class Check {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
         }
     }
+    /*
+        개인회원인지 확인
+     */
+    public void isMember(Member member) {
+        if (member.getAuthority() != Authority.ROLE_MEMBER) {
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
+    }
 
 
     /*

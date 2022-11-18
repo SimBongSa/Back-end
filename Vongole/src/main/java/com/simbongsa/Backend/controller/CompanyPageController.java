@@ -4,6 +4,7 @@ import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.CompanyPageService;
+import com.simbongsa.Backend.util.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/companypage")
 public class CompanyPageController {
-
     private final CompanyPageService companyPageService;
 
     /**

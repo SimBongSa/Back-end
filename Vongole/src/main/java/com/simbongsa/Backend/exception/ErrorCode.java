@@ -15,6 +15,7 @@ public enum ErrorCode {
     /*UNAUTHORIZED 401 error*/
     UNAUTHORIZED_AUTHOR(HttpStatus.UNAUTHORIZED.value(), "Unauthorized Author", "작성자만 수정 또는 삭제할 수 있습니다."),
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "관리자만 게시물을 생성할 수 있습니다."),
+    UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "개인 회원이 아닙니다."),
 
     /*FORBIDDEN 403 error*/
     // 나중에 에러코드 명 바꾸기
