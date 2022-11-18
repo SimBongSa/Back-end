@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Enrollment {
 
     @Id
@@ -25,6 +27,7 @@ public class Enrollment {
     private Member member;
 
     @Column(name = "approval")
+    @Enumerated(EnumType.STRING)
     private Approval approval;
 
 

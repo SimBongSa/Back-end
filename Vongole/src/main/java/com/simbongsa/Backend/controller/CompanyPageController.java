@@ -20,8 +20,6 @@ public class CompanyPageController {
 
     /**
      * 내 프로필 정보 조회
-     * @param userDetails
-     * @return
      */
     @GetMapping()
     public ResponseDto<CompanyResponse> getMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -29,6 +27,9 @@ public class CompanyPageController {
     }
 
 
+    /**
+     * 내 프로필 정보 수정
+     */
     @PutMapping()
     public ResponseDto<CompanyResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute CompanyUpdateRequest companyUpdateRequest) throws IOException {
@@ -38,8 +39,6 @@ public class CompanyPageController {
 
     /**
      * 내가 작성한 게시물 조회
-     * @param userDetails
-     * @return
      */
     @GetMapping("/boards")
     public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -48,9 +47,6 @@ public class CompanyPageController {
 
     /**
      * 봉사 활동 지원자 목록
-     * @param userDetails
-     * @param boardId
-     * @return
      */
     @GetMapping("/boards/{boardId}")
     public ResponseDto<List<EnrollResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -61,9 +57,6 @@ public class CompanyPageController {
 
     /**
      * 지원자 승인
-     * @param userDetails
-     * @param memberId
-     * @return
      */
     @PutMapping("/approve/{memberId}")
     public ResponseDto<MsgResponse> approveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -73,9 +66,6 @@ public class CompanyPageController {
 
     /**
      * 지원자 거절
-     * @param userDetails
-     * @param memberId
-     * @return
      */
     @PutMapping("/disapprove/{memberId}")
     public ResponseDto<MsgResponse> disapproveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
