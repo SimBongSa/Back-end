@@ -12,7 +12,7 @@ public class CommentResponse {
 
     private Long commentId;
 
-    private String author;
+    private String nickname;
 
     private String content;
 
@@ -20,7 +20,7 @@ public class CommentResponse {
 
     public CommentResponse(Comment comment) {
         this.commentId = comment.getId();
-        this.author = comment.getMember().getUsername();
+        this.nickname = comment.getMember().getNickname();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
     }
