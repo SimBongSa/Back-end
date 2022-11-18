@@ -25,6 +25,7 @@ public class Enrollment {
     private Member member;
 
     @Column(name = "approval")
+    @Enumerated(EnumType.STRING)
     private Approval approval;
 
 
