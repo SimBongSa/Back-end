@@ -16,7 +16,6 @@ public class EnrollResponse {
 
     private String username;
 
-    // enum 타입을 String 으로 해줌
     @Enumerated(EnumType.STRING)
     private Approval approval;
 
