@@ -35,6 +35,7 @@ public enum ErrorCode {
 
     /*500 server error*/
 
+    DUPLICATE_USERNAME(HttpStatus.NOT_FOUND.value(), "Username is Duplicated", "이미 사용 중인 아이디입니다."),
     DUPLICATE_NICKNAME(HttpStatus.NOT_FOUND.value(), "Nickname is Duplicated", "이미 사용 중인 닉네임입니다."),
 
     PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND.value(),"Password is Not Matched", "비밀번호가 일치하지 않습니다."),
