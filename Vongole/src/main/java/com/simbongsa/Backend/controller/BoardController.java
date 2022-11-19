@@ -5,11 +5,16 @@ import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,7 +30,10 @@ public class BoardController {
      */
     @PostMapping()
     public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
+                                                   @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(boardService.createBoard(userDetails.getMember(), boardRequest),headers , HttpStatus.OK);
+
         return boardService.createBoard(userDetails.getMember(), boardRequest);
     }
 

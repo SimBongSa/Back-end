@@ -8,6 +8,7 @@ import com.simbongsa.Backend.entity.Likes;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
+import com.simbongsa.Backend.repository.EnrollRepository;
 import com.simbongsa.Backend.repository.LikesRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;

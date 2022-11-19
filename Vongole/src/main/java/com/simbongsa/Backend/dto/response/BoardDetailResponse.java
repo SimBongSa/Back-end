@@ -40,6 +40,8 @@ public class BoardDetailResponse {
 
     private Long applicantCnt;
 
+    private boolean isEnrolled;
+
     private List<CommentResponse> comments;
 
     public BoardDetailResponse(Board board, List<CommentResponse> commentResponses) {
