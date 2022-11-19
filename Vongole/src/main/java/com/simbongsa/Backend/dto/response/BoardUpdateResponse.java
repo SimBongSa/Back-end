@@ -24,6 +24,8 @@ public class BoardUpdateResponse {
 
     private String area;
 
+    private String detailArea;
+
 //    private String category;
 
     public BoardUpdateResponse(Board board) {
@@ -34,6 +36,7 @@ public class BoardUpdateResponse {
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
         this.area = board.getArea();
+        this.detailArea = board.getDetailArea();
 //        this.category = board.getCategory();
     }
 }

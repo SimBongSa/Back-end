@@ -23,6 +23,18 @@ public class Check {
     private final TokenProvider tokenProvider;
 
     /*
+        memberId로 멤버 존재 확인
+     */
+    public Member findMember(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId).orElse(null);
+        if (member == null) {
+            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+        return member;
+    }
+
+
+    /*
         멤버 확인 (username 중복 유무)
      */
     public Member isPresentMember(String username) {

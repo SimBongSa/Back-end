@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -93,13 +92,13 @@ public class CompanyPageService {
     public ResponseDto<MsgResponse> approveMember(Member member, Long memberId) {
         check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
-        Member applicant = memberRepository.findByMemberId(memberId).get();
+        Member findMember = check.findMember(memberId);
 
-        Enrollment enrollment = enrollRepository.findByMember(applicant).get();
+        Enrollment enrollment = enrollRepository.findByMember(findMember).get();
 
         enrollment.approve();
 
-        return ResponseDto.success(new MsgResponse(applicant.getUsername() + " 님, 승인 완료"));
+        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 완료"));
     }
 
     /**
@@ -109,12 +108,12 @@ public class CompanyPageService {
     public ResponseDto<MsgResponse> disapproveMember(Member member, Long memberId) {
         check.isAdmin(member);
         // Optional 을 어떻게 해결해야 하지
-        Member applicant = memberRepository.findByMemberId(memberId).get();
+        Member findMember = check.findMember(memberId);
 
-        Enrollment enrollment = enrollRepository.findByMember(applicant).get();
+        Enrollment enrollment = enrollRepository.findByMember(findMember).get();
 
         enrollment.disapprove();
 
-        return ResponseDto.success(new MsgResponse(applicant.getUsername() + " 님, 승인 거절"));
+        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 거절"));
     }
 }
