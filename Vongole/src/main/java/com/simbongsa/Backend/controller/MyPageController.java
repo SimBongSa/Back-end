@@ -2,6 +2,7 @@ package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.MyUpdateRequest;
 import com.simbongsa.Backend.dto.response.BoardResponse;
+import com.simbongsa.Backend.dto.response.CommentResponse;
 import com.simbongsa.Backend.dto.response.MyResponse;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
@@ -36,6 +37,14 @@ public class MyPageController {
         check.isMember(userDetails.getMember());
         return myPageService.updateMyProfile(userDetails.getMember(), myUpdateRequest);
     }
+    //내가 작성한 댓글들의 정보
+    @GetMapping("/comments")
+    public ResponseDto<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        check.isMember(userDetails.getMember());
+        return myPageService.getMyComments(userDetails.getMember());
+    }
+    //내가 작성한 댓글의 게시글 상세 조회
+
 
     //내가 신청한 모든 (승인,거절,기다림 포함)봉사활동 정보
     @GetMapping("/enroll")
