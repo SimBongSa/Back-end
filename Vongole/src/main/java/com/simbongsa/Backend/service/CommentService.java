@@ -40,7 +40,7 @@ public class CommentService {
         return ResponseDto.success(new CommentResponse(comment));
     }
 
-    public ResponseDto<CommentResponse> deleteComment(Member member, Long id) {
+    public ResponseDto<MsgResponse> deleteComment(Member member, Long id) {
         //멤버 컴퍼니 체크
 
         //댓글 체크
@@ -48,6 +48,6 @@ public class CommentService {
         //댓글 삭제
         commentRepository.delete(comment);
 
-        return ResponseDto.success(new CommentResponse());
+        return ResponseDto.success(new MsgResponse("댓글 삭제 완료"));
     }
 }
