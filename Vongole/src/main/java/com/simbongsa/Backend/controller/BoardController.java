@@ -29,7 +29,7 @@ public class BoardController {
      * 게시물 생성
      */
     @PostMapping()
-    public ResponseDto<MsgResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<BoardCreateResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                    @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
 //        HttpHeaders headers = new HttpHeaders();
 //        return new ResponseEntity<>(boardService.createBoard(userDetails.getMember(), boardRequest),headers , HttpStatus.OK);
