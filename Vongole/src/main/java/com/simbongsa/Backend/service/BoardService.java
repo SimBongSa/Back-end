@@ -35,7 +35,7 @@ public class BoardService {
     /**
      * 게시물 생성 (관리자만 생성 가능)
      */
-    public ResponseDto<MsgResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
+    public ResponseDto<BoardCreateResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
         String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
@@ -43,7 +43,9 @@ public class BoardService {
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
-        return ResponseDto.success(new MsgResponse("게시물 생성 완료"));
+
+
+        return ResponseDto.success(new BoardCreateResponse(board.getId(), "게시물 생성 완료"));
     }
 
     /**
