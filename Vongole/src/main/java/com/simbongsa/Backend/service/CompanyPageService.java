@@ -89,31 +89,25 @@ public class CompanyPageService {
      * 봉사 활동 지원자 승인
      */
     @Transactional
-    public ResponseDto<MsgResponse> approveMember(Member member, Long memberId) {
+    public ResponseDto<MsgResponse> approveMember(Member member, Long enrollId) {
         check.isAdmin(member);
-        // Optional 을 어떻게 해결해야 하지
-        Member findMember = check.findMember(memberId);
+        Enrollment applicant = check.isEnrolled(enrollId);
 
-        Enrollment enrollment = enrollRepository.findByMember(findMember).get();
+        applicant.approve();
 
-        enrollment.approve();
-
-        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 완료"));
+        return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 완료"));
     }
 
     /**
      * 봉사 활동 지원자 거절
      */
     @Transactional
-    public ResponseDto<MsgResponse> disapproveMember(Member member, Long memberId) {
+    public ResponseDto<MsgResponse> disapproveMember(Member member, Long enrollId) {
         check.isAdmin(member);
-        // Optional 을 어떻게 해결해야 하지
-        Member findMember = check.findMember(memberId);
+        Enrollment applicant = check.isEnrolled(enrollId);
 
-        Enrollment enrollment = enrollRepository.findByMember(findMember).get();
+        applicant.disapprove();
 
-        enrollment.disapprove();
-
-        return ResponseDto.success(new MsgResponse(findMember.getUsername() + " 님, 승인 거절"));
+        return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 거절"));
     }
 }
