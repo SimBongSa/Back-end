@@ -92,5 +92,8 @@ public class Member extends Timestamped {
     public void setKakaoId(Long kakaoId){
         this.kakaoId = kakaoId;
     }
+    public void setChatRoomIdList(String chatRoomIdList){
+        this.chatRoomIdList = chatRoomIdList;
+    }
 
 }
