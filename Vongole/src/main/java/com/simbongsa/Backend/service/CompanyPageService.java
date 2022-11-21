@@ -10,6 +10,8 @@ import com.simbongsa.Backend.repository.EnrollRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,9 +54,10 @@ public class CompanyPageService {
     /**
      * 내 게시물 목록
      */
-    public ResponseDto<List<BoardResponse>> getMyBoards(Member member) {
+    public ResponseDto<List<BoardResponse>> getMyBoards(Member member, int page, int size) {
         check.isAdmin(member);
-        List<Board> myBoards = boardRepository.findAllByMember(member);
+        Pageable pageable = PageRequest.of(page, size);
+        List<Board> myBoards = boardRepository.findAllByMember(member, pageable);
         List<BoardResponse> boardResponses = new ArrayList<>();
 
         for (Board myBoard : myBoards) {
@@ -67,13 +70,14 @@ public class CompanyPageService {
     /**
      * 봉사 활동 지원자 목록
      */
-    public ResponseDto<List<EnrollResponse>> getVolunteers(Member member, Long boardId) {
+    public ResponseDto<List<EnrollResponse>> getVolunteers(Member member, Long boardId, int page, int size) {
         check.isAdmin(member);
+        Pageable pageable = PageRequest.of(page, size);
 
         // board 존재하는지 체크
         Board board = check.existBoard(boardId);
 
-        List<Enrollment> enrollments = enrollRepository.findAllByBoard(board);
+        List<Enrollment> enrollments = enrollRepository.findAllByBoard(board, pageable);
         List<EnrollResponse> enrollResponses = new ArrayList<>();
 
         for (Enrollment enrollment : enrollments) {

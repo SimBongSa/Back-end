@@ -43,8 +43,11 @@ public class CompanyPageController {
      * 내가 작성한 게시물 조회
      */
     @GetMapping("/boards")
-    public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return companyPageService.getMyBoards(userDetails.getMember());
+    public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @RequestParam(name = "page", defaultValue = "1") int page,
+                                                        @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+        return companyPageService.getMyBoards(userDetails.getMember(), page, size);
     }
 
     /**
@@ -52,8 +55,11 @@ public class CompanyPageController {
      */
     @GetMapping("/boards/{boardId}")
     public ResponseDto<List<EnrollResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                           @PathVariable Long boardId) {
-        return companyPageService.getVolunteers(userDetails.getMember(), boardId);
+                                                           @PathVariable Long boardId,
+                                                           @RequestParam(name = "page", defaultValue = "1") int page,
+                                                           @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+        return companyPageService.getVolunteers(userDetails.getMember(), boardId, page, size);
     }
 
 

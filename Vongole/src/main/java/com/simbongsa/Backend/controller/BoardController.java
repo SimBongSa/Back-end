@@ -65,7 +65,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId,
                                                      @RequestParam(name = "page", defaultValue = "1") int page,
-                                                     @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                     @RequestParam(name = "size", defaultValue = "5") int size) {
         page = page - 1;
 
         return boardService.getBoard(boardId, page, size);

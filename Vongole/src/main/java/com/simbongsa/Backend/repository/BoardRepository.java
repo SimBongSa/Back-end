@@ -14,6 +14,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByDueDay(LocalDate dueDay, Pageable pageable);
 
     // 내가 작성한 게시물 조회
-    List<Board> findAllByMember(Member member);
+    List<Board> findAllByMember(Member member, Pageable pageable);
 
 }
