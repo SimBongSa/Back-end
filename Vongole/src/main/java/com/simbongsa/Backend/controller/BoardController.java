@@ -2,9 +2,11 @@ package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
 import com.simbongsa.Backend.dto.response.*;
+import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +32,7 @@ public class BoardController {
      */
     @PostMapping()
     public ResponseDto<BoardCreateResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                   @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
+                                                        @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
 //        HttpHeaders headers = new HttpHeaders();
 //        return new ResponseEntity<>(boardService.createBoard(userDetails.getMember(), boardRequest),headers , HttpStatus.OK);
 
@@ -39,24 +41,34 @@ public class BoardController {
 
 
     @GetMapping()
-    public ResponseDto<List<BoardResponse>> getAllBoards() {
-        return boardService.getAllBoards();
+    public ResponseDto<List<BoardResponse>> getAllBoards(@RequestParam(name = "page", defaultValue = "1") int page,
+                                                         @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+        return boardService.getAllBoards(page, size);
     }
 
     /**
      * 게시물 날짜별 조회
      */
     @GetMapping("/date/{dueDay}")
-    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay) {
-        return boardService.getBoardsByDueDay(dueDay);
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay,
+                                                              @RequestParam(name = "page", defaultValue = "1") int page,
+                                                              @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+
+        return boardService.getBoardsByDueDay(dueDay, page, size);
     }
 
     /**
      * 게시물 단건 조회
      */
     @GetMapping("/{boardId}")
-    public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId) {
-        return boardService.getBoard(boardId);
+    public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId,
+                                                     @RequestParam(name = "page", defaultValue = "1") int page,
+                                                     @RequestParam(name = "size", defaultValue = "10") int size) {
+        page = page - 1;
+
+        return boardService.getBoard(boardId, page, size);
     }
 
     /**
