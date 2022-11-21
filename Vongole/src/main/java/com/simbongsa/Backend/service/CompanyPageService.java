@@ -7,7 +7,6 @@ import com.simbongsa.Backend.entity.Enrollment;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
-import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class CompanyPageService {
 
     private final EnrollRepository enrollRepository;
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
 
     private final Check check;
     private final S3Uploader s3Uploader;

@@ -65,7 +65,6 @@ public class BoardService {
      * 게시물 날짜별 조회
      */
     public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay) {
-        // Todo 시간 관련 함수, 쿼리 공부
         List<Board> boards = boardRepository.findAllByDueDay(dueDay);
 
         List<BoardResponse> boardResponses = new ArrayList<>();
