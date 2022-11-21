@@ -8,11 +8,13 @@ import com.simbongsa.Backend.entity.Likes;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.CommentRepository;
-import com.simbongsa.Backend.repository.EnrollRepository;
 import com.simbongsa.Backend.repository.LikesRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,10 +53,11 @@ public class BoardService {
     /**
      * 게시물 전체 조회
      */
-    public ResponseDto<List<BoardResponse>> getAllBoards() {
-        List<Board> boards = boardRepository.findAll();
-        List<BoardResponse> boardResponses = new ArrayList<>();
+    public ResponseDto<List<BoardResponse>> getAllBoards(int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Board> boards = boardRepository.findAll(pageable);
 
+        List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
             boardResponses.add(new BoardResponse(board));
         }
@@ -64,8 +67,9 @@ public class BoardService {
     /**
      * 게시물 날짜별 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay) {
-        List<Board> boards = boardRepository.findAllByDueDay(dueDay);
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay, int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        List<Board> boards = boardRepository.findAllByDueDay(dueDay, pageable);
 
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
@@ -81,14 +85,15 @@ public class BoardService {
      * 조회수 증가
      */
     @Transactional
-    public ResponseDto<BoardDetailResponse> getBoard(Long boardId) {
+    public ResponseDto<BoardDetailResponse> getBoard(Long boardId, int page, int size) {
         // 게시물 존재 유무
         Board board = check.existBoard(boardId);
+        Pageable pageable = PageRequest.of(page,size);
 
         // 조회수 증가
         board.addHits();
 
-        List<Comment> comments = commentRepository.findAllByBoard(board);
+        List<Comment> comments = commentRepository.findAllByBoard(board, pageable);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
             commentResponses.add(new CommentResponse(comment));

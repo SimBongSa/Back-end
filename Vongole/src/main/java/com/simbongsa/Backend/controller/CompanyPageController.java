@@ -5,6 +5,7 @@ import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.CompanyPageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/companypage")
+// TODO secured 어노테이션 공부
+//@Secured()
 public class CompanyPageController {
     private final CompanyPageService companyPageService;
 
@@ -40,8 +43,11 @@ public class CompanyPageController {
      * 내가 작성한 게시물 조회
      */
     @GetMapping("/boards")
-    public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return companyPageService.getMyBoards(userDetails.getMember());
+    public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @RequestParam(name = "page", defaultValue = "1") int page,
+                                                        @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+        return companyPageService.getMyBoards(userDetails.getMember(), page, size);
     }
 
     /**
@@ -49,8 +55,11 @@ public class CompanyPageController {
      */
     @GetMapping("/boards/{boardId}")
     public ResponseDto<List<EnrollResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                           @PathVariable Long boardId) {
-        return companyPageService.getVolunteers(userDetails.getMember(), boardId);
+                                                           @PathVariable Long boardId,
+                                                           @RequestParam(name = "page", defaultValue = "1") int page,
+                                                           @RequestParam(name = "size", defaultValue = "4") int size) {
+        page = page - 1;
+        return companyPageService.getVolunteers(userDetails.getMember(), boardId, page, size);
     }
 
 

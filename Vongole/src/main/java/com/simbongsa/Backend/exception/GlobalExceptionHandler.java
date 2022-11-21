@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(GlobalException.class)
-    protected ResponseDto<?> handleGlobalException(GlobalException e) {
-        return ResponseDto.fail(
-                e.getErrorCode().getHttpStatus(),
-                e.getErrorCode().getMessage(),
-                e.getErrorCode().getDetail());
+    protected ResponseEntity<?> handleGlobalException(GlobalException e) {
 
-//        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-//                .body(e.getErrorCode().getDetail());
+
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+                .body(ResponseDto.fail(
+                        e.getErrorCode().getHttpStatus(),
+                        e.getErrorCode().getMessage(),
+                        e.getErrorCode().getDetail())
+        );
     }
 }
