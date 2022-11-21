@@ -49,26 +49,26 @@ public class CompanyPageController {
      */
     @GetMapping("/boards/{boardId}")
     public ResponseDto<List<EnrollResponse>> getVolunteers(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                              @PathVariable Long boardId) {
-        return companyPageService.getVolunteers(userDetails.getMember(),boardId);
+                                                           @PathVariable Long boardId) {
+        return companyPageService.getVolunteers(userDetails.getMember(), boardId);
     }
 
 
     /**
      * 지원자 승인
      */
-    @PutMapping("/approve/{memberId}")
+    @PutMapping("/approve/{enrollId}")
     public ResponseDto<MsgResponse> approveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                  @PathVariable Long memberId) {
-        return companyPageService.approveMember(userDetails.getMember(), memberId);
+                                                  @PathVariable Long enrollId) {
+        return companyPageService.approveMember(userDetails.getMember(), enrollId);
     }
 
     /**
      * 지원자 거절
      */
-    @PutMapping("/disapprove/{memberId}")
+    @PutMapping("/disapprove/{enrollId}")
     public ResponseDto<MsgResponse> disapproveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                     @PathVariable Long memberId) {
-        return companyPageService.disapproveMember(userDetails.getMember(), memberId);
+                                                     @PathVariable Long enrollId) {
+        return companyPageService.disapproveMember(userDetails.getMember(), enrollId);
     }
 }

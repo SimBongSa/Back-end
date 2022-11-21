@@ -33,7 +33,7 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND.value(),"Token Not Found","해당 토큰은 존재하지 않습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Member Not Found", "해당 멤버는 존재하지 않습니다."),
 
-    ENROLLMENT_NOT_FOUND(HttpStatus.NO_CONTENT.value(), "Applicant Not Found", "신청자를 찾을 수 없습니다."),
+    ENROLLMENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Applicant Not Found", "신청자를 찾을 수 없습니다."),
 
 
     /* CONFLICT 409 error*/

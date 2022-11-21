@@ -17,8 +17,8 @@ public class Check {
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-
     private final CommentRepository commentRepository;
+    private final EnrollRepository enrollRepository;
 
     private final TokenProvider tokenProvider;
 
@@ -184,6 +184,17 @@ public class Check {
         }
     }
 
+    /*
+        신청 여부 확인
+     */
+    public Enrollment isEnrolled(Long enrollId) {
+        Enrollment enrollment = enrollRepository.findById(enrollId).orElse(null);
 
+        if (enrollment == null) {
+            throw new GlobalException(ErrorCode.ENROLLMENT_NOT_FOUND);
+        }
+
+        return enrollment;
+    }
 
 }

@@ -12,7 +12,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 public class EnrollResponse {
 
-    private Long memberId;
+    private Long enrollId;
 
     private String username;
 
@@ -20,7 +20,7 @@ public class EnrollResponse {
     private Approval approval;
 
     public EnrollResponse(Enrollment enrollment) {
-        this.memberId = enrollment.getMember().getMemberId();
+        this.enrollId = enrollment.getId();
         this.username = enrollment.getMember().getUsername();
         this.approval = this.getApproval();
     }
