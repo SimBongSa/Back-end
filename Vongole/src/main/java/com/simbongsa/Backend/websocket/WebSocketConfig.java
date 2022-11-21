@@ -9,7 +9,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-@EnableJpaAuditing
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override

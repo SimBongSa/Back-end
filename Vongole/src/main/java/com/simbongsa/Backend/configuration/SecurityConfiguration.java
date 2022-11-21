@@ -57,6 +57,10 @@ public class SecurityConfiguration {
 //                .antMatchers("/comments/*").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
                 .antMatchers("/companypage/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/app.js").permitAll()
+                .antMatchers("/topic/**").permitAll()
+                .antMatchers("/gs-guide-websocket/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
