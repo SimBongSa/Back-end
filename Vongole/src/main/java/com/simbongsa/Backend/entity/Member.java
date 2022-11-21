@@ -65,6 +65,9 @@ public class Member extends Timestamped {
     @Column(unique = true)
     private Long kakaoId;
 
+    @Column
+    private String chatRoomIdList;
+
 
     public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage) {
         this.nickname = companyUpdateRequest.getNickname();
