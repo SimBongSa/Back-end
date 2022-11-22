@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
 
     private final ChatService chatService;
-    @GetMapping("/chatroom")
-    public ResponseDto getChatRoom(@RequestParam Long id){       // todo : 채팅방 목록 조회 ( 재접속시 ) - 사용자 인증, 인가 정보 필요 @AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/chatroom")    //  채팅방 목록 조회
+    public ResponseDto getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        log.info("member [ {} ] called getChatRoom", id);
-        return ResponseDto.success( chatService.getChatRoom(id));
+        log.info("member [ {} ] called getChatRoom", userDetails.getMember().getMemberId());
+        return ResponseDto.success( chatService.getChatRoom(userDetails.getMember().getMemberId()));
     }
 
 
