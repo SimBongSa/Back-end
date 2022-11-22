@@ -16,6 +16,8 @@ public class EnrollDetailResponse {
     // board data
     private String title;
 
+    private String content;
+
     private LocalDate dueDay;
 
     private LocalDate startDate;
@@ -46,6 +48,7 @@ public class EnrollDetailResponse {
         this.area = enrollment.getBoard().getArea();
         this.detailArea = enrollment.getBoard().getDetailArea();
         this.boardImage = enrollment.getBoard().getBoardImage();
+        this.content = enrollment.getBoard().getContent();
 
         this.enrollId = enrollment.getId();
         this.approval = enrollment.getApproval();

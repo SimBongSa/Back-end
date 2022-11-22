@@ -43,7 +43,6 @@ public class BoardService {
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
 
-
         // 해시테그 객체 생성
         Long boardId = board.getId();
         List<Tag> tags = boardRequest.getTags();

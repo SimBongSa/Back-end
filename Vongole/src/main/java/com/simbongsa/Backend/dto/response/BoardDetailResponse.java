@@ -36,8 +36,6 @@ public class BoardDetailResponse {
 
     private String detailArea;
 
-//    private String category;
-
     private Long applicantCnt;
 
     private boolean isEnrolled;
@@ -46,18 +44,17 @@ public class BoardDetailResponse {
 
     public BoardDetailResponse(Board board, List<CommentResponse> commentResponses) {
         this.boardId = board.getId();
-        this.author = board.getMember().getUsername();
         this.title = board.getTitle();
+        this.author = board.getMember().getUsername();
         this.content = board.getContent();
         this.hits = board.getHits();
         this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
-        this.createAt = board.getCreatedAt();
         this.area = board.getArea();
         this.detailArea = board.getDetailArea();
-//        this.category = board.getCategory();
+        this.createAt = board.getCreatedAt();
         this.applicantCnt = board.getApplicantCnt();
 
         this.comments = commentResponses;
