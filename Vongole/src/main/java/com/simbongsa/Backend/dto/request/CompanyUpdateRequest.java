@@ -8,9 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class CompanyUpdateRequest {
 
-    private String nickname;
+    private String password;
 
-    private String name;
+    private String passwordConfirm;
 
     private MultipartFile profileImage;
 

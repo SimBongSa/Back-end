@@ -67,8 +67,7 @@ public class Member extends Timestamped {
 
 
     public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage) {
-        this.nickname = companyUpdateRequest.getNickname();
-        this.name = companyUpdateRequest.getName();
+        this.password = companyUpdateRequest.getPassword();
         this.email = companyUpdateRequest.getEmail();
         this.introduction = companyUpdateRequest.getIntroduction();
         this.phoneNumber = companyUpdateRequest.getPhoneNumber();
