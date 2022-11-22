@@ -55,7 +55,7 @@ public class BoardService {
      */
     public ResponseDto<List<BoardResponse>> getAllBoards(int page, int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Board> boards = boardRepository.findAll(pageable);
+        List<Board> boards = boardRepository.findAllByOrderByEndDateDesc(pageable);
 
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
