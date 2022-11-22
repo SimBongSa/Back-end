@@ -20,11 +20,6 @@ public class MemberRequestDto {
     @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
     private String username;
 
-    @NotBlank(message = "닉네입을 입력해주세요")
-    @Size(min = 4, max = 12)
-    @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
-    private String nickname;
-
     @NotBlank(message = "비밀번호를 입력해주세요")
     @Size(min = 4, max = 12)
     @Pattern(regexp = "[a-z\\d]*${3,12}")

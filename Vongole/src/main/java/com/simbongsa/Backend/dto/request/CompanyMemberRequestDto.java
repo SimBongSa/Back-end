@@ -14,8 +14,6 @@ public class CompanyMemberRequestDto {
     private String username;
 
 
-    private String nickname;
-
 
     private String password;
 

@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class MyUpdateRequest {
-    private String nickname;
 
     private String name;
 

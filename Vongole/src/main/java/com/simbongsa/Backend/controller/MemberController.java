@@ -1,10 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 
-import com.simbongsa.Backend.dto.request.CompanyMemberRequestDto;
-import com.simbongsa.Backend.dto.request.LoginRequestDto;
-import com.simbongsa.Backend.dto.request.MemberRequestDto;
-import com.simbongsa.Backend.dto.request.MemberUpdateRequestDto;
+import com.simbongsa.Backend.dto.request.*;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.MemberService;
@@ -59,11 +56,10 @@ public class MemberController {
         return memberService.checkUsername(username);
     }
 
-    @GetMapping("/members/signup/check_nickname/{nickname}")
-    public ResponseDto<?> checkNickname(@PathVariable String nickname) {
-        return memberService.checkNickname(nickname);
+    @PostMapping("/members/input_password")
+    public ResponseDto<?> inputPasswordForUpdate(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody InputPasswordRequestDto requestDto) {
+        return memberService.inputPasswordForUpdate(userDetails.getMember(), requestDto);
     }
-
 
 
 
