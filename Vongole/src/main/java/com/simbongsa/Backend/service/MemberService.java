@@ -7,10 +7,8 @@ import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
-import com.simbongsa.Backend.repository.RefreshTokenRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
-import com.simbongsa.Backend.shared.Authority;
 import com.simbongsa.Backend.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -54,7 +51,6 @@ public class MemberService {
             // 일반회원
             Member member = Member.builder()
                     .username(requestDto.getUsername())
-                    .nickname(requestDto.getNickname())
                     .password(passwordEncoder.encode(requestDto.getPassword()))
                     .email(requestDto.getEmail())
                     .phoneNumber(requestDto.getPhoneNumber())
@@ -99,7 +95,6 @@ public class MemberService {
 
             Member member = Member.builder()
                     .username(requestDto.getUsername())
-                    .nickname(requestDto.getNickname())
                     .password(passwordEncoder.encode(requestDto.getPassword()))
                     .email(requestDto.getEmail())
                     .phoneNumber(requestDto.getPhoneNumber())
@@ -161,7 +156,6 @@ public class MemberService {
         Member newMember = Member.builder()
                 .memberId(preMember.getMemberId())
                 .username(preMember.getUsername())
-                .nickname(memberUpdateRequestDto.getNickname())
                 .password(preMember.getPassword())
                 .introduction(memberUpdateRequestDto.getIntroduction())
                 .authority(preMember.getAuthority())
@@ -172,7 +166,19 @@ public class MemberService {
         return ResponseDto.success("회원정보가 정상적으로 수정되었습니다.");
     }
 
+    @Transactional
+    public ResponseDto<?> inputPasswordForUpdate(Member member, InputPasswordRequestDto requestDto) {
+        check.isNotMember(member);
+        Member dbMember = memberRepository.findByMemberId(member.getMemberId()).orElseThrow();
 
+        String dbPassword = dbMember.getPassword();
+        String inputPassword = requestDto.getPassword();
+
+        check.isMatched(inputPassword, dbPassword);
+
+        return ResponseDto.success("success");
+
+    }
 
 
     @Transactional
@@ -219,8 +225,4 @@ public class MemberService {
 
     }
 
-    public ResponseDto<?> checkNickname(String nickname) {
-        check.isDuplicatedNickname(nickname);
-        return ResponseDto.success("사용 가능한 닉네임 입니다.");
-    }
 }
