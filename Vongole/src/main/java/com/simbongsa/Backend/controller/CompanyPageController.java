@@ -32,7 +32,7 @@ public class CompanyPageController {
      * 내 프로필 정보 수정
      */
     @PutMapping()
-    public ResponseDto<CompanyResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<MsgResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute CompanyUpdateRequest companyUpdateRequest) throws IOException {
         return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }

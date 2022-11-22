@@ -44,13 +44,13 @@ public class CompanyPageService {
      * 비밀번호 두개 일치하는지 확인
      */
     @Transactional
-    public ResponseDto<CompanyResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
+    public ResponseDto<MsgResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
         check.isAdmin(member);
         check.isPassword(companyUpdateRequest.getPassword(), companyUpdateRequest.getPasswordConfirm());
         String profileImage = s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
         member.update(companyUpdateRequest, profileImage);
 
-        return ResponseDto.success(new CompanyResponse(member));
+        return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
 
     /**

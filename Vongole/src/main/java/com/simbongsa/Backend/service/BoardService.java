@@ -107,7 +107,7 @@ public class BoardService {
      * (작성한 관리자만 수정 가능)
      */
     @Transactional
-    public ResponseDto<BoardUpdateResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
+    public ResponseDto<MsgResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
         // 게시물 존재 유무
         Board board = check.existBoard(boardId);
         // 작성자인지 확인
@@ -116,7 +116,7 @@ public class BoardService {
         String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
 
-        return ResponseDto.success(new BoardUpdateResponse(board));
+        return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
 
     /**

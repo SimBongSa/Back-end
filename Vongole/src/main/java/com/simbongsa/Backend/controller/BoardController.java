@@ -75,7 +75,7 @@ public class BoardController {
      * 게시물 수정
      */
     @PutMapping("/{boardId}")
-    public ResponseDto<BoardUpdateResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<MsgResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute @Valid BoardRequest boardRequest,
                                                         @PathVariable Long boardId) throws IOException {
         return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
