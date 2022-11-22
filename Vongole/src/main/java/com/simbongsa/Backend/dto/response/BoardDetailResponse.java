@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.dto.response;
 
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,7 +43,9 @@ public class BoardDetailResponse {
 
     private List<CommentResponse> comments;
 
-    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses) {
+    private List<Tag> tags;
+
+    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses, List<Tag> tags) {
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.author = board.getMember().getUsername();
@@ -58,6 +61,7 @@ public class BoardDetailResponse {
         this.applicantCnt = board.getApplicantCnt();
 
         this.comments = commentResponses;
+        this.tags = tags;
     }
 }
 

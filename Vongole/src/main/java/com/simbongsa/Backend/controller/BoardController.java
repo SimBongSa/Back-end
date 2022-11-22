@@ -2,6 +2,7 @@ package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
 import com.simbongsa.Backend.dto.response.*;
+import com.simbongsa.Backend.entity.Tag;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,9 @@ public class BoardController {
     }
 
 
+    /**
+     *  게시물 전체 조회
+     */
     @GetMapping()
     public ResponseDto<List<BoardResponse>> getAllBoards(@RequestParam(name = "page", defaultValue = "1") int page,
                                                          @RequestParam(name = "size", defaultValue = "4") int size) {
@@ -58,6 +62,16 @@ public class BoardController {
                                                      @RequestParam(name = "size", defaultValue = "5") int size) {
 
         return boardService.getBoard(boardId, page - 1, size);
+    }
+
+    /**
+     *  게시물 해시태그 별 조회
+     */
+    @GetMapping("/tag")
+    public ResponseDto<List<BoardResponse>> getBoardsByHashtag(@RequestParam(name = "tag") Tag tag,
+                                                         @RequestParam(name = "page", defaultValue = "1") int page,
+                                                         @RequestParam(name = "size", defaultValue = "4") int size) {
+        return boardService.getBoardsByHashtag(tag, page, size);
     }
 
     /**

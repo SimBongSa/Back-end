@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +48,7 @@ public class BoardService {
         Long boardId = board.getId();
         List<Tag> tags = boardRequest.getTags();
         for (Tag tag : tags) {
-             hashtagRepository.save(new Hashtag(boardId, tag));
+            hashtagRepository.save(new Hashtag(boardId, tag));
         }
 
         return ResponseDto.success(new BoardCreateResponse(board.getId(), "게시물 생성 완료"));
@@ -90,6 +91,7 @@ public class BoardService {
         }
         return ResponseDto.success(boardResponses);
     }
+
     /**
      * 게시물 상세 조회
      * 댓글 전체 조회
@@ -104,13 +106,37 @@ public class BoardService {
         // 조회수 증가
         board.addHits();
 
+        List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(boardId);
+        List<Tag> tags = new ArrayList<>();
+
+        for (Hashtag hashtag : hashtags) {
+            tags.add(hashtag.getTag());
+        }
+
         List<Comment> comments = commentRepository.findAllByBoard(board, pageable);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
             commentResponses.add(new CommentResponse(comment));
         }
 
-        return ResponseDto.success(new BoardDetailResponse(board, commentResponses));
+        return ResponseDto.success(new BoardDetailResponse(board, commentResponses, tags));
+    }
+
+    /**
+     * 게시물 해시태그 별 조회
+     */
+    public ResponseDto<List<BoardResponse>> getBoardsByHashtag(Tag tag, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Hashtag> hashtags = hashtagRepository.findAllByTag(tag);
+        List<BoardResponse> boardResponses = new ArrayList<>();
+
+        for (Hashtag hashtag : hashtags) {
+            System.out.println("hi");
+            Board board = boardRepository.findById(hashtag.getBoardId()).get();
+            boardResponses.add(new BoardResponse(board));
+        }
+        return ResponseDto.success(boardResponses);
     }
 
     /**
@@ -126,6 +152,8 @@ public class BoardService {
 
         String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
+
+        // TODO : 뭐야 hashtag 수정 어떻게 해...?
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
@@ -144,7 +172,12 @@ public class BoardService {
         // 지원자 있는지 확인
         check.existApplicant(board);
 
-        // 댓글 테이블 삭제 어노테이션 찾아보기
+        // 좋아요 기록 삭제
+        likesRepository.deleteAllByBoardId(boardId);
+
+        // 해시태그 기록 삭제
+        hashtagRepository.deleteAllByBoardId(boardId);
+
         boardRepository.delete(board);
         return ResponseDto.success(new MsgResponse("게시물 삭제 완료"));
     }

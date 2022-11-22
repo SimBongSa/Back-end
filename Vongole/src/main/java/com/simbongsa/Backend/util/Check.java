@@ -25,16 +25,16 @@ public class Check {
 
     private final PasswordEncoder passwordEncoder;
 
-    /*
-        memberId로 멤버 존재 확인
-     */
-    public Member findMember(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId).orElse(null);
-        if (member == null) {
-            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
-        }
-        return member;
-    }
+//    /*
+//        memberId로 멤버 존재 확인
+//     */
+//    public Member findMember(Long memberId) {
+//        Member member = memberRepository.findByMemberId(memberId).orElse(null);
+//        if (member == null) {
+//            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+//        }
+//        return member;
+//    }
 
 
     /*
@@ -46,7 +46,7 @@ public class Check {
     }
 
     /*
-        멤버 확인 (member가 null일 때)
+        멤버 확인 (member 가 null 일 때)
      */
 
     public void isNotMember(Member member) {
