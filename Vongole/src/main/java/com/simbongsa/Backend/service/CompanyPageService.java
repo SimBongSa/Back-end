@@ -70,9 +70,27 @@ public class CompanyPageService {
     }
 
     /**
-     * 봉사 활동 지원자 목록
+     * 내 게시물 지원자 전체 조회
      */
-    public ResponseDto<List<EnrollResponse>> getVolunteers(Member member, Long boardId, int page, int size) {
+    public ResponseDto<List<EnrollDetailResponse>> getVolunteers(Member member, int page, int size) {
+        // TODO : 페이징 적용
+        check.isAdmin(member);
+        Pageable pageable = PageRequest.of(page, size);
+        List<Board> myBoards = boardRepository.findAllByMember(member);
+        List<EnrollDetailResponse> enrollDetailResponses = new ArrayList<>();
+        for (Board myBoard : myBoards) {
+            List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
+            for (Enrollment enrollment : enrollments) {
+                enrollDetailResponses.add(new EnrollDetailResponse(enrollment));
+            }
+        }
+        return ResponseDto.success(enrollDetailResponses);
+    }
+
+    /**
+     * 게시물 별 봉사 활동 지원자 목록
+     */
+    public ResponseDto<List<EnrollResponse>> getVolunteersByBoardId(Member member, Long boardId, int page, int size) {
         check.isAdmin(member);
         Pageable pageable = PageRequest.of(page, size);
 
@@ -114,4 +132,6 @@ public class CompanyPageService {
 
         return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 거절"));
     }
+
+
 }

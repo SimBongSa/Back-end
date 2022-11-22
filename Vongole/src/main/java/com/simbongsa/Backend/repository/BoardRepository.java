@@ -16,4 +16,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // 내가 작성한 게시물 조회
     List<Board> findAllByMember(Member member, Pageable pageable);
 
+    // 내가 작성한 게시물 조회 (boardId 가져와서 enrollRepository 조회 용도)
+    List<Board> findAllByMember(Member member);
 }
