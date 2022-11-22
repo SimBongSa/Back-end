@@ -28,11 +28,11 @@ public class ChatController {
     @GetMapping("/chatroom/{id}/history")
     public ResponseDto getChatRoomHistory(@PathVariable String id){     // todo : 채팅 기록 조회 ( 재접속시 ) - 사용자 인증, 인가 정보 필요 @AuthenticationPrincipal UserDetailsImpl userDetails,
         // todo : 구현
-        return ResponseDto.success( null);
+        return chatService.getChatRoomHistory(id);
     }
 
-    @PostMapping("/chatroom")
-    public ResponseDto createChatRoom(@RequestBody ChatCreateRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails){     // 채팅방 생성
+    @PostMapping("/chatroom")   // 채팅방 생성
+    public ResponseDto createChatRoom(@RequestBody ChatCreateRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         log.info("member [ {} {} ] called createChatRoom", userDetails.getMember().getMemberId(),userDetails.getMember().getNickname());
         return ResponseDto.success(chatService.createChatRoom(userDetails.getMember(), dto));

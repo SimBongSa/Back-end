@@ -33,7 +33,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
+function sendName() {   // lo/app/hello/1
     stompClient.send("/app/hello/"+$("#userId").val(), {}, JSON.stringify({'action': 'MESSAGE','userName': $("#name").val(),'chatRoomId':  $("#chatRoomId").val(),'content': $("#content").val()})); // 송신주소 /app/hello/{id}
 }
 
