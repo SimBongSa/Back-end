@@ -18,7 +18,7 @@ public class ChatController {
 
     private final ChatService chatService;
     @GetMapping("/chatroom")    //  채팅방 목록 조회
-    public ResponseDto getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){   // todo : 마지막 채팅 1줄도 같이 포함해서 반환 , 채팅방 이름이 대화 상대일 경우 로직
 
         log.info("member [ {} ] called getChatRoom", userDetails.getMember().getMemberId());
         return ResponseDto.success( chatService.getChatRoom(userDetails.getMember().getMemberId()));

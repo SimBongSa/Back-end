@@ -1,6 +1,6 @@
 package com.simbongsa.Backend.dto.websocket;
 
-import lombok.AllArgsConstructor;
+import com.simbongsa.Backend.entity.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,4 +13,9 @@ public class ChatCreateRequestDto {
     private String userIdList;
     private String userNameList;
     private String roomName;
+
+    public void addUser(Member member){
+        userIdList = userIdList + " " + member.getMemberId().toString();
+        userNameList = userNameList + " " + member.getName();
+    }
 }

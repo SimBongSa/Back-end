@@ -44,13 +44,21 @@ public class ChatService {
 
     public Long createChatRoom(Member member, ChatCreateRequestDto createRequestDto){   // todo : 유효성 검증로직 추가 (멤버리스트) , dto userNameList 수정
         member = memberRepository.findById(member.getMemberId()).orElseThrow(()-> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
-        String chatRoomIdList = member.getChatRoomIdList();
+
+        createRequestDto.addUser(member);
         ChatRoom save = chatRoomRepository.save(new ChatRoom(createRequestDto));
-        if(chatRoomIdList==null){
-            member.setChatRoomIdList(save.getChatRoomId().toString());
-        }else{
-            member.setChatRoomIdList(chatRoomIdList + " " + save.getChatRoomId().toString());
+
+        String[] s = save.getUserIdList().split(" ");
+        for (String s1 : s) {
+            member = memberRepository.findById(Long.parseLong(s1)).orElseThrow(()-> new GlobalException(ErrorCode.MEMBER_NOT_FOUND));
+            String chatRoomIdList = member.getChatRoomIdList();
+            if(chatRoomIdList==null){
+                member.setChatRoomIdList(save.getChatRoomId().toString());
+            }else{
+                member.setChatRoomIdList(chatRoomIdList + " " + save.getChatRoomId().toString());
+            }
         }
+
         return save.getChatRoomId();
     }
 
