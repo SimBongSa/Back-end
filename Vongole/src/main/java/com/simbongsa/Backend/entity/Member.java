@@ -22,10 +22,6 @@ public class Member extends Timestamped {
     @Column(name = "username", nullable = false)
     private String username;
 
-
-    @Column(name = "nickname", nullable = false)
-    private String nickname;
-
     @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
@@ -75,7 +71,6 @@ public class Member extends Timestamped {
     }
 
     public void myupdate(MyUpdateRequest myUpdateRequest, String profileImage) {
-        this.nickname = myUpdateRequest.getNickname();
         this.profileImage = profileImage;
         this.email = myUpdateRequest.getEmail();
         this.phoneNumber = myUpdateRequest.getPhoneNumber();

@@ -7,6 +7,7 @@ import com.simbongsa.Backend.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.*;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -21,6 +22,8 @@ public class Check {
     private final EnrollRepository enrollRepository;
 
     private final TokenProvider tokenProvider;
+
+    private final PasswordEncoder passwordEncoder;
 
     /*
         memberId로 멤버 존재 확인
@@ -46,25 +49,23 @@ public class Check {
         멤버 확인 (member가 null일 때)
      */
 
-    public Member isNotMember(Member member) {
+    public void isNotMember(Member member) {
         if (null == member) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        return member;
     }
 
     /*
         멤버 확인 (동일 유무)
      */
 
-    public Member isSameMember(Member preMember, Member member, Long memberId) {
+    public void isSameMember(Member preMember, Member member, Long memberId) {
 
         if (!preMember.getMemberId().equals(memberId)) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        return member;
     }
 
 
@@ -103,12 +104,6 @@ public class Check {
 
     }
 
-    public void isDuplicatedNickname(String nickname) {
-        if (null != isPresentMember(nickname)) {
-            throw new GlobalException(ErrorCode.DUPLICATE_NICKNAME);
-        }
-
-    }
 
     /*
         비밀번호 일치 여부 확인
@@ -119,6 +114,21 @@ public class Check {
             throw new GlobalException(ErrorCode.PASSWORD_NOT_MATCHED);
         }
     }
+
+    /*
+        DB에 있는 비밀번호와 새로 입력한 비밀번호의 일치 여부 확인
+     */
+
+    public void isMatched(String inputPassword, String dbPassword) {
+
+        if(!passwordEncoder.matches(inputPassword, dbPassword)) {
+            throw new GlobalException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+
+    }
+
+
+
 
     /*
         토큰 유효 여부

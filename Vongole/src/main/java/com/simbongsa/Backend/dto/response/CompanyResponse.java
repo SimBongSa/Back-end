@@ -11,8 +11,6 @@ public class CompanyResponse {
 
     private String username;
 
-    private String nickname;
-
     private String name;
 
     private String profileImage;
@@ -31,7 +29,6 @@ public class CompanyResponse {
 
     public CompanyResponse(Member member) {
         this.username = member.getUsername();
-        this.nickname = member.getNickname();
         this.name = member.getName();
         this.profileImage = member.getProfileImage();
         this.email = member.getEmail();

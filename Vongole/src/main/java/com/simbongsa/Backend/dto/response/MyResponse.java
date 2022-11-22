@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 public class MyResponse {
     private String username;
 
-    private String nickname;
-
     private String name;
 
     private String profileImage;
@@ -23,7 +21,6 @@ public class MyResponse {
 
     public MyResponse(Member member) {
         this.username = member.getUsername();
-        this.nickname = member.getNickname();
         this.name = member.getName();
         this.profileImage = member.getProfileImage();
         this.email = member.getEmail();
