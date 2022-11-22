@@ -40,11 +40,13 @@ public class CompanyPageService {
 
     /**
      * 내 프로필 수정
+     * 관리자인지 확인
+     * 비밀번호 두개 일치하는지 확인
      */
     @Transactional
     public ResponseDto<CompanyResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
         check.isAdmin(member);
-
+        check.isPassword(companyUpdateRequest.getPassword(), companyUpdateRequest.getPasswordConfirm());
         String profileImage = s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
         member.update(companyUpdateRequest, profileImage);
 
