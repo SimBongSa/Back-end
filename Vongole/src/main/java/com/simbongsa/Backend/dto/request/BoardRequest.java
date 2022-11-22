@@ -1,13 +1,12 @@
 package com.simbongsa.Backend.dto.request;
 
+import com.simbongsa.Backend.entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -38,4 +37,6 @@ public class BoardRequest {
 
 //    @NotBlank(message = "봉사 활동 종류를 선택해 주세요.")
 //    private String category;
+
+    private List<Tag> tags;
 }

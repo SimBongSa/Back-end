@@ -2,21 +2,14 @@ package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
 import com.simbongsa.Backend.dto.response.*;
-import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,8 +26,6 @@ public class BoardController {
     @PostMapping()
     public ResponseDto<BoardCreateResponse> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute @Valid BoardRequest boardRequest) throws IOException {
-//        HttpHeaders headers = new HttpHeaders();
-//        return new ResponseEntity<>(boardService.createBoard(userDetails.getMember(), boardRequest),headers , HttpStatus.OK);
 
         return boardService.createBoard(userDetails.getMember(), boardRequest);
     }
@@ -43,8 +34,8 @@ public class BoardController {
     @GetMapping()
     public ResponseDto<List<BoardResponse>> getAllBoards(@RequestParam(name = "page", defaultValue = "1") int page,
                                                          @RequestParam(name = "size", defaultValue = "4") int size) {
-        page = page - 1;
-        return boardService.getAllBoards(page, size);
+
+        return boardService.getAllBoards(page - 1, size);
     }
 
     /**
@@ -54,9 +45,8 @@ public class BoardController {
     public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay,
                                                               @RequestParam(name = "page", defaultValue = "1") int page,
                                                               @RequestParam(name = "size", defaultValue = "4") int size) {
-        page = page - 1;
 
-        return boardService.getBoardsByDueDay(dueDay, page, size);
+        return boardService.getBoardsByDueDay(dueDay, page - 1, size);
     }
 
     /**
@@ -66,9 +56,8 @@ public class BoardController {
     public ResponseDto<BoardDetailResponse> getBoard(@PathVariable Long boardId,
                                                      @RequestParam(name = "page", defaultValue = "1") int page,
                                                      @RequestParam(name = "size", defaultValue = "5") int size) {
-        page = page - 1;
 
-        return boardService.getBoard(boardId, page, size);
+        return boardService.getBoard(boardId, page - 1, size);
     }
 
     /**
@@ -76,8 +65,8 @@ public class BoardController {
      */
     @PutMapping("/{boardId}")
     public ResponseDto<MsgResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @ModelAttribute @Valid BoardRequest boardRequest,
-                                                        @PathVariable Long boardId) throws IOException {
+                                                @ModelAttribute @Valid BoardRequest boardRequest,
+                                                @PathVariable Long boardId) throws IOException {
         return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
     }
 
