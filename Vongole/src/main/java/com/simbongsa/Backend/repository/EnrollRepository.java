@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Repository
@@ -23,10 +22,10 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
 
     Enrollment getEnrollmentByMemberAndBoard(Member member, Board board);
 
-    // 멤버아이디로 봉사활동 지원자 조회
-    Optional<Enrollment> findByMember(Member member);
 
     List<Enrollment> findAllByMember(Member member);
 
     List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
+
+    List<Enrollment> findAllByBoard(Board myBoard);
 }
