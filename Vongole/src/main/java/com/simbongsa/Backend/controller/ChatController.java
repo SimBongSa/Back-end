@@ -34,7 +34,7 @@ public class ChatController {
     public ResponseDto createChatRoom(@RequestBody ChatCreateRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         log.info("member [ {} {} ] called createChatRoom", userDetails.getMember().getMemberId(),userDetails.getMember().getName());
-        return ResponseDto.success(chatService.createChatRoom(userDetails.getMember(), dto));git
+        return ResponseDto.success(chatService.createChatRoom(userDetails.getMember(), dto));
     }
 
     @DeleteMapping("/chatroom/{id}")
