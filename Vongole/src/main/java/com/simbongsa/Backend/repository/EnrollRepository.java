@@ -24,7 +24,7 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
     Enrollment getEnrollmentByMemberAndBoard(Member member, Board board);
 
 
-    Page<Enrollment> findAllByMemberAndPage(Member member,Pageable pageable);
+    Page<Enrollment> findAllByMember(Member member,Pageable pageable);
 
     List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
 

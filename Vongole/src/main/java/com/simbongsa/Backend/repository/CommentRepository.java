@@ -14,5 +14,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     // 게시물 상세조회 시 전체 댓글 조회
     List<Comment> findAllByBoard(Board board, Pageable pageable);
 
-    Page<Comment> findAllByMemberAndPage(Member member, Pageable pageable);
+    Page<Comment> findAllByMember(Member member, Pageable pageable);
 }
