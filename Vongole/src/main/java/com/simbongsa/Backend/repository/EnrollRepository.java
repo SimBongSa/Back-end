@@ -4,6 +4,7 @@ import com.simbongsa.Backend.entity.Approval;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Enrollment;
 import com.simbongsa.Backend.entity.Member;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
     Enrollment getEnrollmentByMemberAndBoard(Member member, Board board);
 
 
-    List<Enrollment> findAllByMember(Member member);
+    Page<Enrollment> findAllByMemberAndPage(Member member,Pageable pageable);
 
     List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
 

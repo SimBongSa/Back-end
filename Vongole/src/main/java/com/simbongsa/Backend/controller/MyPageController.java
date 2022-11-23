@@ -39,40 +39,55 @@ public class MyPageController {
     }
     //내가 작성한 댓글들의 정보
     @GetMapping("/comments")
-    public ResponseDto<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                            @RequestParam(name = "page", defaultValue = "0") int page,
+                                                            @RequestParam(name = "size", defaultValue = "4") int size
+    ){
         check.isMember(userDetails.getMember());
-        return myPageService.getMyComments(userDetails.getMember());
+        return myPageService.getMyComments(userDetails.getMember(),page,size);
     }
     //내가 작성한 댓글의 게시글 상세 조회
 
 
     //내가 신청한 모든 (승인,거절,기다림 포함)봉사활동 정보
     @GetMapping("/enroll")
-    public ResponseDto<List<BoardResponse>> getMyEnroll(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<List<BoardResponse>> getMyEnroll(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                        @RequestParam(name = "page", defaultValue = "0") int page,
+                                                        @RequestParam(name = "size", defaultValue = "4") int size
+    ){
         check.isMember(userDetails.getMember());
-        return myPageService.getMyEnroll(userDetails.getMember());
+        return myPageService.getMyEnroll(userDetails.getMember(),page,size);
     }
 
     //내가 신청한 봉사활동이 아직 대기중인 봉사활동
 
     @GetMapping("/enroll/wait")
-    public ResponseDto<List<BoardResponse>> getMyEnrollWait(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<List<BoardResponse>> getMyEnrollWait(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                            @RequestParam(name = "page", defaultValue = "0") int page,
+                                                            @RequestParam(name = "size", defaultValue = "4") int size
+    ){
         check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollWait(userDetails.getMember());
+        return myPageService.getMyEnrollWait(userDetails.getMember(),page,size);
     }
 
     //내가 신청한 봉사활동이 승인된 봉사활동
 
     @GetMapping("/enroll/pass")
-    public ResponseDto<List<BoardResponse>> getMyEnrollPass(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<List<BoardResponse>> getMyEnrollPass(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                            @RequestParam(name = "page", defaultValue = "0") int page,
+                                                            @RequestParam(name = "size", defaultValue = "4") int size
+    ){
         check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollPass(userDetails.getMember());
+        return myPageService.getMyEnrollPass(userDetails.getMember(),page,size);
     }
 
     //내가 신청한 봉사활동이 거절된 봉사활동
     @GetMapping("/enroll/fail")
-    public ResponseDto<List<BoardResponse>> getMyEnrollFail(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<List<BoardResponse>> getMyEnrollFail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                            @RequestParam(name = "page", defaultValue = "0") int page,
+                                                            @RequestParam(name = "size", defaultValue = "4") int size
+    ){
         check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollFail(userDetails.getMember());
+        return myPageService.getMyEnrollFail(userDetails.getMember(),page,size);
     }
 }
