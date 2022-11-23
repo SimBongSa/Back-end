@@ -39,6 +39,9 @@ public enum ErrorCode {
     /* CONFLICT 409 error*/
 
 
+    /* webSocket 관련 */
+    NO_SUCH_CHATROOM(HttpStatus.NOT_FOUND.value(), "No such Chatroom", "존재하지 않는 채팅방 입니다.(또는 잘못된 채팅방 ID 입니다."),
+    NO_SUCH_METHOD(HttpStatus.NOT_FOUND.value(), "No such Method", "알 수 없는 요청 입니다."),
 
     /*500 server error*/
 
@@ -50,6 +53,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Token is Invalid", "토큰이 유효하지 않습니다."),
 
     ALREADY_APPLIED(HttpStatus.UNAUTHORIZED.value(), "Board is Already Applied", "이미 신청 중인 게시물입니다.");
+
 
 
 
