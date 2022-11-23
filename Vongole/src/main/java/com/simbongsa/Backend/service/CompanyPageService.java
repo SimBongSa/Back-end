@@ -12,6 +12,7 @@ import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class CompanyPageService {
     private final EnrollRepository enrollRepository;
     private final BoardRepository boardRepository;
 
+    private final PasswordEncoder passwordEncoder;
     private final Check check;
     private final S3Uploader s3Uploader;
 
@@ -46,9 +48,15 @@ public class CompanyPageService {
     @Transactional
     public ResponseDto<MsgResponse> updateMyProfile(Member member, CompanyUpdateRequest companyUpdateRequest) throws IOException {
         check.isAdmin(member);
+
+        // 시큐리티에서 제공하는 member 객체에 db 로부터 불러온 member 객체 덮어 쓰기
+        member = check.findMember(member.getMemberId());
         check.isPassword(companyUpdateRequest.getPassword(), companyUpdateRequest.getPasswordConfirm());
+
+        String encodedPassword = passwordEncoder.encode(companyUpdateRequest.getPassword());
+
         String profileImage = s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
-        member.update(companyUpdateRequest, profileImage);
+        member.update(companyUpdateRequest, profileImage, encodedPassword);
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
