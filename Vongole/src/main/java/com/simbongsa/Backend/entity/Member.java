@@ -61,6 +61,9 @@ public class Member extends Timestamped {
     @Column(unique = true)
     private Long kakaoId;
 
+    @Column
+    private String chatRoomIdList;
+
 
     public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage) {
         this.password = companyUpdateRequest.getPassword();
@@ -82,6 +85,9 @@ public class Member extends Timestamped {
 
     public void setKakaoId(Long kakaoId){
         this.kakaoId = kakaoId;
+    }
+    public void setChatRoomIdList(String chatRoomIdList){
+        this.chatRoomIdList = chatRoomIdList;
     }
 
 }
