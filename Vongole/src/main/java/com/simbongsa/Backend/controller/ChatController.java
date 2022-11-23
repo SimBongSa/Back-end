@@ -25,9 +25,8 @@ public class ChatController {
     }
 
 
-    @GetMapping("/chatroom/{id}/history")
-    public ResponseDto getChatRoomHistory(@PathVariable String id){     // todo : 채팅 기록 조회 ( 재접속시 ) - 사용자 인증, 인가 정보 필요 @AuthenticationPrincipal UserDetailsImpl userDetails,
-        // todo : 구현
+    @GetMapping("/chatroom/{id}/history")   // 채팅 기록 조회
+    public ResponseDto getChatRoomHistory(@PathVariable String id){
         return chatService.getChatRoomHistory(id);
     }
 
