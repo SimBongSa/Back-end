@@ -65,8 +65,8 @@ public class Member extends Timestamped {
     private String chatRoomIdList;
 
 
-    public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage) {
-        this.password = companyUpdateRequest.getPassword();
+    public void update(CompanyUpdateRequest companyUpdateRequest, String profileImage, String encodedPassword) {
+        this.password = encodedPassword;
         this.email = companyUpdateRequest.getEmail();
         this.introduction = companyUpdateRequest.getIntroduction();
         this.phoneNumber = companyUpdateRequest.getPhoneNumber();

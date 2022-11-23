@@ -32,7 +32,7 @@ public class CompanyPageController {
      * 내 프로필 정보 수정
      */
     @PutMapping()
-    public ResponseDto<CompanyResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<MsgResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute CompanyUpdateRequest companyUpdateRequest) throws IOException {
         return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }
@@ -45,8 +45,7 @@ public class CompanyPageController {
     public ResponseDto<List<BoardResponse>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @RequestParam(name = "page", defaultValue = "1") int page,
                                                         @RequestParam(name = "size", defaultValue = "4") int size) {
-        page = page - 1;
-        return companyPageService.getMyBoards(userDetails.getMember(), page, size);
+        return companyPageService.getMyBoards(userDetails.getMember(), page - 1, size);
     }
 
     /**
@@ -60,15 +59,14 @@ public class CompanyPageController {
     }
 
     /**
-     * 게시물 별 봉사 활동 지원자 목록
+     * 게시물 별 봉사 활동 지원자 목록(안쓸 수도 있음)
      */
     @GetMapping("/boards/{boardId}")
     public ResponseDto<List<EnrollResponse>> getVolunteersByBoardId(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                     @PathVariable Long boardId,
                                                                     @RequestParam(name = "page", defaultValue = "1") int page,
                                                                     @RequestParam(name = "size", defaultValue = "4") int size) {
-        page = page - 1;
-        return companyPageService.getVolunteersByBoardId(userDetails.getMember(), boardId, page, size);
+        return companyPageService.getVolunteersByBoardId(userDetails.getMember(), boardId, page - 1, size);
     }
 
 

@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.dto.response;
 
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,31 +37,31 @@ public class BoardDetailResponse {
 
     private String detailArea;
 
-//    private String category;
-
     private Long applicantCnt;
 
     private boolean isEnrolled;
 
     private List<CommentResponse> comments;
 
-    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses) {
+    private List<Tag> tags;
+
+    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses, List<Tag> tags) {
         this.boardId = board.getId();
-        this.author = board.getMember().getUsername();
         this.title = board.getTitle();
+        this.author = board.getMember().getUsername();
         this.content = board.getContent();
         this.hits = board.getHits();
         this.boardImage = board.getBoardImage();
         this.dueDay = board.getDueDay();
         this.startDate = board.getStartDate();
         this.endDate = board.getEndDate();
-        this.createAt = board.getCreatedAt();
         this.area = board.getArea();
         this.detailArea = board.getDetailArea();
-//        this.category = board.getCategory();
+        this.createAt = board.getCreatedAt();
         this.applicantCnt = board.getApplicantCnt();
 
         this.comments = commentResponses;
+        this.tags = tags;
     }
 }
 

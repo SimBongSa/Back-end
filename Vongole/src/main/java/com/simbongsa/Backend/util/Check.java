@@ -46,7 +46,7 @@ public class Check {
     }
 
     /*
-        멤버 확인 (member가 null일 때)
+        멤버 확인 (member 가 null 일 때)
      */
 
     public void isNotMember(Member member) {

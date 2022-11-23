@@ -51,9 +51,6 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String detailArea;
 
-//    @Column(nullable = false)
-//    private String category;
-
     @Column
     private Long applicantCnt;
 
@@ -68,7 +65,6 @@ public class Board extends Timestamped {
         this.endDate = LocalDate.parse(boardRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-//        this.category = boardRequest.getCategory();
 
         this.hits = 0L;
         this.applicantCnt = 0L;
@@ -83,7 +79,6 @@ public class Board extends Timestamped {
         this.endDate = LocalDate.parse(boardRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
         this.area = boardRequest.getArea();
         this.detailArea = boardRequest.getDetailArea();
-//        this.category = boardRequest.getCategory();
     }
 
     // 조회수 증가
