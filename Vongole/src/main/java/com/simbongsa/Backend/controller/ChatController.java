@@ -33,8 +33,8 @@ public class ChatController {
     @PostMapping("/chatroom")   // 채팅방 생성
     public ResponseDto createChatRoom(@RequestBody ChatCreateRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        log.info("member [ {} {} ] called createChatRoom", userDetails.getMember().getMemberId(),userDetails.getMember().getNickname());
-        return ResponseDto.success(chatService.createChatRoom(userDetails.getMember(), dto));
+        log.info("member [ {} {} ] called createChatRoom", userDetails.getMember().getMemberId(),userDetails.getMember().getName());
+        return ResponseDto.success(chatService.createChatRoom(userDetails.getMember(), dto));git
     }
 
     @DeleteMapping("/chatroom/{id}")
