@@ -3,6 +3,7 @@ package com.simbongsa.Backend.configuration;
 
 import com.simbongsa.Backend.jwt.AccessDeniedHandlerException;
 import com.simbongsa.Backend.jwt.AuthenticationEntryPointException;
+import com.simbongsa.Backend.jwt.JwtExceptionFilter;
 import com.simbongsa.Backend.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -28,6 +29,7 @@ public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final AuthenticationEntryPointException authenticationEntryPointException;
     private final AccessDeniedHandlerException accessDeniedHandlerException;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -67,7 +69,7 @@ public class SecurityConfiguration {
                 .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfiguration(tokenProvider));
+                .apply(new JwtSecurityConfiguration(tokenProvider, jwtExceptionFilter));
 
         return http.build();
     }
