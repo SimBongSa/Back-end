@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class CompanyPageController {
      */
     @PutMapping()
     public ResponseDto<MsgResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @ModelAttribute CompanyUpdateRequest companyUpdateRequest) throws IOException {
+                                                        @ModelAttribute @Valid CompanyUpdateRequest companyUpdateRequest) throws IOException {
+
         return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }
 
