@@ -85,14 +85,6 @@ public class MemberService {
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
-
-//
-//        if (requestDto.getAuthority() != Authority.ROLE_ADMIN) {
-//
-//
-//
-//        }
-
             Member member = Member.builder()
                     .username(requestDto.getUsername())
                     .password(passwordEncoder.encode(requestDto.getPassword()))
@@ -100,7 +92,8 @@ public class MemberService {
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
                     .licenseNumber(requestDto.getLicenseNumber())
-                    .licenseImage(s3Uploader.uploadFiles(requestDto.getLicenseImage(), "licenseImage"))
+                    .licenseImage((requestDto.getLicenseImage().getOriginalFilename().equals(""))?
+                            null: s3Uploader.uploadFiles(requestDto.getLicenseImage(), "licenseImage"))
                     .authority(requestDto.getAuthority())
                     .build();
 
@@ -159,7 +152,8 @@ public class MemberService {
                 .password(preMember.getPassword())
                 .introduction(memberUpdateRequestDto.getIntroduction())
                 .authority(preMember.getAuthority())
-                .profileImage(s3Uploader.uploadFiles(memberUpdateRequestDto.getProfileImage(), "member"))
+                .profileImage((memberUpdateRequestDto.getProfileImage().getOriginalFilename().equals(""))?
+                        null:s3Uploader.uploadFiles(memberUpdateRequestDto.getProfileImage(), "member"))
                 .build();
 
         memberRepository.save(newMember);

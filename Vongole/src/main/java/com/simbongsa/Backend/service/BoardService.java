@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +38,8 @@ public class BoardService {
     public ResponseDto<BoardCreateResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
-        String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
+        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals(""))?
+                null:s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
 
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
@@ -150,7 +150,8 @@ public class BoardService {
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        String boardImage = s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
+        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals(""))?
+                null:s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
 
         // TODO : 뭐야 hashtag 수정 어떻게 해...?
