@@ -36,6 +36,7 @@ public class BoardService {
     /**
      * 게시물 생성 (관리자만 생성 가능)
      */
+    @Transactional
     public ResponseDto<BoardCreateResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
@@ -49,7 +50,7 @@ public class BoardService {
         Long boardId = board.getId();
         List<Tag> tags = boardRequest.getTags();
         for (Tag tag : tags) {
-            hashtagRepository.save(new Hashtag(boardId, tag.getMsg()));
+            hashtagRepository.save(new Hashtag(boardId, tag));
         }
 
         return ResponseDto.success(new BoardCreateResponse(board.getId(), "게시물 생성 완료"));
@@ -96,11 +97,10 @@ public class BoardService {
     private ResponseDto<List<BoardResponse>> getBoardResponses(List<Board> boards) {
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
-
             List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(board.getId());
             List<String> tags = new ArrayList<>();
             for (Hashtag hashtag : hashtags) {
-                tags.add(hashtag.getTag());
+                tags.add(hashtag.getTag().getMsg());
             }
 
             boardResponses.add(new BoardResponse(board, tags));
@@ -126,7 +126,7 @@ public class BoardService {
         List<String> tags = new ArrayList<>();
 
         for (Hashtag hashtag : hashtags) {
-            tags.add(hashtag.getTag());
+            tags.add(hashtag.getTag().getMsg());
         }
 
         List<Comment> comments = commentRepository.findAllByBoard(board, pageable);
@@ -148,7 +148,6 @@ public class BoardService {
         List<BoardResponse> boardResponses = new ArrayList<>();
 
         for (Hashtag hashtag : hashtags) {
-            System.out.println("hi");
             Board board = boardRepository.findById(hashtag.getBoardId()).get();
             boardResponses.add(new BoardResponse(board));
         }

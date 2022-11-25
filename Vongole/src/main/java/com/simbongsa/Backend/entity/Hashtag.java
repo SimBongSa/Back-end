@@ -18,12 +18,13 @@ public class Hashtag {
     private Long boardId;
 
     @Column
-    private String tag;
+    @Enumerated(EnumType.STRING)
+    private Tag tag;
 
 //    @Column
 //    private Long tagCount;
 
-    public Hashtag(Long boardId, String tag) {
+    public Hashtag(Long boardId, Tag tag) {
         this.boardId = boardId;
         this.tag = tag;
     }

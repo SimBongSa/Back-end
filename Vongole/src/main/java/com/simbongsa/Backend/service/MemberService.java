@@ -11,6 +11,7 @@ import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import com.simbongsa.Backend.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,8 @@ public class MemberService {
     private final S3Uploader s3Uploader;
     private final Check check;
 
+    @Value("${defaultImage}")
+    private final String defaultImage;
 
 
     @Transactional
@@ -47,11 +50,11 @@ public class MemberService {
 
 
 
-
             // 일반회원
             Member member = Member.builder()
                     .username(requestDto.getUsername())
                     .password(passwordEncoder.encode(requestDto.getPassword()))
+                    .profileImage(defaultImage)
                     .email(requestDto.getEmail())
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
@@ -92,6 +95,7 @@ public class MemberService {
                     .phoneNumber(requestDto.getPhoneNumber())
                     .name(requestDto.getName())
                     .licenseNumber(requestDto.getLicenseNumber())
+                    .profileImage(defaultImage)
                     .licenseImage((requestDto.getLicenseImage().getOriginalFilename().equals(""))?
                             null: s3Uploader.uploadFiles(requestDto.getLicenseImage(), "licenseImage"))
                     .authority(requestDto.getAuthority())
