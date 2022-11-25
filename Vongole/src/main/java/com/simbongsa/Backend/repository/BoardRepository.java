@@ -20,4 +20,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByMember(Member member);
 
     List<Board> findAllByOrderByEndDateDesc(Pageable pageable);
+
+    List<Board> findAllByDueDayBetween(LocalDate start, LocalDate end);
 }

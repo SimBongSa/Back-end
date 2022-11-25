@@ -10,6 +10,7 @@ import com.simbongsa.Backend.repository.LikesRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.Months;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +41,8 @@ public class BoardService {
     public ResponseDto<BoardCreateResponse> createBoard(Member member, BoardRequest boardRequest) throws IOException {
         // 관리자인지 확인
         check.isAdmin(member);
-        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals(""))?
-                null:s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
+        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals("")) ?
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
 
         Board board = new Board(boardRequest, member, boardImage);
         boardRepository.save(board);
@@ -62,6 +65,21 @@ public class BoardService {
         List<Board> boards = boardRepository.findAllByOrderByEndDateDesc(pageable);
 
         return getBoardResponses(boards);
+    }
+
+    /**
+     * 게시물 월별 조회
+     */
+    public ResponseDto<List<BoardResponse>> getBoardsByMonth(String month) {
+        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
+
+        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end);
+        List<BoardResponse> boardResponses = new ArrayList<>();
+        for (Board board : boards) {
+            boardResponses.add(new BoardResponse(board));
+        }
+        return ResponseDto.success(boardResponses);
     }
 
     /**
@@ -150,8 +168,8 @@ public class BoardService {
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals(""))?
-                null:s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
+        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals("")) ?
+                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
 
         // TODO : 뭐야 hashtag 수정 어떻게 해...?
