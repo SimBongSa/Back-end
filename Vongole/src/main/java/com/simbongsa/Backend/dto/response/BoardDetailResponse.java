@@ -41,7 +41,7 @@ public class BoardDetailResponse {
 
     private Long applicantCnt;
 
-    private boolean isEnrolled;
+//    private boolean isEnrolled;
 
     private List<CommentResponse> comments;
 
