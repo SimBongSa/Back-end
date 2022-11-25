@@ -6,12 +6,14 @@ import com.simbongsa.Backend.entity.Tag;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.Months;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -40,6 +42,14 @@ public class BoardController {
                                                          @RequestParam(name = "size", defaultValue = "4") int size) {
 
         return boardService.getAllBoards(page - 1, size);
+    }
+
+    /**
+     * 게시물 월별 조회
+     */
+    @GetMapping("/month")
+    public ResponseDto<List<BoardResponse>> getBoardsByMonth(@RequestParam(name = "month") String month) {
+        return boardService.getBoardsByMonth(month);
     }
 
     /**
