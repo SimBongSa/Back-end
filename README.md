@@ -71,7 +71,7 @@
 - JWT 0.11.2
 
 ## 5. ERD 설계
-![ERD](https://ibb.co/P4rdDWn)
+![ERD](https://github.com/SimBongSa/Back-end/blob/main/Vongole/src/main/resources/static/%EB%B4%89%EA%B3%A8%EB%A0%88%20%EC%B5%9C%EC%A2%85_.png)
 
 ## 6. Trouble Shooting
 
