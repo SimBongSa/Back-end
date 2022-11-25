@@ -35,6 +35,7 @@ public class CompanyPageController {
     @PutMapping()
     public ResponseDto<MsgResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                         @ModelAttribute @Valid CompanyUpdateRequest companyUpdateRequest) throws IOException {
+
         return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }
 

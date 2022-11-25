@@ -56,7 +56,7 @@ public class CompanyPageService {
         String encodedPassword = passwordEncoder.encode(companyUpdateRequest.getPassword());
 
         String profileImage = (companyUpdateRequest.getProfileImage().getOriginalFilename().equals(""))?
-                null:s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
+                member.getProfileImage():s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
         member.update(companyUpdateRequest, profileImage, encodedPassword);
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
