@@ -17,6 +17,8 @@ public class BoardDetailResponse {
 
     private String author;
 
+    private String profileImage;
+
     private String title;
 
     private String content;
@@ -43,12 +45,13 @@ public class BoardDetailResponse {
 
     private List<CommentResponse> comments;
 
-    private List<Tag> tags;
+    private List<String> tags;
 
-    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses, List<Tag> tags) {
+    public BoardDetailResponse(Board board, List<CommentResponse> commentResponses, List<String> tags) {
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.author = board.getMember().getUsername();
+        this.profileImage = board.getMember().getProfileImage();
         this.content = board.getContent();
         this.hits = board.getHits();
         this.boardImage = board.getBoardImage();

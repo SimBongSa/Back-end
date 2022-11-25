@@ -10,7 +10,6 @@ import com.simbongsa.Backend.repository.LikesRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.Months;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +49,7 @@ public class BoardService {
         Long boardId = board.getId();
         List<Tag> tags = boardRequest.getTags();
         for (Tag tag : tags) {
-            hashtagRepository.save(new Hashtag(boardId, tag));
+            hashtagRepository.save(new Hashtag(boardId, tag.getMsg()));
         }
 
         return ResponseDto.success(new BoardCreateResponse(board.getId(), "게시물 생성 완료"));
@@ -100,7 +98,7 @@ public class BoardService {
         for (Board board : boards) {
 
             List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(board.getId());
-            List<Tag> tags = new ArrayList<>();
+            List<String> tags = new ArrayList<>();
             for (Hashtag hashtag : hashtags) {
                 tags.add(hashtag.getTag());
             }
@@ -125,7 +123,7 @@ public class BoardService {
         board.addHits();
 
         List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(boardId);
-        List<Tag> tags = new ArrayList<>();
+        List<String> tags = new ArrayList<>();
 
         for (Hashtag hashtag : hashtags) {
             tags.add(hashtag.getTag());
