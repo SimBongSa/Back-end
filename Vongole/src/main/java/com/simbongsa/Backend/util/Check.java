@@ -96,7 +96,7 @@ public class Check {
         중복 확인
      */
 
-    // Username 중복확인
+    // Username 중복확인 (200 ErrorCode)
     public void isDuplicatedUsername(String username) {
         if (null != isPresentMember(username)) {
             throw new GlobalException(ErrorCode.DUPLICATE_USERNAME);
