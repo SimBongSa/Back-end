@@ -40,7 +40,7 @@ public class MemberService {
     private final Check check;
 
     @Value("${defaultImage}")
-    private final String defaultImage;
+    private String defaultImage;
 
 
     @Transactional

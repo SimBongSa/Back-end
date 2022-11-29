@@ -4,9 +4,11 @@ import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Enrollment;
+import com.simbongsa.Backend.entity.Hashtag;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
+import com.simbongsa.Backend.repository.HashtagRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class CompanyPageService {
 
     private final EnrollRepository enrollRepository;
     private final BoardRepository boardRepository;
+    private final HashtagRepository hashtagRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final Check check;
@@ -89,8 +92,13 @@ public class CompanyPageService {
         List<EnrollDetailResponse> enrollDetailResponses = new ArrayList<>();
         for (Board myBoard : myBoards) {
             List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
+            List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(myBoard.getId());
+            List<String> tags = new ArrayList<>();
+            for (Hashtag hashtag : hashtags) {
+                tags.add(hashtag.getTag().getMsg());
+            }
             for (Enrollment enrollment : enrollments) {
-                enrollDetailResponses.add(new EnrollDetailResponse(enrollment));
+                enrollDetailResponses.add(new EnrollDetailResponse(enrollment, tags));
             }
         }
         return ResponseDto.success(enrollDetailResponses);
