@@ -2,12 +2,14 @@ package com.simbongsa.Backend.dto.response;
 
 import com.simbongsa.Backend.entity.Approval;
 import com.simbongsa.Backend.entity.Enrollment;
+import com.simbongsa.Backend.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -39,8 +41,11 @@ public class EnrollDetailResponse {
     // member data
     private String username;
 
+    // hashtag data
+    private List<String> tags;
 
-    public EnrollDetailResponse(Enrollment enrollment) {
+
+    public EnrollDetailResponse(Enrollment enrollment, List<String> tags) {
         this.title = enrollment.getBoard().getTitle();
         this.dueDay = enrollment.getBoard().getDueDay();
         this.startDate = enrollment.getBoard().getStartDate();
@@ -54,5 +59,7 @@ public class EnrollDetailResponse {
         this.approval = enrollment.getApproval();
 
         this.username = enrollment.getMember().getUsername();
+
+        this.tags = tags;
     }
 }
