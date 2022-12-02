@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -86,7 +87,9 @@ public class BoardService {
      */
     public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<Board> boards = boardRepository.findAllByDueDay(dueDay, pageable);
+        Timestamp start = Timestamp.valueOf(dueDay.atTime(0, 0, 0));
+        Timestamp end = Timestamp.valueOf(dueDay.atTime(23, 59, 59));
+        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end, pageable);
 
         return getBoardResponses(boards);
     }
@@ -129,7 +132,7 @@ public class BoardService {
             tags.add(hashtag.getTag().getMsg());
         }
 
-        List<Comment> comments = commentRepository.findAllByBoard(board, pageable);
+        List<Comment> comments = commentRepository.findAllByBoardOrderByCreatedAtDesc(board, pageable);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
             commentResponses.add(new CommentResponse(comment));
