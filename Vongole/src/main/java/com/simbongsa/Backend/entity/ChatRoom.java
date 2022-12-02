@@ -18,6 +18,7 @@ public class ChatRoom {
         this.userIdList = dto.getUserIdList();
         this.userNameList = dto.getUserNameList();
         this.roomName = dto.getRoomName();
+        this.boardId = dto.getBoardId();
     }
 
     @Id
@@ -29,6 +30,9 @@ public class ChatRoom {
 
     @Column
     private String userNameList;
+
+    @Column
+    private Long boardId;
 
     @Column
     private String roomName;

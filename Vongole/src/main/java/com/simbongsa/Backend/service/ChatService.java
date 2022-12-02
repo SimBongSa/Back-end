@@ -33,6 +33,9 @@ public class ChatService {
         List list = new ArrayList<ChatRoom>();
 
         String chatRoomIdList = member.getChatRoomIdList();
+        if(chatRoomIdList== null){
+            return null;
+        }
         String[] s = chatRoomIdList.split(" ");
 
         for (String s1 : s) {   // todo : 채팅방 이름이 대화 상대일 경우 로직
@@ -63,7 +66,11 @@ public class ChatService {
     }
 
 
-    public ResponseDto getChatRoomHistory(@PathVariable String id){
+    public ResponseDto getChatRoomHistory(@PathVariable String id, Member member){
+
+        if(!member.getChatRoomIdList().contains(id)){
+            throw new GlobalException(ErrorCode.NO_SUCH_CHATROOM);
+        }
 
         List<ChatRecord> records = chatRoomRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new GlobalException(ErrorCode.NO_SUCH_CHATROOM))

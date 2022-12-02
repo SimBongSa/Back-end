@@ -45,7 +45,7 @@ public enum ErrorCode {
 
 
     /* webSocket 관련 */
-    NO_SUCH_CHATROOM(HttpStatus.NOT_FOUND.value(), "No such Chatroom", "존재하지 않는 채팅방 입니다.(또는 잘못된 채팅방 ID 입니다."),
+    NO_SUCH_CHATROOM(HttpStatus.NOT_FOUND.value(), "No such Chatroom", "존재하지 않는 채팅방 입니다.(또는 잘못된 채팅방 ID 입니다.)"),
     NO_SUCH_METHOD(HttpStatus.NOT_FOUND.value(), "No such Method", "알 수 없는 요청 입니다."),
 
     /*500 server error*/
