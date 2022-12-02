@@ -15,11 +15,13 @@ public class ChatRoomDto {
     private String userIdList;
     private String userNameList;
     private String roomName;
+    private Long boardId;
 
     public ChatRoomDto(ChatRoom entity) {
         this.chatRoomId = entity.getChatRoomId();
         this.userIdList = entity.getUserIdList();
         this.userNameList = entity.getUserNameList();
         this.roomName = entity.getRoomName();
+        this.boardId = entity.getBoardId();
     }
 }

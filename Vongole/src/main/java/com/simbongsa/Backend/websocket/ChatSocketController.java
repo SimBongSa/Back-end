@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.websocket;
 
 import com.simbongsa.Backend.dto.websocket.MessageDto;
+import com.simbongsa.Backend.dto.websocket.SendMessageDto;
 import com.simbongsa.Backend.entity.ChatRecord;
 import com.simbongsa.Backend.entity.ChatRoom;
 import com.simbongsa.Backend.exception.ErrorCode;
@@ -32,21 +33,21 @@ public class ChatSocketController {
 			ChatRoom chatRoom = chatRoomRepository.findById(message.getChatRoomId()).orElse(null);
 			if(chatRoom==null){
 				simpMessagingTemplate.convertAndSend("/topic/greetings/" + id ,
-						new MessageDto(WebsocketMethod.ERROR.getMethod(), null, null,"존재하지 않는 채팅방 입니다."));
+						new SendMessageDto(WebsocketMethod.ERROR.getMethod(), null, null,"존재하지 않는 채팅방 입니다.",null));
 				return;
 			}
-			chatRecordRepository.save(new ChatRecord(message, chatRoom));
+			ChatRecord save = chatRecordRepository.save(new ChatRecord(message, chatRoom));
 
 			String[] s = chatRoom.getUserIdList().split(" ");
 			for (String s1 : s) {
 				log.trace("socketHandle MESSAGE send to : (id){}",s1);
 				simpMessagingTemplate.convertAndSend("/topic/greetings/" + s1 ,
-						new MessageDto(message.getAction(), message.getChatRoomId(), message.getUserName(),message.getContent()));
+						new SendMessageDto(message.getAction(), message.getChatRoomId(), message.getUserName(),message.getContent(), save.getCreatedAt()));
 			}
 
 		}else{
 			simpMessagingTemplate.convertAndSend("/topic/greetings/" + id ,
-					new MessageDto(WebsocketMethod.ERROR.getMethod(), null, null,"알 수 없는 요청 입니다."));
+					new SendMessageDto(WebsocketMethod.ERROR.getMethod(), null, null,"알 수 없는 요청 입니다.", null));
 		}
 	}
 }

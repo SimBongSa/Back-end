@@ -13,6 +13,7 @@ public class ChatCreateRequestDto {
     private String userIdList;
     private String userNameList;
     private String roomName;
+    private Long boardId;
 
     public void addUser(Member member){
         userIdList = userIdList + " " + member.getMemberId().toString();

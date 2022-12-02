@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -21,7 +23,11 @@ public class ChatController {
     public ResponseDto getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){   // todo : 마지막 채팅 1줄도 같이 포함해서 반환 , 채팅방 이름이 대화 상대일 경우 로직
 
         log.info("member [ {} ] called getChatRoom", userDetails.getMember().getMemberId());
-        return ResponseDto.success( chatService.getChatRoom(userDetails.getMember().getMemberId()));
+        List chatRoom = chatService.getChatRoom(userDetails.getMember().getMemberId());
+        if(chatRoom==null){
+            return ResponseDto.success("참여하고 있는 채팅방이 없습니다.");   // todo : 성호님한테 그냥 data 에 null 넘기면 안되는지 물어보기, 또는 빈 리스트 ?
+        }
+        return ResponseDto.success(chatRoom);
     }
 
 
@@ -53,5 +59,3 @@ public class ChatController {
 
 
 }
-
-
