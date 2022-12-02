@@ -5,6 +5,7 @@ import com.simbongsa.Backend.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +28,7 @@ public class BoardDetailResponse {
 
     private String boardImage;
 
-    private LocalDate dueDay;
+    private Timestamp dueDay;
 
     private LocalDate startDate;
 

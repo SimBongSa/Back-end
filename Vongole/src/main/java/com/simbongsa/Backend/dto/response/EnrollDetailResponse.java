@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class EnrollDetailResponse {
 
     private String content;
 
-    private LocalDate dueDay;
+    private Timestamp dueDay;
 
     private LocalDate startDate;
 
