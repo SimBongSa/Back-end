@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +28,7 @@ public class BoardResponse {
 
     private String boardImage;
 
-    private LocalDate dueDay;
+    private Timestamp dueDay;
 
     private LocalDate startDate;
 
