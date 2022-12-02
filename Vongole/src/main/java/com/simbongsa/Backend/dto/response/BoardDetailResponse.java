@@ -18,6 +18,8 @@ public class BoardDetailResponse {
 
     private String author;
 
+    private Long authorId;
+
     private String profileImage;
 
     private String title;
@@ -52,6 +54,7 @@ public class BoardDetailResponse {
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.author = board.getMember().getUsername();
+        this.authorId = board.getMember().getMemberId();
         this.profileImage = board.getMember().getProfileImage();
         this.content = board.getContent();
         this.hits = board.getHits();
