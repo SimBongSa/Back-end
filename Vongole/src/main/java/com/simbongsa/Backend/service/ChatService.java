@@ -66,7 +66,11 @@ public class ChatService {
     }
 
 
-    public ResponseDto getChatRoomHistory(@PathVariable String id){
+    public ResponseDto getChatRoomHistory(@PathVariable String id, Member member){
+
+        if(!member.getChatRoomIdList().contains(id)){
+            throw new GlobalException(ErrorCode.NO_SUCH_CHATROOM);
+        }
 
         List<ChatRecord> records = chatRoomRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new GlobalException(ErrorCode.NO_SUCH_CHATROOM))

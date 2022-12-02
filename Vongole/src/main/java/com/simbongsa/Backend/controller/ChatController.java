@@ -32,8 +32,8 @@ public class ChatController {
 
 
     @GetMapping("/chatroom/{id}/history")   // 채팅 기록 조회
-    public ResponseDto getChatRoomHistory(@PathVariable String id){
-        return chatService.getChatRoomHistory(id);
+    public ResponseDto getChatRoomHistory(@PathVariable String id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return chatService.getChatRoomHistory(id, userDetails.getMember());
     }
 
     @PostMapping("/chatroom")   // 채팅방 생성
