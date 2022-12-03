@@ -207,4 +207,10 @@ public class Check {
         return enrollment;
     }
 
+    public void myApplicant(Enrollment enrollment, Member member) {
+        if (!enrollment.getBoard().getMember().getUsername().equals(member.getUsername())) {
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_ENROLLMENT);
+        }
+    }
+
 }

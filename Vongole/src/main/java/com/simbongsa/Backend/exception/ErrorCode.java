@@ -28,6 +28,8 @@ public enum ErrorCode {
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "관리자만 게시물을 생성할 수 있습니다."),
     UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "개인 회원이 아닙니다."),
 
+    UNAUTHORIZED_ENROLLMENT(HttpStatus.UNAUTHORIZED.value(), "Unauthorized enrollment", "봉사 활동 승인 권한이 없습니다."),
+
     /*FORBIDDEN 403 error*/
     // 나중에 에러코드 명 바꾸기
     UNABLE_DELETE_BOARD(HttpStatus.FORBIDDEN.value(), "Unable To Delete Board", "봉사활동 지원자가 있기 때문에 삭제할 수 없습니다."),

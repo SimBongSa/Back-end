@@ -3,13 +3,17 @@ package com.simbongsa.Backend.dto.request;
 import com.simbongsa.Backend.entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class BoardRequest {
 
     @NotEmpty(message = "빈 칸을 채워 주세요.")
@@ -39,4 +43,17 @@ public class BoardRequest {
 //    private String category;
 
     private List<Tag> tags;
+
+    public BoardRequest(String title, String content, String dueDay, String startDate, String endDate,
+                        String area, String detailArea, List<Tag> tags) {
+        this.title = title;
+        this.content = content;
+        this.boardImage = null;
+        this.dueDay = dueDay;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.area = area;
+        this.detailArea = detailArea;
+        this.tags = tags;
+    }
 }

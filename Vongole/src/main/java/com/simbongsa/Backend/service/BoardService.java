@@ -168,8 +168,8 @@ public class BoardService {
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        String boardImage = (boardRequest.getBoardImage().getOriginalFilename().equals("")) ?
-                null : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
+        String boardImage = (boardRequest.getBoardImage() == null) ?
+                board.getBoardImage() : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
         board.update(boardRequest, boardImage);
 
         // TODO : 뭐야 hashtag 수정 어떻게 해...?
