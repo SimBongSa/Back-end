@@ -132,6 +132,10 @@ public class CompanyPageService {
         check.isAdmin(member);
         Enrollment applicant = check.isEnrolled(enrollId);
 
+        // 내 게시물의 신청자가 아니면 접근 막기
+        check.myApplicant(applicant, member);
+
+
         applicant.approve();
 
         return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 완료"));
