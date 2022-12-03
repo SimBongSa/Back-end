@@ -2,8 +2,10 @@ package com.simbongsa.Backend.repository;
 
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Member;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -22,5 +24,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> findAllByOrderByEndDateDesc(Pageable pageable);
 
-    List<Board> findAllByDueDayBetween(LocalDate start, LocalDate end);
+//    List<Board> findAllByDueDayBetween(LocalDate start, LocalDate end);
+
+    // TODO : 에러남
+    @Query(value = "SELECT * from board " +
+            "WHERE DATE_FORMAT(due_day,'%Y-%m') =  :month", nativeQuery = true)
+    List<Board> findAllByDueDay(@Param("month") String month);
 }

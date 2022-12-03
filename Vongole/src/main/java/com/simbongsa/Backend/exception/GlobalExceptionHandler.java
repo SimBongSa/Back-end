@@ -23,13 +23,13 @@ public class GlobalExceptionHandler {
     }
 
 
-    // Todo 조금 더 알아보고 수정하기
-    @ExceptionHandler({AmazonS3Exception.class})
-    protected ResponseEntity<?> handleMultipartException(AmazonS3Exception e) {
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
-    }
+//    // Todo 조금 더 알아보고 수정하기
+//    @ExceptionHandler({AmazonS3Exception.class})
+//    protected ResponseEntity<?> handleMultipartException(AmazonS3Exception e) {
+//
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//
+//    }
 
 }
 
