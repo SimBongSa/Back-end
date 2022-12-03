@@ -71,10 +71,10 @@ public class BoardService {
      * 게시물 월별 조회
      */
     public ResponseDto<List<BoardResponse>> getBoardsByMonth(String month) {
-        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
+//        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
+//        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
 
-        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end);
+        List<Board> boards = boardRepository.findAllByDueDay(month);
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
             boardResponses.add(new BoardResponse(board));
