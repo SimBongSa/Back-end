@@ -55,7 +55,8 @@ dependencies {
 	// AWS S3
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 
-
+	//swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 
 //	// AWS S3를 테스트하기 위한 라이브러리(S3 Mock)

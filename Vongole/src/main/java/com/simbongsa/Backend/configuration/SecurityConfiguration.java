@@ -30,6 +30,20 @@ public class SecurityConfiguration {
     private final AuthenticationEntryPointException authenticationEntryPointException;
     private final AccessDeniedHandlerException accessDeniedHandlerException;
     private final JwtExceptionFilter jwtExceptionFilter;
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,6 +80,7 @@ public class SecurityConfiguration {
                 .antMatchers("/main.css").permitAll()
                 .antMatchers("/topic/**").permitAll()
                 .antMatchers("/gs-guide-websocket/**").permitAll()
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .anyRequest().authenticated()
 
                 .and()
