@@ -41,8 +41,8 @@ public class MyPageService {
     public ResponseDto<MyResponse> updateMyProfile(Member member, MyUpdateRequest myUpdateRequest) throws IOException {
         check.isNotMember(member);
 
-        String profileImage = (myUpdateRequest.getProfileImage().getOriginalFilename().equals(""))?
-                null:s3Uploader.uploadFiles(myUpdateRequest.getProfileImage(), "member");
+        String profileImage = (myUpdateRequest.getProfileImage() == null) ?
+                member.getProfileImage() : s3Uploader.uploadFiles(myUpdateRequest.getProfileImage(), "member");
         member.myupdate(myUpdateRequest, profileImage);
 
         return ResponseDto.success(new MyResponse(member));
