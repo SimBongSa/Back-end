@@ -70,16 +70,16 @@ public class BoardService {
     /**
      * 게시물 월별 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoardsByMonth(String year,String month) {
+    public ResponseDto<List<BoardDudayResponse>> getBoardsByMonth(String year,String month) {
 //        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
 //        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
 
         List<Board> boards = boardRepository.findAllByDueDay(year,month);
-        List<BoardResponse> boardResponses = new ArrayList<>();
+        List<BoardDudayResponse> boardDudayResponses = new ArrayList<>();
         for (Board board : boards) {
-            boardResponses.add(new BoardResponse(board));
+            boardDudayResponses.add(new BoardDudayResponse(board));
         }
-        return ResponseDto.success(boardResponses);
+        return ResponseDto.success(boardDudayResponses);
     }
 
     /**

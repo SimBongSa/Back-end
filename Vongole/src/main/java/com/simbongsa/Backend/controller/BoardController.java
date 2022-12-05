@@ -48,7 +48,7 @@ public class BoardController {
      * 게시물 월별 조회
      */
     @GetMapping("/month")
-    public ResponseDto<List<BoardResponse>> getBoardsByMonth(@RequestParam(name = "year") String year,
+    public ResponseDto<List<BoardDudayResponse>> getBoardsByMonth(@RequestParam(name = "year") String year,
                                                              @RequestParam(name = "month") String month) {
         return boardService.getBoardsByMonth(year,month);
     }

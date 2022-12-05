@@ -27,7 +27,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 //    List<Board> findAllByDueDayBetween(LocalDate start, LocalDate end);
 
     @Query(value = "SELECT * from board " +
-            "WHERE DATE_FORMAT(due_day,'%M') =  :month" +
+            "WHERE DATE_FORMAT(due_day,'%m') =  :month" +
             " AND DATE_FORMAT(due_day,'%Y') =  :year", nativeQuery = true)
     List<Board> findAllByDueDay(@Param("year") String year,
                                 @Param("month") String month);
