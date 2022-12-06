@@ -7,6 +7,7 @@ import com.simbongsa.Backend.entity.Tag;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,5 +111,19 @@ public class BoardController {
     public ResponseDto<MsgResponse> likeBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                               @PathVariable Long boardId) {
         return boardService.likeBoard(userDetails.getUsername(), boardId);
+    }
+
+    /**
+     * 게시물 검색
+     */
+    @GetMapping("/search")
+    public ResponseDto<List<BoardResponse>> searchBoards(Pageable pageable,
+                                                         @RequestParam(name = "tag") Tag tag,
+                                                         @RequestParam(name = "startDate") String startDate,
+                                                         @RequestParam(name = "endDate") String endDate,
+                                                         @RequestParam(name = "area") String area) {
+
+        return boardService.searchBoards(pageable, tag, startDate, endDate, area);
+
     }
 }
