@@ -8,6 +8,7 @@ import com.simbongsa.Backend.entity.Enrollment;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.CommentRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
+import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,8 @@ public class MyPageService {
     private final EnrollRepository enrollRepository;
 
     private final Check check;
+
+    private final MemberRepository memberRepository;
     public ResponseDto<MyResponse> getMyProfile(Member member) {
         check.isNotMember(member);
         return ResponseDto.success(new MyResponse(member));
@@ -106,4 +110,23 @@ public class MyPageService {
         return ResponseDto.success(boardResponses);
     }
 
+    public ResponseDto<MyResponse> getYourProfile(Long id) {
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        return ResponseDto.success(new MyResponse(member.orElseThrow()));
+    }
+
+    public ResponseDto<List<BoardResponse>> getYourBoards(Long id,int page,int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
+        List<BoardResponse> boardResponses = new ArrayList<>();
+        for (Enrollment enrollment : enrollments) {
+            if(enrollment.getApproval().equals(Approval.PASS)){
+                boardResponses.add(new BoardResponse(enrollment.getBoard()));
+            }
+        }
+        return ResponseDto.success(boardResponses);
+    }
 }

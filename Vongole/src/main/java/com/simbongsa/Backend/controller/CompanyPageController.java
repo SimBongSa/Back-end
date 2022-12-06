@@ -89,4 +89,19 @@ public class CompanyPageController {
                                                      @PathVariable Long enrollId) {
         return companyPageService.disapproveMember(userDetails.getMember(), enrollId);
     }
+
+    //남의회원 정보 조회
+    @GetMapping("/{member_id}")
+    public ResponseDto<CompanyResponse> getYourProfile(@PathVariable("member_id") Long id) {
+        return companyPageService.getYourProfile(id);
+    }
+
+    //다른기업이 게시한 게시글
+    @GetMapping("/{member_id}/boards")
+    public ResponseDto<List<BoardResponse>> getYourBoards(@PathVariable("member_id") Long id,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page,
+                                                          @RequestParam(name = "size", defaultValue = "4") int size
+    ){
+        return companyPageService.getYourBoards(id,page,size);
+    }
 }

@@ -9,6 +9,7 @@ import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
 import com.simbongsa.Backend.repository.HashtagRepository;
+import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,7 @@ public class CompanyPageService {
     private final PasswordEncoder passwordEncoder;
     private final Check check;
     private final S3Uploader s3Uploader;
+    private final MemberRepository memberRepository;
 
     /**
      * 내 프로필 조회
@@ -155,4 +159,23 @@ public class CompanyPageService {
     }
 
 
+    public ResponseDto<CompanyResponse> getYourProfile(Long id) {
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isAdmin(member.orElseThrow());
+        return ResponseDto.success(new CompanyResponse(member.orElseThrow()));
+    }
+
+    public ResponseDto<List<BoardResponse>> getYourBoards(Long id, int page, int size) {
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isAdmin(member.orElseThrow());
+        Pageable pageable = PageRequest.of(page, size);
+        List<Board> myBoards = boardRepository.findAllByMember(member.orElseThrow(), pageable);
+        List<BoardResponse> boardResponses = new ArrayList<>();
+
+        for (Board myBoard : myBoards) {
+            boardResponses.add(new BoardResponse(myBoard));
+        }
+
+        return ResponseDto.success(boardResponses);
+    }
 }

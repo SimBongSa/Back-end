@@ -73,6 +73,7 @@ public class SecurityConfiguration {
 //                .antMatchers("/comments/*").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
                 .antMatchers("/companypage/**").permitAll()
+                .antMatchers("/mypage/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/app.js").permitAll()
                 .antMatchers("/webjars/**").permitAll()
