@@ -1,12 +1,10 @@
 package com.simbongsa.Backend.service;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.request.BoardUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.*;
-import com.simbongsa.Backend.repository.BoardRepository;
-import com.simbongsa.Backend.repository.CommentRepository;
-import com.simbongsa.Backend.repository.HashtagRepository;
-import com.simbongsa.Backend.repository.LikesRepository;
+import com.simbongsa.Backend.repository.*;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +28,7 @@ public class BoardService {
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
     private final HashtagRepository hashtagRepository;
+    private final EnrollRepository enrollRepository;
 
     private final S3Uploader s3Uploader;
     private final Check check;
@@ -70,11 +69,11 @@ public class BoardService {
     /**
      * 게시물 월별 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoardsByMonth(String year,String month) {
+    public ResponseDto<List<BoardResponse>> getBoardsByMonth(String year, String month) {
 //        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
 //        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
 
-        List<Board> boards = boardRepository.findAllByDueDay(year,month);
+        List<Board> boards = boardRepository.findAllByDueDay(year, month);
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Board board : boards) {
             boardResponses.add(new BoardResponse(board));
@@ -138,7 +137,12 @@ public class BoardService {
             commentResponses.add(new CommentResponse(comment));
         }
 
-        return ResponseDto.success(new BoardDetailResponse(board, commentResponses, tags));
+        List<String> applicants = new ArrayList<>();
+        enrollRepository.findAllByBoard(board)
+                .forEach(enrollment -> applicants.add(enrollment.getMember().getUsername()));
+
+
+        return ResponseDto.success(new BoardDetailResponse(board, commentResponses, tags, applicants));
     }
 
     /**
@@ -162,17 +166,24 @@ public class BoardService {
      * (작성한 관리자만 수정 가능)
      */
     @Transactional
-    public ResponseDto<MsgResponse> updateBoard(Member member, BoardRequest boardRequest, Long boardId) throws IOException {
+    public ResponseDto<MsgResponse> updateBoard(Member member, BoardUpdateRequest boardUpdateRequest, Long boardId) throws IOException {
         // 게시물 존재 유무
         Board board = check.existBoard(boardId);
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        String boardImage = (boardRequest.getBoardImage() == null) ?
-                board.getBoardImage() : s3Uploader.uploadFiles(boardRequest.getBoardImage(), "board");
-        board.update(boardRequest, boardImage);
+        // 해시태그 삭제 후 다시 등록
+        hashtagRepository.deleteAllByBoardId(boardId);
 
-        // TODO : 뭐야 hashtag 수정 어떻게 해...?
+        String boardImage = (boardUpdateRequest.getBoardImage() == null) ?
+                board.getBoardImage() : s3Uploader.uploadFiles(boardUpdateRequest.getBoardImage(), "board");
+        board.update(boardUpdateRequest, boardImage);
+
+        List<Tag> tags = boardUpdateRequest.getTags();
+        for (Tag tag : tags) {
+            hashtagRepository.save(new Hashtag(boardId, tag));
+        }
+
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
     }

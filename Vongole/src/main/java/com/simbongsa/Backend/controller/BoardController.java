@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.request.BoardUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Tag;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
@@ -90,9 +91,9 @@ public class BoardController {
      */
     @PutMapping("/{boardId}")
     public ResponseDto<MsgResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @ModelAttribute @Valid BoardRequest boardRequest,
+                                                @ModelAttribute @Valid BoardUpdateRequest boardUpdateRequest,
                                                 @PathVariable Long boardId) throws IOException {
-        return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
+        return boardService.updateBoard(userDetails.getMember(), boardUpdateRequest, boardId);
     }
 
     /**
