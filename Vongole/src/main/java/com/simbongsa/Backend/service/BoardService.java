@@ -24,6 +24,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardQueryRepository boardQueryRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
     private final HashtagRepository hashtagRepository;
@@ -231,6 +232,21 @@ public class BoardService {
         }
 
         return ResponseDto.success(new MsgResponse(msg));
+    }
+
+    /**
+     * 게시물 검색
+     */
+
+    @Transactional
+    public ResponseDto<List<BoardResponse>> searchBoards(Pageable pageable, Tag tag, String startDate, String endDate, String area) {
+
+        List<Board> boards = boardQueryRepository.findAllBySearch(pageable, tag, startDate, endDate, area);
+
+
+
+        return getBoardResponses(boards);
+
     }
 
 }

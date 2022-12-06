@@ -99,17 +99,21 @@ public class TokenProvider {
     }
 
     public Authentication getAuthentication(String accessToken) {
+        // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new IllegalStateException("권한 정보가 없는 토큰입니다.");
         }
+
+        // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        UserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());
+        // UserDetails 객체를 만들어서 Authentication을 리턴
+        UserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());  // DB로부터 회원정보를 가져와서, 있는 회원인지 아닌지 체크하는 메소드
 
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
