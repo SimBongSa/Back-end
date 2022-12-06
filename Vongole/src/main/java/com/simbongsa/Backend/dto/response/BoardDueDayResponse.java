@@ -8,13 +8,13 @@ import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
-public class BoardDudayResponse {
+public class BoardDueDayResponse {
 
     private Long boardId;
 
     private Timestamp dueDay;
 
-    public BoardDudayResponse(Board board) {
+    public BoardDueDayResponse(Board board) {
         this.boardId=board.getId();
         this.dueDay=board.getDueDay();
     }

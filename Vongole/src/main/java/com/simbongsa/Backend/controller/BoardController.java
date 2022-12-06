@@ -1,19 +1,18 @@
 package com.simbongsa.Backend.controller;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.request.BoardUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Tag;
 import com.simbongsa.Backend.entity.UserDetailsImpl;
 import com.simbongsa.Backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.Months;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -48,8 +47,8 @@ public class BoardController {
      * 게시물 월별 조회
      */
     @GetMapping("/month")
-    public ResponseDto<List<BoardDudayResponse>> getBoardsByMonth(@RequestParam(name = "year") String year,
-                                                             @RequestParam(name = "month") String month) {
+    public ResponseDto<List<BoardDueDayResponse>> getBoardsByMonth(@RequestParam(name = "year") String year,
+                                                                   @RequestParam(name = "month") String month) {
         return boardService.getBoardsByMonth(year,month);
     }
 
@@ -90,9 +89,9 @@ public class BoardController {
      */
     @PutMapping("/{boardId}")
     public ResponseDto<MsgResponse> updateBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @ModelAttribute @Valid BoardRequest boardRequest,
+                                                @ModelAttribute @Valid BoardUpdateRequest boardUpdateRequest,
                                                 @PathVariable Long boardId) throws IOException {
-        return boardService.updateBoard(userDetails.getMember(), boardRequest, boardId);
+        return boardService.updateBoard(userDetails.getMember(), boardUpdateRequest, boardId);
     }
 
     /**

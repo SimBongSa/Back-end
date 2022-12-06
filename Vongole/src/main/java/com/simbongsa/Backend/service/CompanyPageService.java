@@ -135,10 +135,10 @@ public class CompanyPageService {
         // 내 게시물의 신청자가 아니면 접근 막기
         check.myApplicant(applicant, member);
 
-
+        String username = applicant.getMember().getUsername();
         applicant.approve();
 
-        return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 완료"));
+        return ResponseDto.success(new MsgResponse(username + " 님, 승인 완료"));
     }
 
     /**

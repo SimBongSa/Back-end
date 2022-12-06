@@ -1,6 +1,7 @@
 package com.simbongsa.Backend.entity;
 
 import com.simbongsa.Backend.dto.request.BoardRequest;
+import com.simbongsa.Backend.dto.request.BoardUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,15 +72,15 @@ public class Board extends Timestamped {
         this.applicantCnt = 0L;
     }
 
-    public void update(BoardRequest boardRequest, String boardImage) {
-        this.title = boardRequest.getTitle();
-        this.content = boardRequest.getContent();
+    public void update(BoardUpdateRequest boardUpdateRequest, String boardImage) {
+        this.title = boardUpdateRequest.getTitle();
+        this.content = boardUpdateRequest.getContent();
         this.boardImage = boardImage;
-        this.dueDay = Timestamp.valueOf(boardRequest.getDueDay());
-        this.startDate = LocalDate.parse(boardRequest.getStartDate(),DateTimeFormatter.ISO_LOCAL_DATE);
-        this.endDate = LocalDate.parse(boardRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
-        this.area = boardRequest.getArea();
-        this.detailArea = boardRequest.getDetailArea();
+        this.dueDay = Timestamp.valueOf(boardUpdateRequest.getDueDay());
+        this.startDate = LocalDate.parse(boardUpdateRequest.getStartDate(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.endDate = LocalDate.parse(boardUpdateRequest.getEndDate(),DateTimeFormatter.ISO_LOCAL_DATE);
+        this.area = boardUpdateRequest.getArea();
+        this.detailArea = boardUpdateRequest.getDetailArea();
     }
 
     // 조회수 증가

@@ -17,6 +17,9 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
 
     // 봉사활동 지원자 목록
     List<Enrollment> findAllByBoard(Board board, Pageable pageable);
+    // Todo : 나중에 제거
+    List<Enrollment> findAllByBoard(Board board);
+
 
     // 봉사활동에 지원한 사람인지 확인
     Boolean existsByMemberAndBoard(Member member, Board board);
@@ -28,5 +31,5 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
 
     List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
 
-    List<Enrollment> findAllByBoard(Board myBoard);
+
 }

@@ -11,8 +11,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
-public class BoardRequest {
+@NoArgsConstructor
+//@AllArgsConstructor
+@Setter
+public class BoardUpdateRequest {
 
     @NotEmpty(message = "빈 칸을 채워 주세요.")
     private String title;
@@ -38,4 +40,17 @@ public class BoardRequest {
     private String detailArea;
 
     private List<Tag> tags;
+
+    public BoardUpdateRequest(String title, String content, String dueDay, String startDate, String endDate,
+                        String area, String detailArea, List<Tag> tags) {
+        this.title = title;
+        this.content = content;
+        this.boardImage = null;
+        this.dueDay = dueDay;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.area = area;
+        this.detailArea = detailArea;
+        this.tags = tags;
+    }
 }
