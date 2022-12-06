@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,16 +68,15 @@ public class BoardService {
     /**
      * 게시물 월별 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoardsByMonth(String year, String month) {
-//        LocalDate start = LocalDate.parse(month + "-01", DateTimeFormatter.ISO_LOCAL_DATE);
-//        LocalDate end = LocalDate.parse(month + "-30", DateTimeFormatter.ISO_LOCAL_DATE);
+    public ResponseDto<List<BoardDueDayResponse>> getBoardsByMonth(String year, String month) {
 
-        List<Board> boards = boardRepository.findAllByDueDay(year, month);
-        List<BoardResponse> boardResponses = new ArrayList<>();
+        List<Board> boards = boardRepository.findAllByDueDay(year,month);
+        List<BoardDueDayResponse> boardDueDayResponses = new ArrayList<>();
+
         for (Board board : boards) {
-            boardResponses.add(new BoardResponse(board));
+            boardDueDayResponses.add(new BoardDueDayResponse(board));
         }
-        return ResponseDto.success(boardResponses);
+        return ResponseDto.success(boardDueDayResponses);
     }
 
     /**
