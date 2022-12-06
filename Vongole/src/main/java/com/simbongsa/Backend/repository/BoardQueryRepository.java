@@ -46,12 +46,12 @@ public class BoardQueryRepository {
 
         return queryFactory
                 .selectFrom(board)
-                .where(board.id.eqAny(
+                .where(board.id.in(
                         JPAExpressions
                                    .select(hashtag.boardId)
                                  .from(hashtag)
-                                  .where(hashtag.tag.in(tag)))
-                , areaEq(area), dateEq(startDate, endDate))
+                                  .where(tagIn(tag)))
+                , areaEq(area), dateBetween(startDate, endDate))
                 .orderBy(board.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -61,17 +61,23 @@ public class BoardQueryRepository {
 
 
 
-    private BooleanExpression tagEq(Tag tag) {
-        return tag.equals("ALL") ? null : hashtag.tag.eq(tag);
+    private BooleanExpression tagIn(Tag tag) {
+
+        if (tag == Tag.ALL) {
+            return null;
+        }
+
+        return hashtag.tag.in(tag);
     }
 
 
 
     private BooleanExpression areaEq(String area) {
-        return area.equals("ALL") ? null : board.area.eq(area);
+
+        return area.equals("ALL") ? null : board.area.substring(0,2).eq(area);
     }
 
-    private BooleanExpression dateEq(String startDate, String endDate) {
+    private BooleanExpression dateBetween(String startDate, String endDate) {
         BooleanExpression searchDate;
         LocalDate startDateOfLd = LocalDate.parse(startDate, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDateOfLd = LocalDate.parse(endDate, DateTimeFormatter.ISO_LOCAL_DATE);
