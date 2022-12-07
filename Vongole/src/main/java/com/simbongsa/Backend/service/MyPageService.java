@@ -51,9 +51,11 @@ public class MyPageService {
 
         return ResponseDto.success(new MyResponse(member));
     }
-    public ResponseDto<List<CommentResponse>> getMyComments(Member member,int page,int size) {
+    public ResponseDto<List<CommentResponse>> getMyComments(Long id,int page,int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Comment> comments = commentRepository.findAllByMember(member,pageable);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Comment> comments = commentRepository.findAllByMember(member.orElseThrow(),pageable);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
             commentResponses.add(new CommentResponse(comment));
@@ -61,9 +63,11 @@ public class MyPageService {
         return ResponseDto.success(commentResponses);
     }
 
-    public ResponseDto<List<BoardResponse>> getMyEnroll(Member member,int page,int size) {
+    public ResponseDto<List<BoardResponse>> getMyEnroll(Long id,int page,int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member,pageable);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Enrollment enrollment : enrollments) {
             boardResponses.add(new BoardResponse(enrollment.getBoard()));
@@ -71,9 +75,11 @@ public class MyPageService {
 
         return ResponseDto.success(boardResponses);
     }
-    public ResponseDto<List<BoardResponse>> getMyEnrollWait(Member member,int page,int size) {
+    public ResponseDto<List<BoardResponse>> getMyEnrollWait(Long id,int page,int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member,pageable);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Enrollment enrollment : enrollments) {
             if(enrollment.getApproval().equals(Approval.WAITING)){
@@ -83,9 +89,11 @@ public class MyPageService {
 
         return ResponseDto.success(boardResponses);
     }
-    public ResponseDto<List<BoardResponse>> getMyEnrollPass(Member member,int page,int size) {
+    public ResponseDto<List<BoardResponse>> getMyEnrollPass(Long id,int page,int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member,pageable);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
 
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Enrollment enrollment : enrollments) {
@@ -98,9 +106,11 @@ public class MyPageService {
     }
 
 
-    public ResponseDto<List<BoardResponse>> getMyEnrollFail(Member member,int page,int size) {
+    public ResponseDto<List<BoardResponse>> getMyEnrollFail(Long id,int page,int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member,pageable);
+        Optional<Member> member = memberRepository.findByMemberId(id);
+        check.isMember(member.orElseThrow());
+        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
         List<BoardResponse> boardResponses = new ArrayList<>();
         for (Enrollment enrollment : enrollments) {
             if(enrollment.getApproval().equals(Approval.FAIL)){
@@ -116,17 +126,4 @@ public class MyPageService {
         return ResponseDto.success(new MyResponse(member.orElseThrow()));
     }
 
-    public ResponseDto<List<BoardResponse>> getYourBoards(Long id,int page,int size) {
-        Pageable pageable = PageRequest.of(page,size);
-        Optional<Member> member = memberRepository.findByMemberId(id);
-        check.isMember(member.orElseThrow());
-        Page<Enrollment> enrollments = enrollRepository.findAllByMember(member.orElseThrow(),pageable);
-        List<BoardResponse> boardResponses = new ArrayList<>();
-        for (Enrollment enrollment : enrollments) {
-            if(enrollment.getApproval().equals(Approval.PASS)){
-                boardResponses.add(new BoardResponse(enrollment.getBoard()));
-            }
-        }
-        return ResponseDto.success(boardResponses);
-    }
 }

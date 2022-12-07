@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -156,6 +157,16 @@ public class Check {
             throw new GlobalException(ErrorCode.BOARD_NOT_FOUND);
         }
         return board;
+    }
+
+    /*
+        게시글 검색 시 게시글 리스트 존재 유무 확인
+     */
+
+    public void existBoardList(List<Board> boards) {
+        if (boards.isEmpty()) {
+            throw new GlobalException(ErrorCode.SEARCH_NOT_FOUND);
+        }
     }
 
 

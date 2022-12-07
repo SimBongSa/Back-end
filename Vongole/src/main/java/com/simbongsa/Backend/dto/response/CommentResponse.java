@@ -15,6 +15,8 @@ public class CommentResponse {
 
     private Long boardId;
 
+    private Long memberId;
+
     private String username;
 
     private String content;
@@ -25,6 +27,7 @@ public class CommentResponse {
     public CommentResponse(Comment comment) {
         this.commentId = comment.getId();
         this.boardId = comment.getBoard().getId();
+        this.memberId = comment.getMember().getMemberId();
         this.username = comment.getMember().getUsername();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();

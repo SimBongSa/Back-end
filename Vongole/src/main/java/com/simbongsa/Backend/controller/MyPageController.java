@@ -38,57 +38,52 @@ public class MyPageController {
         return myPageService.updateMyProfile(userDetails.getMember(), myUpdateRequest);
     }
     //내가 작성한 댓글들의 정보
-    @GetMapping("/comments")
-    public ResponseDto<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/{member_id}/comments")
+    public ResponseDto<List<CommentResponse>> getMyComments(@PathVariable("member_id") Long id,
                                                             @RequestParam(name = "page", defaultValue = "0") int page,
                                                             @RequestParam(name = "size", defaultValue = "4") int size
     ){
-        check.isMember(userDetails.getMember());
-        return myPageService.getMyComments(userDetails.getMember(),page,size);
+        return myPageService.getMyComments(id,page,size);
     }
     //내가 작성한 댓글의 게시글 상세 조회
 
 
     //내가 신청한 모든 (승인,거절,기다림 포함)봉사활동 정보
-    @GetMapping("/enroll")
-    public ResponseDto<List<BoardResponse>> getMyEnroll(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/{member_id}/enroll")
+    public ResponseDto<List<BoardResponse>> getMyEnroll(@PathVariable("member_id") Long id,
                                                         @RequestParam(name = "page", defaultValue = "0") int page,
                                                         @RequestParam(name = "size", defaultValue = "4") int size
     ){
-        check.isMember(userDetails.getMember());
-        return myPageService.getMyEnroll(userDetails.getMember(),page,size);
+        return myPageService.getMyEnroll(id,page,size);
     }
 
     //내가 신청한 봉사활동이 아직 대기중인 봉사활동
 
-    @GetMapping("/enroll/wait")
-    public ResponseDto<List<BoardResponse>> getMyEnrollWait(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/{member_id}/enroll/wait")
+    public ResponseDto<List<BoardResponse>> getMyEnrollWait(@PathVariable("member_id") Long id,
                                                             @RequestParam(name = "page", defaultValue = "0") int page,
                                                             @RequestParam(name = "size", defaultValue = "4") int size
     ){
-        check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollWait(userDetails.getMember(),page,size);
+        return myPageService.getMyEnrollWait(id,page,size);
     }
 
     //내가 신청한 봉사활동이 승인된 봉사활동
 
-    @GetMapping("/enroll/pass")
-    public ResponseDto<List<BoardResponse>> getMyEnrollPass(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/{member_id}/enroll/pass")
+    public ResponseDto<List<BoardResponse>> getMyEnrollPass(@PathVariable("member_id") Long id,
                                                             @RequestParam(name = "page", defaultValue = "0") int page,
                                                             @RequestParam(name = "size", defaultValue = "4") int size
     ){
-        check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollPass(userDetails.getMember(),page,size);
+        return myPageService.getMyEnrollPass(id,page,size);
     }
 
     //내가 신청한 봉사활동이 거절된 봉사활동
-    @GetMapping("/enroll/fail")
-    public ResponseDto<List<BoardResponse>> getMyEnrollFail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @GetMapping("/{member_id}/enroll/fail")
+    public ResponseDto<List<BoardResponse>> getMyEnrollFail(@PathVariable("member_id") Long id,
                                                             @RequestParam(name = "page", defaultValue = "0") int page,
                                                             @RequestParam(name = "size", defaultValue = "4") int size
     ){
-        check.isMember(userDetails.getMember());
-        return myPageService.getMyEnrollFail(userDetails.getMember(),page,size);
+        return myPageService.getMyEnrollFail(id,page,size);
     }
 
     //남의회원 정보 조회
@@ -97,12 +92,4 @@ public class MyPageController {
         return myPageService.getYourProfile(id);
     }
 
-    //남의회원이 신청한 게시글이 승인된 게시글
-    @GetMapping("/{member_id}/enroll/pass")
-    public ResponseDto<List<BoardResponse>> getYourBoards(@PathVariable("member_id") Long id,
-                                                          @RequestParam(name = "page", defaultValue = "0") int page,
-                                                          @RequestParam(name = "size", defaultValue = "4") int size
-    ){
-        return myPageService.getYourBoards(id,page,size);
-    }
 }
