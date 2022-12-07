@@ -242,11 +242,9 @@ public class BoardService {
     public ResponseDto<List<BoardResponse>> searchBoards(Pageable pageable, Tag tag, String startDate, String endDate, String area) {
 
         List<Board> boards = boardQueryRepository.findAllBySearch(pageable, tag, startDate, endDate, area);
-
-
+        check.existBoardList(boards);
 
         return getBoardResponses(boards);
-
     }
 
 }
