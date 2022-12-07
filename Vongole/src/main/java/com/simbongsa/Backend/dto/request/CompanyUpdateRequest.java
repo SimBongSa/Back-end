@@ -11,10 +11,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @Setter
 @NoArgsConstructor
 public class CompanyUpdateRequest {
+
+    @Email(message = "이메일 형식에 맞춰서 입력해주세요.")
+    private String email;
+
+    private String introduction;
 
     @Pattern(regexp = "^(?=.*[a-zA-Z])((?=.*\\d)(?=.*\\W)).{8,16}$", message = "영문자+숫자+특수문자를 최소 1개 이상 포함하여 8~16자로 구성됩니다.")
     private String password;
@@ -23,20 +28,17 @@ public class CompanyUpdateRequest {
 
     private MultipartFile profileImage;
 
-    @Email(message = "이메일 형식에 맞춰서 입력해주세요.")
-    private String email;
-
     private String phoneNumber;
 
-    private String introduction;
 
-    public CompanyUpdateRequest(String password, String passwordConfirm, String email, String phoneNumber, String introduction) {
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.profileImage = null;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.introduction = introduction;
-    }
+
+//    public CompanyUpdateRequest(String password, String passwordConfirm, String email, String phoneNumber, String introduction) {
+//        this.password = password;
+//        this.passwordConfirm = passwordConfirm;
+//        this.profileImage = null;
+//        this.email = email;
+//        this.phoneNumber = phoneNumber;
+//        this.introduction = introduction;
+//    }
 
 }

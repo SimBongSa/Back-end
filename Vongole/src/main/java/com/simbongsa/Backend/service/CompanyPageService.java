@@ -53,14 +53,15 @@ public class CompanyPageService {
         check.isAdmin(member);
 
         // 시큐리티에서 제공하는 member 객체에 db 로부터 불러온 member 객체 덮어 쓰기
-        member = check.findMember(member.getMemberId());
+        Member findMember = check.findMember(member.getMemberId());
         check.isPassword(companyUpdateRequest.getPassword(), companyUpdateRequest.getPasswordConfirm());
 
         String encodedPassword = passwordEncoder.encode(companyUpdateRequest.getPassword());
 
         String profileImage = (companyUpdateRequest.getProfileImage() == null) ?
-                member.getProfileImage() : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
-        member.update(companyUpdateRequest, profileImage, encodedPassword);
+                findMember.getProfileImage() : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
+        findMember.update(companyUpdateRequest, profileImage, encodedPassword);
+
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
