@@ -34,7 +34,7 @@ public class CompanyPageController {
      */
     @PutMapping()
     public ResponseDto<MsgResponse> updateMyProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                        @ModelAttribute @Valid CompanyUpdateRequest companyUpdateRequest) throws IOException {
+                                                    @ModelAttribute @Valid CompanyUpdateRequest companyUpdateRequest) throws IOException {
 
         return companyPageService.updateMyProfile(userDetails.getMember(), companyUpdateRequest);
     }
@@ -101,7 +101,7 @@ public class CompanyPageController {
     public ResponseDto<List<BoardResponse>> getYourBoards(@PathVariable("member_id") Long id,
                                                           @RequestParam(name = "page", defaultValue = "0") int page,
                                                           @RequestParam(name = "size", defaultValue = "4") int size
-    ){
-        return companyPageService.getYourBoards(id,page,size);
+    ) {
+        return companyPageService.getYourBoards(id, page, size);
     }
 }

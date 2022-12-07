@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simbongsa.Backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,12 +30,14 @@ public class BoardDetailResponse {
 
     private String boardImage;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp dueDay;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
 
     private String area;

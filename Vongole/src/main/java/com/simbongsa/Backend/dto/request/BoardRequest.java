@@ -37,5 +37,6 @@ public class BoardRequest {
     @NotEmpty(message = "상세 주소를 작성해 주세요.")
     private String detailArea;
 
+    @NotEmpty(message = "해시태그를 선택하세요.")
     private List<Tag> tags;
 }
