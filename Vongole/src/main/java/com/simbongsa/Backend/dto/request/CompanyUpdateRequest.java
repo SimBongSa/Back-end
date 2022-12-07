@@ -26,6 +26,7 @@ public class CompanyUpdateRequest {
 
     private String passwordConfirm;
 
+//    @Nullable
     private MultipartFile profileImage;
 
     private String phoneNumber;

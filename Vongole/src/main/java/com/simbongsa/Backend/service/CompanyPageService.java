@@ -64,6 +64,7 @@ public class CompanyPageService {
 
         String profileImage = (companyUpdateRequest.getProfileImage() == null) ?
                 findMember.getProfileImage() : s3Uploader.uploadFiles(companyUpdateRequest.getProfileImage(), "company");
+
         findMember.update(companyUpdateRequest, profileImage, encodedPassword);
 
 
