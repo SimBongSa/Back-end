@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,10 @@ public class MemberResponseDto {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedAt;
 }
