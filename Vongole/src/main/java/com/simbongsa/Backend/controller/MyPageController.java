@@ -90,4 +90,19 @@ public class MyPageController {
         check.isMember(userDetails.getMember());
         return myPageService.getMyEnrollFail(userDetails.getMember(),page,size);
     }
+
+    //남의회원 정보 조회
+    @GetMapping("/{member_id}")
+    public ResponseDto<MyResponse> getYourProfile(@PathVariable("member_id") Long id) {
+        return myPageService.getYourProfile(id);
+    }
+
+    //남의회원이 신청한 게시글이 승인된 게시글
+    @GetMapping("/{member_id}/enroll/pass")
+    public ResponseDto<List<BoardResponse>> getYourBoards(@PathVariable("member_id") Long id,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page,
+                                                          @RequestParam(name = "size", defaultValue = "4") int size
+    ){
+        return myPageService.getYourBoards(id,page,size);
+    }
 }
