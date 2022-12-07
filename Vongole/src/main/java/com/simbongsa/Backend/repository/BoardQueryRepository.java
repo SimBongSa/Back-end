@@ -9,12 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.net.URLDecoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.simbongsa.Backend.entity.QBoard.board;
 import static com.simbongsa.Backend.entity.QHashtag.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Repository
 public class BoardQueryRepository {
@@ -74,7 +76,9 @@ public class BoardQueryRepository {
 
     private BooleanExpression areaEq(String area) {
 
-        return area.equals("ALL") ? null : board.area.substring(0,2).eq(area);
+        String decodeArea = URLDecoder.decode(area, UTF_8);
+
+        return decodeArea.equals("ALL") ? null : board.area.substring(0,2).eq(decodeArea);
     }
 
     private BooleanExpression dateBetween(String startDate, String endDate) {
