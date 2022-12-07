@@ -1,5 +1,6 @@
 package com.simbongsa.Backend.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simbongsa.Backend.entity.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class CommentResponse {
 
     private String content;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
     public CommentResponse(Comment comment) {
