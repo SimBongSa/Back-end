@@ -46,6 +46,7 @@ public class MemberService {
     @Transactional
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
+        check.isDuplicatedUsername(requestDto.getUsername());
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
@@ -85,6 +86,7 @@ public class MemberService {
     @Transactional
     public ResponseDto<?> createCompanyMember(CompanyMemberRequestDto requestDto) throws IOException {
 
+        check.isDuplicatedUsername(requestDto.getUsername());
         check.isPassword(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
 
@@ -125,8 +127,12 @@ public class MemberService {
 
     @Transactional
     public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
+        check.isEmptyUsername(requestDto.getUsername());
+        check.isEmptyPassword(requestDto.getPassword());
+
+
         Member member = check.isPresentMember(requestDto.getUsername());
-        check.isNotMember(member);
+        check.isMatched(requestDto.getPassword(), member.getPassword());
 
 
         UsernamePasswordAuthenticationToken authenticationToken =
