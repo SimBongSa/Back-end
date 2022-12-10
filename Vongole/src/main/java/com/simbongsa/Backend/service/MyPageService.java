@@ -44,6 +44,7 @@ public class MyPageService {
     @Transactional
     public ResponseDto<MyResponse> updateMyProfile(Member member, MyUpdateRequest myUpdateRequest) throws IOException {
         check.isNotMember(member);
+        member = check.findMember(member.getMemberId());
 
         String profileImage = (myUpdateRequest.getProfileImage() == null) ?
                 member.getProfileImage() : s3Uploader.uploadFiles(myUpdateRequest.getProfileImage(), "member");

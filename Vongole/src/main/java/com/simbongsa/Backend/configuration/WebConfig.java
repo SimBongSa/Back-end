@@ -14,7 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")
                 .exposedHeaders("Authorization")
                 .exposedHeaders("*")    // todo : 필요한 헤더만 사용하도록 수정할것
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
 //    @Override // 브라우저 콘솔 webjar 404에러 관련 시도 (해결 X)
