@@ -39,11 +39,13 @@ public class Check {
 
 
     /*
-        멤버 확인 (username 중복 유무)
+        멤버 확인 (By Username)
      */
     public Member isPresentMember(String username) {
         Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        return optionalMember.orElse(null);
+        return optionalMember.orElseThrow(
+                () -> new GlobalException(ErrorCode.USERNAME_NOT_FOUND)
+        );
     }
 
     /*
@@ -55,6 +57,25 @@ public class Check {
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
+    }
+
+    /*
+        Username이 공백일 때
+     */
+
+    public void isEmptyUsername(String username) {
+        if (username.isEmpty()) {
+            throw new GlobalException(ErrorCode.LOGIN_USERNAME_EMPTY);
+        }
+    }
+
+    /*
+        Password가 공백일 때
+     */
+    public void isEmptyPassword(String password) {
+        if (password.isEmpty()) {
+            throw new GlobalException(ErrorCode.LOGIN_PASSWORD_EMPTY);
+        }
     }
 
     /*
@@ -99,7 +120,7 @@ public class Check {
 
     // Username 중복확인 (200 ErrorCode)
     public void isDuplicatedUsername(String username) {
-        if (null != isPresentMember(username)) {
+        if (memberRepository.existsByUsername(username)) {
             throw new GlobalException(ErrorCode.DUPLICATE_USERNAME);
         }
 
@@ -123,7 +144,7 @@ public class Check {
     public void isMatched(String inputPassword, String dbPassword) {
 
         if(!passwordEncoder.matches(inputPassword, dbPassword)) {
-            throw new GlobalException(ErrorCode.PASSWORD_NOT_MATCHED);
+            throw new GlobalException(ErrorCode.LOGIN_PASSWORD_NOT_MATCHED);
         }
 
     }

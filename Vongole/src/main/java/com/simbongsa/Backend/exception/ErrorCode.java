@@ -18,6 +18,13 @@ public enum ErrorCode {
 
     /* BAD_REQUEST 400 error*/
 
+    // 로그인
+    LOGIN_USERNAME_EMPTY(HttpStatus.BAD_REQUEST.value(), "Login Username is Empty", "아이디를 입력해주세요"),
+    LOGIN_PASSWORD_EMPTY(HttpStatus.BAD_REQUEST.value(), "Login Password is Empty", "비밀번호를 입력해주세요"),
+    USERNAME_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "Username Not Found","해당 아이디는 존재하지 않습니다."),
+    LOGIN_PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST.value(), "Login Password Not Matched", "비밀번호가 틀립니다."),
+
+
 
     /*UNAUTHORIZED 401 error*/
 
@@ -41,6 +48,8 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Comment Not Found", "해당 댓글은 존재하지 않습니다."),
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND.value(),"Token Not Found","해당 토큰은 존재하지 않습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Member Not Found", "해당 멤버는 존재하지 않습니다."),
+
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Username Not Found", "해당 아이디는 존재하지 않습니다."),
 
     ENROLLMENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Applicant Not Found", "신청자를 찾을 수 없습니다."),
 

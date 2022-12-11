@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Member> member = memberRepository.findByUsername(username);
         return member
                 .map(UserDetailsImpl::new)
-                .orElseThrow(() -> new UsernameNotFoundException("nickname not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
 
