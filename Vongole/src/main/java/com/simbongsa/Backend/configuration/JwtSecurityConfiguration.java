@@ -1,8 +1,8 @@
 package com.simbongsa.Backend.configuration;
 
-import com.simbongsa.Backend.jwt.JwtExceptionFilter;
-import com.simbongsa.Backend.jwt.JwtFilter;
-import com.simbongsa.Backend.jwt.TokenProvider;
+import com.simbongsa.Backend.exception.jwt.JwtExceptionFilter;
+import com.simbongsa.Backend.exception.jwt.JwtFilter;
+import com.simbongsa.Backend.exception.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

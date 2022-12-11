@@ -5,7 +5,7 @@ import com.simbongsa.Backend.dto.response.MemberResponseDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.entity.RefreshToken;
-import com.simbongsa.Backend.jwt.TokenProvider;
+import com.simbongsa.Backend.exception.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.MemberRepository;
 import com.simbongsa.Backend.util.Check;
 import com.simbongsa.Backend.util.S3Uploader;

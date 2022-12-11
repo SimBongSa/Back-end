@@ -3,7 +3,7 @@ package com.simbongsa.Backend.util;
 import com.simbongsa.Backend.entity.*;
 import com.simbongsa.Backend.exception.ErrorCode;
 import com.simbongsa.Backend.exception.GlobalException;
-import com.simbongsa.Backend.jwt.TokenProvider;
+import com.simbongsa.Backend.exception.jwt.TokenProvider;
 import com.simbongsa.Backend.repository.*;
 import com.simbongsa.Backend.shared.Authority;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.simbongsa.Backend.jwt;
+package com.simbongsa.Backend.exception.jwt;
 
 import com.simbongsa.Backend.dto.request.TokenDto;
 import com.simbongsa.Backend.dto.response.ResponseDto;
