@@ -76,7 +76,7 @@ public class CompanyPageController {
      * 지원자 승인
      */
     @PutMapping("/approve/{enrollId}")
-    public ResponseDto<MsgResponse> approveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<EnrollResponse> approveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                   @PathVariable Long enrollId) {
         return companyPageService.approveMember(userDetails.getMember(), enrollId);
     }
@@ -85,7 +85,7 @@ public class CompanyPageController {
      * 지원자 거절
      */
     @PutMapping("/disapprove/{enrollId}")
-    public ResponseDto<MsgResponse> disapproveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseDto<EnrollResponse> disapproveMember(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long enrollId) {
         return companyPageService.disapproveMember(userDetails.getMember(), enrollId);
     }

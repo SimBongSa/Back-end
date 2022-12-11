@@ -1,4 +1,4 @@
-package com.simbongsa.Backend.jwt;
+package com.simbongsa.Backend.exception.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simbongsa.Backend.dto.response.ResponseDto;

@@ -1,4 +1,4 @@
-package com.simbongsa.Backend.jwt;
+package com.simbongsa.Backend.exception.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

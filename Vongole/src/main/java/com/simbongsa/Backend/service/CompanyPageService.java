@@ -127,30 +127,31 @@ public class CompanyPageService {
      * 봉사 활동 지원자 승인
      */
     @Transactional
-    public ResponseDto<MsgResponse> approveMember(Member member, Long enrollId) {
+    public ResponseDto<EnrollResponse> approveMember(Member member, Long enrollId) {
         check.isAdmin(member);
         Enrollment applicant = check.isEnrolled(enrollId);
 
         // 내 게시물의 신청자가 아니면 접근 막기
         check.myApplicant(applicant, member);
 
-        String username = applicant.getMember().getUsername();
         applicant.approve();
 
-        return ResponseDto.success(new MsgResponse(username + " 님, 승인 완료"));
+        return ResponseDto.success(new EnrollResponse(applicant));
     }
 
     /**
      * 봉사 활동 지원자 거절
      */
     @Transactional
-    public ResponseDto<MsgResponse> disapproveMember(Member member, Long enrollId) {
+    public ResponseDto<EnrollResponse> disapproveMember(Member member, Long enrollId) {
         check.isAdmin(member);
         Enrollment applicant = check.isEnrolled(enrollId);
 
+        check.myApplicant(applicant, member);
+
         applicant.disapprove();
 
-        return ResponseDto.success(new MsgResponse(applicant.getMember().getUsername() + " 님, 승인 거절"));
+        return ResponseDto.success(new EnrollResponse(applicant));
     }
 
 

@@ -4,7 +4,7 @@ package com.simbongsa.Backend.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simbongsa.Backend.dto.request.TokenDto;
 import com.simbongsa.Backend.entity.Member;
-import com.simbongsa.Backend.jwt.TokenProvider;
+import com.simbongsa.Backend.exception.jwt.TokenProvider;
 import com.simbongsa.Backend.service.KakaoUserService;
 import com.simbongsa.Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;

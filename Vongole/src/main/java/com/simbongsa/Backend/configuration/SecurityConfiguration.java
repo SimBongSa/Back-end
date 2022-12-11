@@ -1,10 +1,10 @@
 package com.simbongsa.Backend.configuration;
 
 
-import com.simbongsa.Backend.jwt.AccessDeniedHandlerException;
-import com.simbongsa.Backend.jwt.AuthenticationEntryPointException;
-import com.simbongsa.Backend.jwt.JwtExceptionFilter;
-import com.simbongsa.Backend.jwt.TokenProvider;
+import com.simbongsa.Backend.exception.jwt.AccessDeniedHandlerException;
+import com.simbongsa.Backend.exception.jwt.AuthenticationEntryPointException;
+import com.simbongsa.Backend.exception.jwt.JwtExceptionFilter;
+import com.simbongsa.Backend.exception.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;

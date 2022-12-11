@@ -22,6 +22,6 @@ public class EnrollResponse {
     public EnrollResponse(Enrollment enrollment) {
         this.enrollId = enrollment.getId();
         this.username = enrollment.getMember().getUsername();
-        this.approval = this.getApproval();
+        this.approval = enrollment.getApproval();
     }
 }
