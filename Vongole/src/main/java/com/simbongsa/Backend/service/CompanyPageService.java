@@ -15,6 +15,7 @@ import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,10 +80,7 @@ public class CompanyPageService {
         Pageable pageable = PageRequest.of(page, size);
         List<Board> myBoards = boardRepository.findAllByMember(member, pageable);
         List<BoardResponse> boardResponses = new ArrayList<>();
-
-        for (Board myBoard : myBoards) {
-            boardResponses.add(new BoardResponse(myBoard));
-        }
+        myBoards.forEach(myBoard -> boardResponses.add(new BoardResponse(myBoard)));
 
         return ResponseDto.success(boardResponses);
     }
@@ -100,12 +98,9 @@ public class CompanyPageService {
             List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
             List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(myBoard.getId());
             List<String> tags = new ArrayList<>();
-            for (Hashtag hashtag : hashtags) {
-                tags.add(hashtag.getTag().getMsg());
-            }
-            for (Enrollment enrollment : enrollments) {
-                enrollDetailResponses.add(new EnrollDetailResponse(enrollment, tags));
-            }
+            hashtags.forEach(hashtag -> tags.add(hashtag.getTag().getMsg()));
+
+            enrollments.forEach(enrollment -> enrollDetailResponses.add(new EnrollDetailResponse(enrollment, tags)));
         }
         return ResponseDto.success(enrollDetailResponses);
     }
@@ -123,9 +118,7 @@ public class CompanyPageService {
         List<Enrollment> enrollments = enrollRepository.findAllByBoard(board, pageable);
         List<EnrollResponse> enrollResponses = new ArrayList<>();
 
-        for (Enrollment enrollment : enrollments) {
-            enrollResponses.add(new EnrollResponse(enrollment));
-        }
+        enrollments.forEach(enrollment -> enrollResponses.add(new EnrollResponse(enrollment)));
 
         return ResponseDto.success(enrollResponses);
     }

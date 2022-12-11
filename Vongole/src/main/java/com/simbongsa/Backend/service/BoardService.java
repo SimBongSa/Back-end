@@ -47,13 +47,13 @@ public class BoardService {
         boardRepository.save(board);
 
         // 해시테그 객체 생성
-        Long boardId = board.getId();
-        List<Tag> tags = boardRequest.getTags();
-        for (Tag tag : tags) {
-            hashtagRepository.save(new Hashtag(boardId, tag));
-        }
+        createHashtag(board.getId(), boardRequest.getTags());
 
         return ResponseDto.success(new BoardCreateResponse(board.getId(), "게시물 생성 완료"));
+    }
+
+    private void createHashtag(Long boardId, List<Tag> tags) {
+        tags.forEach(tag -> hashtagRepository.save(new Hashtag(boardId, tag)));
     }
 
     /**
@@ -74,9 +74,8 @@ public class BoardService {
         List<Board> boards = boardRepository.findAllByDueDay(year,month);
         List<BoardDueDayResponse> boardDueDayResponses = new ArrayList<>();
 
-        for (Board board : boards) {
-            boardDueDayResponses.add(new BoardDueDayResponse(board));
-        }
+        boards.forEach(board -> boardDueDayResponses.add(new BoardDueDayResponse(board)));
+
         return ResponseDto.success(boardDueDayResponses);
     }
 
@@ -97,12 +96,12 @@ public class BoardService {
      */
     private ResponseDto<List<BoardResponse>> getBoardResponses(List<Board> boards) {
         List<BoardResponse> boardResponses = new ArrayList<>();
+
+
         for (Board board : boards) {
             List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(board.getId());
             List<String> tags = new ArrayList<>();
-            for (Hashtag hashtag : hashtags) {
-                tags.add(hashtag.getTag().getMsg());
-            }
+            hashtags.forEach(hashtag -> tags.add(hashtag.getTag().getMsg()));
 
             boardResponses.add(new BoardResponse(board, tags));
         }
@@ -125,16 +124,11 @@ public class BoardService {
 
         List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(boardId);
         List<String> tags = new ArrayList<>();
-
-        for (Hashtag hashtag : hashtags) {
-            tags.add(hashtag.getTag().getMsg());
-        }
+        hashtags.forEach(hashtag -> tags.add(hashtag.getTag().getMsg()));
 
         List<Comment> comments = commentRepository.findAllByBoardOrderByCreatedAtDesc(board, pageable);
         List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comment comment : comments) {
-            commentResponses.add(new CommentResponse(comment));
-        }
+        comments.forEach(comment -> commentResponses.add(new CommentResponse(comment)));
 
         List<String> applicants = new ArrayList<>();
         enrollRepository.findAllByBoard(board)
@@ -153,10 +147,15 @@ public class BoardService {
         List<Hashtag> hashtags = hashtagRepository.findAllByTag(tag);
         List<BoardResponse> boardResponses = new ArrayList<>();
 
-        for (Hashtag hashtag : hashtags) {
-            Board board = boardRepository.findById(hashtag.getBoardId()).get();
-            boardResponses.add(new BoardResponse(board));
-        }
+        hashtags.forEach(hashtag ->
+                boardResponses.add(new BoardResponse(
+                        boardRepository.findById(hashtag.getBoardId()).get()
+                )));
+
+//        for (Hashtag hashtag : hashtags) {
+//            Board board = boardRepository.findById(hashtag.getBoardId()).get();
+//            boardResponses.add(new BoardResponse(board));
+//        }
         return ResponseDto.success(boardResponses);
     }
 
@@ -171,18 +170,17 @@ public class BoardService {
         // 작성자인지 확인
         check.isAuthor(member, board);
 
-        // 해시태그 삭제 후 다시 등록
-        hashtagRepository.deleteAllByBoardId(boardId);
+
 
         String boardImage = (boardUpdateRequest.getBoardImage() == null) ?
                 board.getBoardImage() : s3Uploader.uploadFiles(boardUpdateRequest.getBoardImage(), "board");
         board.update(boardUpdateRequest, boardImage);
 
-        List<Tag> tags = boardUpdateRequest.getTags();
-        for (Tag tag : tags) {
-            hashtagRepository.save(new Hashtag(boardId, tag));
-        }
 
+        // 해시태그 삭제 후 다시 등록
+        hashtagRepository.deleteAllByBoardId(boardId);
+        List<Tag> tags = boardUpdateRequest.getTags();
+        tags.forEach(tag -> hashtagRepository.save(new Hashtag(boardId, tag)));
 
         return ResponseDto.success(new MsgResponse("수정 완료!"));
     }
