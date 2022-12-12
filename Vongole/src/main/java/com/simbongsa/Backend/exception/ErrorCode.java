@@ -34,7 +34,7 @@ public enum ErrorCode {
     UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Unsupported Token", "지원되지 않는 토큰입니다."),
 
     UNAUTHORIZED_AUTHOR(HttpStatus.UNAUTHORIZED.value(), "Unauthorized Author", "작성자만 수정 또는 삭제할 수 있습니다."),
-    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "관리자만 게시물을 생성할 수 있습니다."),
+    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "관리자 회원이 아닙니다."),
     UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED.value(), "Unauthorized User", "개인 회원이 아닙니다."),
 
     UNAUTHORIZED_ENROLLMENT(HttpStatus.UNAUTHORIZED.value(), "Unauthorized enrollment", "봉사 활동 승인 권한이 없습니다."),

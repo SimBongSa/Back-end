@@ -74,7 +74,6 @@ public class BoardDetailResponse {
         this.comments = commentResponses;
         this.tags = tags;
         this.applicants = applicants;
-
     }
 }
 
