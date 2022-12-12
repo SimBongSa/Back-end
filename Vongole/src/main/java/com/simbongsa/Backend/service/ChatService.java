@@ -34,7 +34,7 @@ public class ChatService {
 
         String chatRoomIdList = member.getChatRoomIdList();
         if(chatRoomIdList== null){
-            return null;
+            return list;
         }
         String[] s = chatRoomIdList.split(" ");
 

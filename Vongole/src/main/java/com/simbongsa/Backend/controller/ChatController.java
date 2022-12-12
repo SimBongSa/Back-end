@@ -24,9 +24,6 @@ public class ChatController {
 
         log.info("member [ {} ] called getChatRoom", userDetails.getMember().getMemberId());
         List chatRoom = chatService.getChatRoom(userDetails.getMember().getMemberId());
-        if(chatRoom==null){
-            return ResponseDto.success("참여하고 있는 채팅방이 없습니다.");   // todo : 성호님한테 그냥 data 에 null 넘기면 안되는지 물어보기, 또는 빈 리스트 ?
-        }
         return ResponseDto.success(chatRoom);
     }
 
