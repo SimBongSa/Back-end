@@ -84,8 +84,10 @@ public class BoardService {
      */
     public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Timestamp start = Timestamp.valueOf(dueDay.atTime(0, 0, 0));
-        Timestamp end = Timestamp.valueOf(dueDay.atTime(23, 59, 59));
+//        Timestamp start = Timestamp.valueOf(dueDay.atTime(0, 0, 0));
+//        Timestamp end = Timestamp.valueOf(dueDay.atTime(23, 59, 59));
+        Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
+        Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
         List<Board> boards = boardRepository.findAllByDueDayBetween(start, end, pageable);
 
         return getBoardResponses(boards);
