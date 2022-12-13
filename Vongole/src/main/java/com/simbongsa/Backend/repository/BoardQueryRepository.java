@@ -1,15 +1,25 @@
 package com.simbongsa.Backend.repository;
 
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleTemplate;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.simbongsa.Backend.dto.response.BoardResponse;
 import com.simbongsa.Backend.entity.Board;
+import com.simbongsa.Backend.entity.QBoard;
 import com.simbongsa.Backend.entity.Tag;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.net.URLDecoder;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,9 +36,8 @@ public class BoardQueryRepository {
     public void save(Board board) {
         em.persist(board);
     }
+
     private final JPAQueryFactory queryFactory;
-
-
 
 
     public BoardQueryRepository(EntityManager em) {
@@ -43,17 +52,16 @@ public class BoardQueryRepository {
     }
 
 
-
     public List<Board> findAllBySearch(Pageable pageable, Tag tag, String startDate, String endDate, String area) {
 
         return queryFactory
                 .selectFrom(board)
                 .where(board.id.in(
-                        JPAExpressions
-                                   .select(hashtag.boardId)
-                                 .from(hashtag)
-                                  .where(tagIn(tag)))
-                , areaEq(area), dateBetween(startDate, endDate))
+                                JPAExpressions
+                                        .select(hashtag.boardId)
+                                        .from(hashtag)
+                                        .where(tagIn(tag)))
+                        , areaEq(area), dateBetween(startDate, endDate))
                 .orderBy(board.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -61,6 +69,28 @@ public class BoardQueryRepository {
 
     }
 
+    /**
+     * 날짜별 조회
+     */
+    public List<Board> findAllByDueDayBetween(LocalDate dueDay, Pageable pageable) {
+        Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
+        Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
+        return queryFactory
+                .selectFrom(board)
+                .where(board.dueDay.between(start, end))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    /**
+     * boardResponse
+     */
+//    public BoardResponse getBoardResponses() {
+//
+//
+//
+//    }
 
 
     private BooleanExpression tagIn(Tag tag) {
@@ -73,12 +103,11 @@ public class BoardQueryRepository {
     }
 
 
-
     private BooleanExpression areaEq(String area) {
 
         String decodeArea = URLDecoder.decode(area, UTF_8);
 
-        return decodeArea.equals("ALL") ? null : board.area.substring(0,2).eq(decodeArea);
+        return decodeArea.equals("ALL") ? null : board.area.substring(0, 2).eq(decodeArea);
     }
 
     private BooleanExpression dateBetween(String startDate, String endDate) {
@@ -86,7 +115,7 @@ public class BoardQueryRepository {
         LocalDate startDateOfLd = LocalDate.parse(startDate, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDateOfLd = LocalDate.parse(endDate, DateTimeFormatter.ISO_LOCAL_DATE);
         System.out.println("startDate = " + startDateOfLd);
-        searchDate = board.endDate.between(startDateOfLd,endDateOfLd);
+        searchDate = board.endDate.between(startDateOfLd, endDateOfLd);
         return searchDate;
     }
 

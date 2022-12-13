@@ -79,8 +79,6 @@ public class BoardService {
                 .map(BoardDueDayResponse::new)
                 .collect(Collectors.toList());
 
-        boards.forEach(board -> boardDueDayResponses.add(new BoardDueDayResponse(board)));
-
         return ResponseDto.success(boardDueDayResponses);
     }
 
@@ -89,11 +87,14 @@ public class BoardService {
      */
     public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-//        Timestamp start = Timestamp.valueOf(dueDay.atTime(0, 0, 0));
-//        Timestamp end = Timestamp.valueOf(dueDay.atTime(23, 59, 59));
-        Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
-        Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
-        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end, pageable);
+
+        // query method
+//        Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
+//        Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
+//        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end, pageable);
+
+        // querydsl
+        List<Board> boards = boardQueryRepository.findAllByDueDayBetween(dueDay, pageable);
 
         return getBoardResponses(boards);
     }
