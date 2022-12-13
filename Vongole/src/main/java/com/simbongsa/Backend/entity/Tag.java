@@ -18,7 +18,9 @@ public enum Tag {
     // skills
     PLAY_THE_INSTRUMENT("악기 연주 가능하신 분"), FUNNY("유쾌한 분"),LIKE_CHILD("아이를 좋아하는 분"),
     GOOD_AT_CLEANING("청소에 일가견이 있으신 분"),ACTIVE("활동적인 분"),CAREFUL("꼼꼼한 분"),
-    LIKE_ANIMAL("동물을 사랑하는 분"), ALL("");
+    LIKE_ANIMAL("동물을 사랑하는 분"),
+
+    ALL("");
 
 
 

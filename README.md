@@ -120,29 +120,15 @@ ModelAttribute를 사용할 때 유의할 점은 객체 매핑이 저절로 되�
 JPA가 제공하는 멤버 객체가 아니라서 db에 반영이 안되는 거라고 생각해서 JpaRepository로부터 불러온 멤버 객체를 업데이트하니까 db에 잘 적용이 되었다.
 
 
-
-
-
-
-## 7. 질문
-
-### 1) 앞으로 남은 3주 간의 방향성
-        for (Board myBoard : myBoards) {
-            List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
-            for (Enrollment enrollment : enrollments) {
-                enrollDetailResponses.add(new EnrollDetailResponse(enrollment));
-            }
-        }
-
-    
-위 코드는 내가 작성한 게시글들의 봉사 활동 지원자 전체 목록을 조회해오는 코드입니다. 먼저 내가 게시한 게시글을 boardRepository로 부터 조회해오고 for 문을 돌려 각 게시물에 지원한 지원자 내역을 enrollRepository로부터 조회해 옵니다. 그 다음 또 for문을 돌려서 지원자 내역을 responseDto에 담아서 리턴하는 구조입니다.
-
-지금까지 항해 강의 자료로 공부한 지식이 전부이기 때문에 sql,jpql 등도 잘 모르는 상태여서 제가 할 수 있는 최선의 코드를 작성한 것입니다. 함께 공부하는 동료들이 QueryDSL을 적용하면 이중 for문을 쓰지 않아도 된다는 조언을 들었는데요.
-
-제가 드리고 싶은 질문은 코드를 어떻게 수정하면 좋을지가 아니라 앞으로 남은 3주간 어떤 방향으로 공부해야 할지를 여쭤보고 싶습니다. 
-
-남병관 CTO 님의 세션에서 "이해도 잘 되지 않는 새로운 기술을 적용하기 보다는 현재 갖고 있는 역량 내에서 최선을 다해 고민해 본 후, 새로운 기술을 배울 수 밖에 없는 상황이 되었을 때 기술을 배워서 적용해 보라" 고 말씀해 주셨었는데요. 세션을 들으면서 제가 현재 그런 상황에 직면해 있다는 느낌을 받았습니다. 
-
-하지만 기본적인 CRUD를 기계적으로 작성을 하고는 있지만 아직까지 전체적인 흐름을 파악하고 있다기보다는 사용법에 익숙해진 느낌입니다. 예를 들어 아직까지 영속성 컨텍스트, 트랜젝션의 의미를 100% 이해하지 못하고 있는 상황인데 querydsl을 따로 공부해보는게 좋을지, JPA의 본질에 대해 조금 더 깊이 공부해보는 것이 좋을지 궁금합니다.
+### > JWT 토큰 만료에 대한 예외처리
+현재 구현하고 있는 스프링 기반 웹 프로젝트에서 사용자 인증 방식으로 Spring Security + JWT 인증 방식을 사용하고 있다.
+처음에는 JwtFilter에서 예외를 던져주면 GlobalExceptionHandler에서 처리하면 되지 않을까라고 생각했지만 Filter는 아직 애플리케이션에 들어가지 못했다는 것을 깨달았다.
+Filter는 Dispatcher Servlet 보다 앞단에 존재하며 Handler Intercepter는 뒷단에 존재하기 때문에 Filter 에서 보낸 예외는 Exception Handler로 처리를 못한다.
+jwt 토큰 만료에 대한 예외처리를 하기 위해 현재 필터보다 앞단에 예외 처리를 위한 필터를 하나 더 두고 FilterChain으로 원래의 JWT 유효성 검사를 하던 필터로 요청을 넘겨주는 방법이 있었다. 필터 구성을 이런식으로 해두면 다음 차례 필터의 로직 수행 중 던져진 예외가 앞서 거쳤던 필터로 넘어가서 처리가 가능하게 된다.
+즉, 원래는
+ * 요청 ➡️ JwtAuthenticationFilter
+의 형태였다면,
+* 요청 ➡️ JwtExceptionFilter ➡️ JwtAuthenticationFilter
+로 필터를 구성해서 JwtAuthenticationFilter에서 던진 예외를 JwtExceptionFilter가 처리할 수 있도록 했다.
 
 
