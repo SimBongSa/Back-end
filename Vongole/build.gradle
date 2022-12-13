@@ -102,7 +102,7 @@ compileQuerydsl {
 }
 
 
-// ci / cd
+// ci/cd
 jar {
 	enabled = false
 }
