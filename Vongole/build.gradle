@@ -53,7 +53,6 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 
-
 	// AWS RDS
 	runtimeOnly 'mysql:mysql-connector-java'
 
@@ -70,6 +69,9 @@ dependencies {
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	implementation group: 'org.owasp.esapi', name: 'esapi', version: '2.3.0.0'
+	implementation 'org.jsoup:jsoup:1.13.1'
 
 
 //	// AWS S3를 테스트하기 위한 라이브러리(S3 Mock)
