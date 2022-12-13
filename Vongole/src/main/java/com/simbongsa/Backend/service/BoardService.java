@@ -18,9 +18,11 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -71,8 +73,11 @@ public class BoardService {
      */
     public ResponseDto<List<BoardDueDayResponse>> getBoardsByMonth(String year, String month) {
 
-        List<Board> boards = boardRepository.findAllByDueDay(year,month);
-        List<BoardDueDayResponse> boardDueDayResponses = new ArrayList<>();
+        List<Board> boards = boardRepository.findAllByDueDay(year, month);
+
+        List<BoardDueDayResponse> boardDueDayResponses = boards.stream()
+                .map(BoardDueDayResponse::new)
+                .collect(Collectors.toList());
 
         boards.forEach(board -> boardDueDayResponses.add(new BoardDueDayResponse(board)));
 
@@ -124,17 +129,21 @@ public class BoardService {
         // 조회수 증가
         board.addHits();
 
-        List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(boardId);
-        List<String> tags = new ArrayList<>();
-        hashtags.forEach(hashtag -> tags.add(hashtag.getTag().getMsg()));
+        // 해시태그
+        List<String> tags = hashtagRepository.findAllByBoardId(boardId).stream()
+                .map(hashtag -> hashtag.getTag().getMsg())
+                .collect(Collectors.toList());
 
+        // 댓글
         List<Comment> comments = commentRepository.findAllByBoardOrderByCreatedAtDesc(board, pageable);
-        List<CommentResponse> commentResponses = new ArrayList<>();
-        comments.forEach(comment -> commentResponses.add(new CommentResponse(comment)));
+        List<CommentResponse> commentResponses = comments.stream()
+                .map(CommentResponse::new)
+                .collect(Collectors.toList());
 
-        List<String> applicants = new ArrayList<>();
-        enrollRepository.findAllByBoard(board)
-                .forEach(enrollment -> applicants.add(enrollment.getMember().getUsername()));
+        // 지원자 명단
+        List<String> applicants = enrollRepository.findAllByBoard(board).stream()
+                .map(enrollment -> enrollment.getMember().getUsername())
+                .collect(Collectors.toList());
 
 
         return ResponseDto.success(new BoardDetailResponse(board, commentResponses, tags, applicants));
@@ -146,18 +155,11 @@ public class BoardService {
     public ResponseDto<List<BoardResponse>> getBoardsByHashtag(Tag tag, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        List<Hashtag> hashtags = hashtagRepository.findAllByTag(tag);
-        List<BoardResponse> boardResponses = new ArrayList<>();
 
-        hashtags.forEach(hashtag ->
-                boardResponses.add(new BoardResponse(
-                        boardRepository.findById(hashtag.getBoardId()).get()
-                )));
+        List<BoardResponse> boardResponses = hashtagRepository.findAllByTag(tag).stream()
+                .map(hashtag -> new BoardResponse(boardRepository.findById(hashtag.getBoardId()).get()))
+                .collect(Collectors.toList());
 
-//        for (Hashtag hashtag : hashtags) {
-//            Board board = boardRepository.findById(hashtag.getBoardId()).get();
-//            boardResponses.add(new BoardResponse(board));
-//        }
         return ResponseDto.success(boardResponses);
     }
 
@@ -171,7 +173,6 @@ public class BoardService {
         Board board = check.existBoard(boardId);
         // 작성자인지 확인
         check.isAuthor(member, board);
-
 
 
         String boardImage = (boardUpdateRequest.getBoardImage() == null) ?

@@ -4,7 +4,6 @@ import com.simbongsa.Backend.dto.request.CompanyUpdateRequest;
 import com.simbongsa.Backend.dto.response.*;
 import com.simbongsa.Backend.entity.Board;
 import com.simbongsa.Backend.entity.Enrollment;
-import com.simbongsa.Backend.entity.Hashtag;
 import com.simbongsa.Backend.entity.Member;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
@@ -15,7 +14,6 @@ import com.simbongsa.Backend.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,9 +76,9 @@ public class CompanyPageService {
     public ResponseDto<List<BoardResponse>> getMyBoards(Member member, int page, int size) {
         check.isAdmin(member);
         Pageable pageable = PageRequest.of(page, size);
-        List<Board> myBoards = boardRepository.findAllByMember(member, pageable);
-        List<BoardResponse> boardResponses = new ArrayList<>();
-        myBoards.forEach(myBoard -> boardResponses.add(new BoardResponse(myBoard)));
+        List<BoardResponse> boardResponses = boardRepository.findAllByMember(member,pageable).stream()
+                .map(BoardResponse::new)
+                .collect(Collectors.toList());
 
         return ResponseDto.success(boardResponses);
     }
@@ -95,11 +93,12 @@ public class CompanyPageService {
         List<Board> myBoards = boardRepository.findAllByMember(member);
         List<EnrollDetailResponse> enrollDetailResponses = new ArrayList<>();
         for (Board myBoard : myBoards) {
-            List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
-            List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(myBoard.getId());
-            List<String> tags = new ArrayList<>();
-            hashtags.forEach(hashtag -> tags.add(hashtag.getTag().getMsg()));
 
+            List<String> tags = hashtagRepository.findAllByBoardId(myBoard.getId()).stream()
+                    .map(hashtag -> hashtag.getTag().getMsg())
+                    .collect(Collectors.toList());
+
+            List<Enrollment> enrollments = enrollRepository.findAllByBoard(myBoard);
             enrollments.forEach(enrollment -> enrollDetailResponses.add(new EnrollDetailResponse(enrollment, tags)));
         }
         return ResponseDto.success(enrollDetailResponses);
@@ -115,10 +114,9 @@ public class CompanyPageService {
         // board 존재하는지 체크
         Board board = check.existBoard(boardId);
 
-        List<Enrollment> enrollments = enrollRepository.findAllByBoard(board, pageable);
-        List<EnrollResponse> enrollResponses = new ArrayList<>();
-
-        enrollments.forEach(enrollment -> enrollResponses.add(new EnrollResponse(enrollment)));
+        List<EnrollResponse> enrollResponses = enrollRepository.findAllByBoard(board, pageable).stream()
+                .map(EnrollResponse::new)
+                .collect(Collectors.toList());
 
         return ResponseDto.success(enrollResponses);
     }
