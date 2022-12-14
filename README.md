@@ -62,13 +62,18 @@
 - 강창식
 
 ## 4. Dependencies
-
-- Spring Boot 2.7.5
-- Java SDK 11
-- mySQL 8.0.28
-- AWS S3 2.2.1
-- Websocket 2.3.3
-- JWT 0.11.2
+<div align=center> 
+   <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+   <img src="https://img.shields.io/badge/amazone ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+   <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+   <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
+   <img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+<br>
+   <img src="https://img.shields.io/badge/Websockets-41454A?style=for-the-badge&logo=&logoColor=white">
+   <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSONWebTokens&logoColor=white">
+   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+</div>
 
 ## 5. ERD 설계
 ![ERD](https://github.com/SimBongSa/Back-end/blob/main/Vongole/src/main/resources/static/%EB%B4%89%EA%B3%A8%EB%A0%88%20%EC%B5%9C%EC%A2%85_.png)
