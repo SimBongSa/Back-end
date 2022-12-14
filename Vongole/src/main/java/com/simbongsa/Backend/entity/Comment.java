@@ -36,6 +36,9 @@ public class Comment extends Timestamped{
     }
 
     public Comment(Member member, Board board, CommentRequest commentRequest) {
+        if(commentRequest.getContent()==null||commentRequest.getContent() .equals("")){
+            throw new IllegalArgumentException("댓글생성 실패 쓴댓글이 없습니다.");
+        }
         this.member = member;
         this.board = board;
         this.content = commentRequest.getContent();
