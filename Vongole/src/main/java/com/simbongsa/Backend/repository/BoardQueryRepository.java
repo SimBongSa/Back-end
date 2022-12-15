@@ -72,25 +72,14 @@ public class BoardQueryRepository {
     /**
      * 날짜별 조회
      */
-    public List<Board> findAllByDueDayBetween(LocalDate dueDay, Pageable pageable) {
+    public List<Board> findAllByDueDayBetween(LocalDate dueDay) {
         Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
         Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
         return queryFactory
                 .selectFrom(board)
                 .where(board.dueDay.between(start, end))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
     }
-
-    /**
-     * boardResponse
-     */
-//    public BoardResponse getBoardResponses() {
-//
-//
-//
-//    }
 
 
     private BooleanExpression tagIn(Tag tag) {

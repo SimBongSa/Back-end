@@ -57,11 +57,9 @@ public class BoardController {
      * 게시물 날짜별 조회
      */
     @GetMapping("/date/{dueDay}")
-    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay,
-                                                              @RequestParam(name = "page", defaultValue = "1") int page,
-                                                              @RequestParam(name = "size", defaultValue = "4") int size) {
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(@PathVariable LocalDate dueDay) {
 
-        return boardService.getBoardsByDueDay(dueDay, page - 1, size);
+        return boardService.getBoardsByDueDay(dueDay);
     }
 
     /**

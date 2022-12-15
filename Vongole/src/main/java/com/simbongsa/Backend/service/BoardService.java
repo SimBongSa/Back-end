@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
+
 @Service
 @RequiredArgsConstructor
 
@@ -77,7 +79,7 @@ public class BoardService {
 
         List<BoardDueDayResponse> boardDueDayResponses = boards.stream()
                 .map(BoardDueDayResponse::new)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return ResponseDto.success(boardDueDayResponses);
     }
@@ -85,16 +87,9 @@ public class BoardService {
     /**
      * 게시물 날짜별 조회
      */
-    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-
-        // query method
-//        Timestamp start = Timestamp.valueOf(dueDay.atStartOfDay());
-//        Timestamp end = Timestamp.valueOf(dueDay.plusDays(1).atStartOfDay());
-//        List<Board> boards = boardRepository.findAllByDueDayBetween(start, end, pageable);
-
+    public ResponseDto<List<BoardResponse>> getBoardsByDueDay(LocalDate dueDay) {
         // querydsl
-        List<Board> boards = boardQueryRepository.findAllByDueDayBetween(dueDay, pageable);
+        List<Board> boards = boardQueryRepository.findAllByDueDayBetween(dueDay);
 
         return getBoardResponses(boards);
     }
@@ -133,18 +128,18 @@ public class BoardService {
         // 해시태그
         List<String> tags = hashtagRepository.findAllByBoardId(boardId).stream()
                 .map(hashtag -> hashtag.getTag().getMsg())
-                .collect(Collectors.toList());
+                .collect(toList());
 
         // 댓글
         List<Comment> comments = commentRepository.findAllByBoardOrderByCreatedAtDesc(board, pageable);
         List<CommentResponse> commentResponses = comments.stream()
                 .map(CommentResponse::new)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         // 지원자 명단
         List<String> applicants = enrollRepository.findAllByBoard(board).stream()
                 .map(enrollment -> enrollment.getMember().getUsername())
-                .collect(Collectors.toList());
+                .collect(toList());
 
 
         return ResponseDto.success(new BoardDetailResponse(board, commentResponses, tags, applicants));
@@ -157,11 +152,28 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, size);
 
 
-        List<BoardResponse> boardResponses = hashtagRepository.findAllByTag(tag).stream()
+        // stream
+        long startTime = System.nanoTime();
+        List<BoardResponse> boardResponsesStream = hashtagRepository.findAllByTag(tag).stream()
                 .map(hashtag -> new BoardResponse(boardRepository.findById(hashtag.getBoardId()).get()))
-                .collect(Collectors.toList());
+                .collect(toList());
+        long endTime = System.nanoTime();
 
-        return ResponseDto.success(boardResponses);
+        System.out.printf("stream: %dns%n", endTime - startTime);
+
+        // for-loop
+//        long startTime = System.nanoTime();
+//        List<Hashtag> hashtags = hashtagRepository.findAllByTag(tag);
+//        List<BoardResponse> boardResponsesForLoop = new ArrayList<>();
+//        for (Hashtag hashtag : hashtags) {
+//            Board board = boardRepository.findById(hashtag.getBoardId()).get();
+//            boardResponsesForLoop.add(new BoardResponse(board));
+//        }
+//        long endTime = System.nanoTime();
+//
+//        System.out.printf("for-loop: %dns%n", endTime - startTime);
+
+        return ResponseDto.success(boardResponsesStream);
     }
 
     /**
