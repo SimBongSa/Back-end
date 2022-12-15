@@ -13,9 +13,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    // 날짜별 봉사활동 목록 조회
-    List<Board> findAllByDueDayBetween(Timestamp start, Timestamp end, Pageable pageable);
-
     // 내가 작성한 게시물 조회
     List<Board> findAllByMember(Member member, Pageable pageable);
 
