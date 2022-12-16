@@ -11,7 +11,6 @@ public enum ErrorCode {
 
     /* OK 200 error*/
 
-
     DUPLICATE_USERNAME(HttpStatus.OK.value(), "Username is Duplicated", "사용 불가능한 아이디 입니다."),
 
     SEARCH_NOT_FOUND(HttpStatus.OK.value(), "Search Result Not Found", "검색 결과가 없습니다."),
@@ -39,6 +38,10 @@ public enum ErrorCode {
 
     UNAUTHORIZED_ENROLLMENT(HttpStatus.UNAUTHORIZED.value(), "Unauthorized enrollment", "봉사 활동 승인 권한이 없습니다."),
 
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Token is Invalid", "토큰이 유효하지 않습니다."),
+
+    ALREADY_APPLIED(HttpStatus.UNAUTHORIZED.value(), "Board is Already Applied", "이미 신청 중인 게시물입니다."),
+
     /*FORBIDDEN 403 error*/
     // 나중에 에러코드 명 바꾸기
     UNABLE_DELETE_BOARD(HttpStatus.FORBIDDEN.value(), "Unable To Delete Board", "봉사활동 지원자가 있기 때문에 삭제할 수 없습니다."),
@@ -54,23 +57,17 @@ public enum ErrorCode {
     ENROLLMENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Applicant Not Found", "신청자를 찾을 수 없습니다."),
 
 
-    /* CONFLICT 409 error*/
-
-
     /* webSocket 관련 */
     NO_SUCH_CHATROOM(HttpStatus.NOT_FOUND.value(), "No such Chatroom", "존재하지 않는 채팅방 입니다.(또는 잘못된 채팅방 ID 입니다.)"),
     NO_SUCH_METHOD(HttpStatus.NOT_FOUND.value(), "No such Method", "알 수 없는 요청 입니다."),
 
     /*500 server error*/
 
-//    DUPLICATE_USERNAME(HttpStatus.NOT_FOUND.value(), "Username is Duplicated", "이미 사용 중인 아이디입니다."),
     DUPLICATE_NICKNAME(HttpStatus.NOT_FOUND.value(), "Nickname is Duplicated", "이미 사용 중인 닉네임입니다."),
 
-    PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND.value(),"Password is Not Matched", "비밀번호가 일치하지 않습니다."),
+    PASSWORD_NOT_MATCHED(HttpStatus.NOT_FOUND.value(),"Password is Not Matched", "비밀번호가 일치하지 않습니다.");
 
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Token is Invalid", "토큰이 유효하지 않습니다."),
 
-    ALREADY_APPLIED(HttpStatus.UNAUTHORIZED.value(), "Board is Already Applied", "이미 신청 중인 게시물입니다.");
 
 
 
