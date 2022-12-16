@@ -71,6 +71,13 @@ public class BoardService {
     }
 
     /**
+     * 게시물 전체 개수
+     */
+    public ResponseDto<BoardTotalResponse> getBoardCnt() {
+        return ResponseDto.success(new BoardTotalResponse(boardRepository.countBoardsBy()));
+    }
+
+    /**
      * 게시물 월별 조회
      */
     public ResponseDto<List<BoardDueDayResponse>> getBoardsByMonth(String year, String month) {

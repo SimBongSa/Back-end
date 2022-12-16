@@ -19,17 +19,4 @@ public class Util {
     }
 
 
-//    public Board getCurrentBoard(Long boardId) {
-//
-//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException("존재하지 않는 게시글입니다."));
-//        return board;
-//    }
-
-//    public boolean checkBoardMember(Board board, Member member) {
-//
-//        if(board.getMember().getMemberId().equals(member.getMemberId())){
-//            return false;
-//        }
-//        return true;
-//    }
 }

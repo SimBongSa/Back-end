@@ -47,6 +47,7 @@ public class BoardResponse {
 
     private Long applicantCnt;
 
+
     public BoardResponse(Board board, List<String> tags) {
         this.boardId = board.getId();
         this.title = board.getTitle();

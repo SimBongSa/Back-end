@@ -44,6 +44,11 @@ public class BoardController {
         return boardService.getAllBoards(page - 1, size);
     }
 
+    @GetMapping("/count")
+    public ResponseDto<BoardTotalResponse> getBoardCnt() {
+        return boardService.getBoardCnt();
+    }
+
     /**
      * 게시물 월별 조회
      */

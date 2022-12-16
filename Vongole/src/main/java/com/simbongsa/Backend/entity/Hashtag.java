@@ -21,8 +21,6 @@ public class Hashtag {
     @Enumerated(EnumType.STRING)
     private Tag tag;
 
-//    @Column
-//    private Long tagCount;
 
     public Hashtag(Long boardId, Tag tag) {
         this.boardId = boardId;

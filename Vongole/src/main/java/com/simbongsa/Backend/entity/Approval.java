@@ -11,5 +11,4 @@ public enum Approval {
     PASS, // 승인
     FAIL; // 거절
 
-//    private final String msg;
 }
