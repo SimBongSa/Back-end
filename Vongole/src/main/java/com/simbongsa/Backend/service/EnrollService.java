@@ -5,6 +5,7 @@ import com.simbongsa.Backend.dto.response.ResponseDto;
 import com.simbongsa.Backend.entity.*;
 import com.simbongsa.Backend.repository.BoardRepository;
 import com.simbongsa.Backend.repository.EnrollRepository;
+import com.simbongsa.Backend.util.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,13 @@ public class EnrollService {
 
     private final BoardRepository boardRepository;
     private final EnrollRepository enrollRepository;
+    private final Check check;
 
     @Transactional
     public ResponseDto<MsgResponse> enrollApprovalAndCancel(Member member, Long boardId) {
 
         Board board = boardRepository.findById(boardId).orElseThrow(null);
-
+        check.isMember(member);
 
         // 신청
         if (!enrollRepository.existsByMemberAndBoard(member, board)) {
