@@ -29,7 +29,6 @@ public interface EnrollRepository extends JpaRepository<Enrollment, Long> {
 
     Page<Enrollment> findAllByMember(Member member,Pageable pageable);
 
-    List<Enrollment> findAllByMemberAndApproval(Approval approval, Member member);
 
 
 }
