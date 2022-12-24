@@ -68,9 +68,16 @@ public class ChatService {
 
     public ResponseDto getChatRoomHistory(@PathVariable String id, Member member){
 
-        if(!member.getChatRoomIdList().contains(id)){
+        try{
+            if(!member.getChatRoomIdList().contains(id)){
+                throw new GlobalException(ErrorCode.NO_SUCH_CHATROOM);
+            }
+        }catch (NullPointerException e){
+            log.info("From(getChatRoomHistory) : member.getChatRoomIdList() was NULL [line: 72~74] - member = id :{} name:{}"
+                    , member.getMemberId(),member.getName());
             throw new GlobalException(ErrorCode.NO_SUCH_CHATROOM);
         }
+
 
         List<ChatRecord> records = chatRoomRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new GlobalException(ErrorCode.NO_SUCH_CHATROOM))
